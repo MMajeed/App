@@ -15,6 +15,11 @@
 */[Dd]ebug/*
 */[Rr]elease/*
 
+
+[Bb]in/*
+[Dd]ebug/*
+[Rr]elease/*
+
 *.sdf 
 *.opensdf
 *.suo
