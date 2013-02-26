@@ -171,7 +171,7 @@ HRESULT Application::InitDevices()
 		DX11ObjectManager::getInstance()->Sampler.Add(this->pSamplerAnisotropic.first, this->pSamplerAnisotropic.second);
 	}
 	
-	for(int i = 0; i < 100; ++i)
+	for(int i = 0; i < 1; ++i)
 	{
 		PlyFile* object = new PlyFile(L"PlyFiles/Box.ply");
 		object->Init();	
@@ -188,15 +188,11 @@ void Application::CleanupDevices()
 {
 	DX11App::InitDevices();
 
-	while(this->objects.size() > 0)
+	while(this->objects.size() >= 0)
 	{
 		(*this->objects.begin())->Clean();
-		this->objects.erase(this->objects.begin());
-		
+		this->objects.erase(this->objects.begin());		
 	}
-
-	DX11ObjectManager::getInstance()->CBuffer.Erase(this->pCBNeverChangesID.first);
-	DX11ObjectManager::getInstance()->CBuffer.Erase(this->pCBNeverChangesID.first);
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {

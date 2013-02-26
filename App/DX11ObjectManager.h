@@ -36,14 +36,6 @@ public:
 			out = iter->second;
 			return true;
 		}
-		void Erase(std::string name)
-		{
-			if(this->mapObject.find(name) != this->mapObject.end()) 
-			{
-				this->mapObject[name]->Release();
-				this->mapObject.erase(name);
-			}
-		}
 		bool Exists(std::string name)
 		{
 			return (this->mapObject.find(name) != this->mapObject.end());

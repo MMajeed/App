@@ -28,13 +28,6 @@ void BasicObject::Init()
 }
 void BasicObject::Clean()
 {
-	DX11ObjectManager::getInstance()->VertexBuffer.Erase(this->pVertexBuffer.first);
-	DX11ObjectManager::getInstance()->VertexBuffer.Erase(this->pIndexBuffer.first);	
-	DX11ObjectManager::getInstance()->CBuffer.Erase(this->pCBChangesEveryFrame.first);
-	DX11ObjectManager::getInstance()->InputLayout.Erase(this->pInputLayout.first );
-	DX11ObjectManager::getInstance()->VertexShader.Erase(this->pVertexShader.first);
-	DX11ObjectManager::getInstance()->PixelShader.Erase(this->pPixelShader.first);
-	DX11ObjectManager::getInstance()->RastersizerState.Erase(this->pRastersizerState.first);
 }
 void BasicObject::Update(float delta)
 {
