@@ -10,14 +10,14 @@
 
 SkyBox::SkyBox(std::string cubeMap)
 {	
-	this->VertexBufferID        = "PlyFiles/Sphere_Smooth_3.ply";
-	this->IndexBufferID         = "PlyFiles/Sphere_Smooth_3.ply";
-	this->InputLayoutID         = "ShaderFiles/6_SkyMap.fx";
-	this->VertexShaderID        = "ShaderFiles/6_SkyMap.fx";
-	this->PixelShaderID         = "ShaderFiles/6_SkyMap.fx";
-	this->RastersizerStateID    = "SkyBox";	
-	this->CBChangesEveryFrameID = "CBChangeEveryFrame";
-	this->CubeMapIDs			= cubeMap;
+	this->pVertexBuffer.first        = "PlyFiles/Sphere_Smooth_3.ply";
+	this->pIndexBuffer.first         = "PlyFiles/Sphere_Smooth_3.ply";
+	this->pCBChangesEveryFrame.first = "CBChangeEveryFrame";
+	this->pInputLayout.first         = "ShaderFiles/6_SkyMap.fx";
+	this->pVertexShader.first        = "ShaderFiles/6_SkyMap.fx";
+	this->pPixelShader.first         = "ShaderFiles/6_SkyMap.fx";
+	this->pRastersizerState.first    = "SkyBox";	
+	this->pCubeMap.first 			 = cubeMap;
 	std::wstring error;
 	
 	bool hr = VertexBuffer::LoadFromPlyFile(L"PlyFiles/Sphere_Smooth_3.ply", this->vertexBuffer,error); 
@@ -31,21 +31,17 @@ SkyBox::SkyBox(std::string cubeMap)
 
 void SkyBox::InitRastersizerState(ID3D11Device* device)
 {
-	if(!DX11ObjectManager::getInstance()->RastersizerState.Exists(this->RastersizerStateID))
+	if(!DX11ObjectManager::getInstance()->RastersizerState.Exists(this->pRastersizerState.first))
 	{
 		std::wstring error;
-		ID3D11RasterizerState* rasterizerState;
-		if(!DX11Helper::LoadRasterizerState(D3D11_CULL_NONE, D3D11_FILL_SOLID, true, true, device, &rasterizerState, error))
+		if(!DX11Helper::LoadRasterizerState(D3D11_CULL_NONE, D3D11_FILL_SOLID, true, true, device, &(this->pRastersizerState.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->RastersizerState.Add(this->RastersizerStateID, rasterizerState);
+		DX11ObjectManager::getInstance()->RastersizerState.Add(this->pRastersizerState.first, this->pRastersizerState.second);
 	}
 }
 
 void SkyBox::Update(float delta)
 {
-	Camera camera = App::getInstance()->camera;
-
-	//this->object.Pos = camera.eye;
 }

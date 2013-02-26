@@ -23,16 +23,18 @@ void BasicObject::Init()
 	this->InitRastersizerState(device);
 	this->InitCBChangesEveryFrameBuffer(device);
 	this->InitTextureAndCube(device);
+
+	this->LoadD3DStuff();
 }
 void BasicObject::Clean()
 {
-	DX11ObjectManager::getInstance()->VertexBuffer.Erase(this->VertexBufferID);
-	DX11ObjectManager::getInstance()->VertexBuffer.Erase(this->IndexBufferID);
-	DX11ObjectManager::getInstance()->InputLayout.Erase(this->InputLayoutID );
-	DX11ObjectManager::getInstance()->VertexShader.Erase(this->VertexShaderID);
-	DX11ObjectManager::getInstance()->PixelShader.Erase(this->PixelShaderID);
-	DX11ObjectManager::getInstance()->RastersizerState.Erase(this->RastersizerStateID);
-	DX11ObjectManager::getInstance()->CBuffer.Erase(this->CBChangesEveryFrameID);
+	DX11ObjectManager::getInstance()->VertexBuffer.Erase(this->pVertexBuffer.first);
+	DX11ObjectManager::getInstance()->VertexBuffer.Erase(this->pIndexBuffer.first);	
+	DX11ObjectManager::getInstance()->CBuffer.Erase(this->pCBChangesEveryFrame.first);
+	DX11ObjectManager::getInstance()->InputLayout.Erase(this->pInputLayout.first );
+	DX11ObjectManager::getInstance()->VertexShader.Erase(this->pVertexShader.first);
+	DX11ObjectManager::getInstance()->PixelShader.Erase(this->pPixelShader.first);
+	DX11ObjectManager::getInstance()->RastersizerState.Erase(this->pRastersizerState.first);
 }
 void BasicObject::Update(float delta)
 {
@@ -40,15 +42,6 @@ void BasicObject::Update(float delta)
 }
 void BasicObject::Draw()
 {
-	ID3D11Buffer* pVertexBuffer;
-	ID3D11Buffer* pIndexBuffer;
-	ID3D11InputLayout* pInputLayout;
-	ID3D11VertexShader* pVertexShader;
-	ID3D11PixelShader* pPixelShader;
-	ID3D11RasterizerState* pRastersizerState;
-	ID3D11Buffer* pCBbChangeEveryFrame;
-	this->LoadD3DStuff(pVertexBuffer, pIndexBuffer, pInputLayout, pVertexShader, pPixelShader, pRastersizerState, pCBbChangeEveryFrame);
-
 	cBuffer::cbChangeEveryFrame cbCEF ;
 	XMFLOAT4X4 world = this->object.CalculateMatrix();
 	cbCEF.mWorld = XMLoadFloat4x4(&world);
@@ -59,59 +52,57 @@ void BasicObject::Draw()
 	// Set vertex buffer 
 	UINT stride = sizeof( VertexBuffer::SimpleVertex );
 	UINT offset = 0;
-	pImmediateContext->UpdateSubresource( pCBbChangeEveryFrame, 0, NULL, &cbCEF, 0, 0 );
-	pImmediateContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &stride, &offset );
-	pImmediateContext->IASetIndexBuffer( pIndexBuffer, DXGI_FORMAT_R16_UINT, 0 );
+	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cbCEF, 0, 0 );
+	pImmediateContext->IASetVertexBuffers( 0, 1, &this->pVertexBuffer.second, &stride, &offset );
+	pImmediateContext->IASetIndexBuffer( this->pIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
 	pImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
 	// Set the input layout
-	pImmediateContext->IASetInputLayout( pInputLayout );
-	pImmediateContext->VSSetShader( pVertexShader, NULL, 0 );	
-	pImmediateContext->PSSetShader( pPixelShader, NULL, 0 );
-	pImmediateContext->RSSetState(pRastersizerState);
-	pImmediateContext->VSSetConstantBuffers( 2, 1, &pCBbChangeEveryFrame );
+	pImmediateContext->IASetInputLayout( this->pInputLayout.second );
+	pImmediateContext->VSSetShader( this->pVertexShader.second, NULL, 0 );	
+	pImmediateContext->PSSetShader( this->pPixelShader.second, NULL, 0 );
+	pImmediateContext->RSSetState(this->pRastersizerState.second);
+	pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 	pImmediateContext->DrawIndexed( this->vertexBuffer.indices.size() * 3, 0, 0 );
 }
-void BasicObject::LoadD3DStuff(	ID3D11Buffer*& vertexBuffer, ID3D11Buffer*& indexBuffer, ID3D11InputLayout*& inputLayout, ID3D11VertexShader*& vertexShader, ID3D11PixelShader*& pixelShader, ID3D11RasterizerState*& rastersizerState, ID3D11Buffer*& cbChangeEveryFrame) const
+void BasicObject::LoadD3DStuff()
 {
-	if(!DX11ObjectManager::getInstance()->VertexBuffer.Get(this->VertexBufferID , vertexBuffer)){ throw std::exception("Vertex Buffer not found"); }
-	if(!DX11ObjectManager::getInstance()->IndexBuffer.Get(this->IndexBufferID , indexBuffer)){ throw std::exception("Index Buffer not found"); }
-	if(!DX11ObjectManager::getInstance()->InputLayout.Get(this->InputLayoutID , inputLayout)){ throw std::exception("Input Layout not found"); }
-	if(!DX11ObjectManager::getInstance()->VertexShader.Get(this->VertexShaderID , vertexShader)){ throw std::exception("Vertex Shader not found"); }
-	if(!DX11ObjectManager::getInstance()->PixelShader.Get(this->PixelShaderID , pixelShader)){ throw std::exception("Pixel Shader not found"); }
-	if(!DX11ObjectManager::getInstance()->RastersizerState.Get(this->RastersizerStateID , rastersizerState)){ throw std::exception("Rastersizer State not found"); }
-	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->CBChangesEveryFrameID , cbChangeEveryFrame)){ throw std::exception("const buffer not found"); }	
+	if(!DX11ObjectManager::getInstance()->VertexBuffer.Get(this->pVertexBuffer.first, this->pVertexBuffer.second)){ throw std::exception("Vertex Buffer not found"); }
+	if(!DX11ObjectManager::getInstance()->IndexBuffer.Get(this->pIndexBuffer.first, this->pIndexBuffer.second)){ throw std::exception("Index Buffer not found"); }
+	if(!DX11ObjectManager::getInstance()->InputLayout.Get(this->pInputLayout.first, this->pInputLayout.second)){ throw std::exception("Input Layout not found"); }
+	if(!DX11ObjectManager::getInstance()->VertexShader.Get(this->pVertexShader.first, this->pVertexShader.second)){ throw std::exception("Vertex Shader not found"); }
+	if(!DX11ObjectManager::getInstance()->PixelShader.Get(this->pPixelShader.first, this->pPixelShader.second)){ throw std::exception("Pixel Shader not found"); }
+	if(!DX11ObjectManager::getInstance()->RastersizerState.Get(this->pRastersizerState.first, this->pRastersizerState.second)){ throw std::exception("Rastersizer State not found"); }
+	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pCBChangesEveryFrame.first, this->pCBChangesEveryFrame.second)){ throw std::exception("const buffer not found"); }	
+
+	for(auto iter = pVecTexture.begin();
+		iter != pVecTexture.end();
+		++iter)
+	{
+		if(!DX11ObjectManager::getInstance()->Textexture.Get(iter->first, iter->second)){ throw std::exception("Texture not found"); }	
+	}
+
+	if(this->pCubeMap.first != "")
+	{
+		if(!DX11ObjectManager::getInstance()->Textexture.Get(this->pCubeMap.first, this->pCubeMap.second)){ throw std::exception("Cube Map not found"); }	
+	}
 }
 
 void BasicObject::DrawTexture(ID3D11DeviceContext* pImmediateContext)
 {
-	std::vector<ID3D11ShaderResourceView*> textures;
-	for(auto textureIter = this->TextureIDs.begin();
-		textureIter != this->TextureIDs.end();
-		++textureIter)
-	{
-		ID3D11ShaderResourceView* tempTexture;
-
-		if(!DX11ObjectManager::getInstance()->Textexture.Get(*textureIter, tempTexture)){ throw std::exception(("Texture " + *textureIter + " not found").c_str()); }
-
-		textures.push_back(tempTexture);
-	}
-
 	int counter = 0;
 
-	for(auto textureIter = textures.begin();
-		textureIter != textures.end();
+	for(auto textureIter = pVecTexture.begin();
+		textureIter != pVecTexture.end();
 		++textureIter)
 	{
-		pImmediateContext->PSSetShaderResources( counter, 1, &(*textureIter) );
+		pImmediateContext->PSSetShaderResources( counter, 1, &(textureIter->second) );
 		++counter;
 	}
 
-	if(this->CubeMapIDs != "")
+	if(this->pCubeMap.first != "")
 	{
-		ID3D11ShaderResourceView* cubeMap;
-		if(!DX11ObjectManager::getInstance()->Textexture.Get(this->CubeMapIDs, cubeMap)){ throw std::exception(("Cubemap " + this->CubeMapIDs + " not found").c_str()); }
-		pImmediateContext->PSSetShaderResources( counter, 1, &cubeMap );	
+		pImmediateContext->PSSetShaderResources( counter, 1, &this->pCubeMap.second );	
 	}
 }
 
@@ -119,125 +110,116 @@ void BasicObject::InitVertexBuffer(ID3D11Device* device)
 {
 	std::wstring error;
 
-	if(!DX11ObjectManager::getInstance()->VertexBuffer.Exists(this->VertexBufferID))
+	if(!DX11ObjectManager::getInstance()->VertexBuffer.Exists(this->pVertexBuffer.first))
 	{
-		ID3D11Buffer* vertexBuffer;
-		if(!this->vertexBuffer.CreateVertexBuffer(device, &vertexBuffer, error))
+		if(!this->vertexBuffer.CreateVertexBuffer(device, &(this->pVertexBuffer.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}	
-		DX11ObjectManager::getInstance()->VertexBuffer.Add(this->VertexBufferID, vertexBuffer);
+		DX11ObjectManager::getInstance()->VertexBuffer.Add(this->pVertexBuffer.first, pVertexBuffer.second);
 	}
 }
 void BasicObject::InitIndexBuffer(ID3D11Device* device)
 {
-	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->IndexBufferID))
+	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->pIndexBuffer.first))
 	{
 		std::wstring error;
-		ID3D11Buffer* indexBuffer;
-		if(!this->vertexBuffer.CreateIndexBuffer(device, &indexBuffer, error))
+		if(!this->vertexBuffer.CreateIndexBuffer(device, &(this->pIndexBuffer.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->IndexBuffer.Add(this->IndexBufferID, indexBuffer);
+		DX11ObjectManager::getInstance()->IndexBuffer.Add(this->pIndexBuffer.first, this->pIndexBuffer.second);
 	}
 }
 void BasicObject::InitInputLayout(ID3D11Device* device)
 {
-	if(!DX11ObjectManager::getInstance()->InputLayout.Exists(this->InputLayoutID))
+	if(!DX11ObjectManager::getInstance()->InputLayout.Exists(this->pInputLayout.first))
 	{
 		std::wstring error;
-		ID3D11InputLayout* inputLayout;
-		if(!DX11Helper::LoadInputLayoutFile(Helper::stringToWstring(this->InputLayoutID), L"VS", L"vs_4_0", device, &inputLayout, error))
+		if(!DX11Helper::LoadInputLayoutFile(Helper::stringToWstring(this->pInputLayout.first), L"VS", L"vs_4_0", device, &(this->pInputLayout.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->InputLayout.Add(this->InputLayoutID, inputLayout);
+		DX11ObjectManager::getInstance()->InputLayout.Add(this->pInputLayout.first, this->pInputLayout.second);
 	}
 }
 void BasicObject::InitVertexShader(ID3D11Device* device)
 {
-	if(!DX11ObjectManager::getInstance()->VertexShader.Exists(this->VertexShaderID))
+	if(!DX11ObjectManager::getInstance()->VertexShader.Exists(this->pVertexShader.first))
 	{
 		std::wstring error;
-		ID3D11VertexShader* vertexShader;
-		if(!DX11Helper::LoadVertexShaderFile(Helper::stringToWstring(this->VertexShaderID), L"VS", L"vs_4_0", device, &vertexShader, error))
+		if(!DX11Helper::LoadVertexShaderFile(Helper::stringToWstring(this->pVertexShader.first), L"VS", L"vs_4_0", device, &(this->pVertexShader.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->VertexShader.Add(this->VertexShaderID , vertexShader);
+		DX11ObjectManager::getInstance()->VertexShader.Add(this->pVertexShader.first , this->pVertexShader.second);
 	}
 }
 void BasicObject::InitPixelShader(ID3D11Device* device)
 {
-	if(!DX11ObjectManager::getInstance()->PixelShader.Exists(this->PixelShaderID))
+	if(!DX11ObjectManager::getInstance()->PixelShader.Exists(this->pPixelShader.first))
 	{
 		std::wstring error;
-		ID3D11PixelShader* pixelShader;
-		if(!DX11Helper::LoadPixelShaderFile(Helper::stringToWstring(this->PixelShaderID), L"PS", L"ps_4_0", device, &pixelShader, error))
+		if(!DX11Helper::LoadPixelShaderFile(Helper::stringToWstring(this->pPixelShader.first), L"PS", L"ps_4_0", device, &(this->pPixelShader.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->PixelShader.Add(this->PixelShaderID , pixelShader);
+		DX11ObjectManager::getInstance()->PixelShader.Add(this->pPixelShader.first , this->pPixelShader.second);
 	}
 }
 void BasicObject::InitRastersizerState(ID3D11Device* device)
 {
-	if(!DX11ObjectManager::getInstance()->RastersizerState.Exists(this->RastersizerStateID))
+	if(!DX11ObjectManager::getInstance()->RastersizerState.Exists(this->pRastersizerState.first))
 	{
 		std::wstring error;
-		ID3D11RasterizerState* rasterizerState;
-		if(!DX11Helper::LoadRasterizerState(D3D11_CULL_BACK, D3D11_FILL_SOLID, true, true, device, &rasterizerState, error))
+		if(!DX11Helper::LoadRasterizerState(D3D11_CULL_BACK, D3D11_FILL_SOLID, true, true, device, &(this->pRastersizerState.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->RastersizerState.Add(this->RastersizerStateID, rasterizerState);
+		DX11ObjectManager::getInstance()->RastersizerState.Add(this->pRastersizerState.first, this->pRastersizerState.second);
 	}
 }
 void BasicObject::InitCBChangesEveryFrameBuffer(ID3D11Device* device)
 {
-	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->CBChangesEveryFrameID))
+	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->pCBChangesEveryFrame.first))
 	{
 		std::wstring error;
-		ID3D11Buffer* constantBuffer;
-		if(!cBuffer::LoadBuffer<cBuffer::cbChangeEveryFrame>(device, &constantBuffer, error))
+		if(!cBuffer::LoadBuffer<cBuffer::cbChangeEveryFrame>(device, &(this->pCBChangesEveryFrame.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->CBuffer.Add(this->CBChangesEveryFrameID, constantBuffer);
+		DX11ObjectManager::getInstance()->CBuffer.Add(this->pCBChangesEveryFrame.first, this->pCBChangesEveryFrame.second);
 	}
 }
 void BasicObject::InitTextureAndCube(ID3D11Device* device)
 {
-	for(auto textureIter = this->TextureIDs.begin();
-		textureIter != this->TextureIDs.end();
+	for(auto textureIter = this->pVecTexture.begin();
+		textureIter != this->pVecTexture.end();
 		++textureIter)
 	{
-		std::string textureName = *textureIter;
+		std::string textureName = textureIter->first;
 		if(!DX11ObjectManager::getInstance()->Textexture.Exists(textureName))
 		{
 			std::wstring error;
-			ID3D11ShaderResourceView* texture;
-			if(!DX11Helper::LoadTextureFile(Helper::stringToWstring(textureName), device, &texture, error))
+			if(!DX11Helper::LoadTextureFile(Helper::stringToWstring(textureName), device, &(textureIter->second), error))
 			{
 				throw std::exception(Helper::WStringtoString(error).c_str());
 			}
-			DX11ObjectManager::getInstance()->Textexture.Add(textureName, texture);
+			DX11ObjectManager::getInstance()->Textexture.Add(textureName, textureIter->second);
 		}
 	}
 
-	if(this->CubeMapIDs != "")
+	if(this->pCubeMap.first != "")
 	{
-		std::string textureName = this->CubeMapIDs;
+		std::string textureName = this->pCubeMap.first;
 		if(!DX11ObjectManager::getInstance()->Textexture.Exists(textureName))
 		{
 			std::wstring error;
-			ID3D11ShaderResourceView* texture;
-			if(!DX11Helper::LoadTextureFile(Helper::stringToWstring(textureName), device, &texture, error))
+			if(!DX11Helper::LoadTextureFile(Helper::stringToWstring(textureName), device, &(this->pCubeMap.second), error))
 			{
 				throw std::exception(Helper::WStringtoString(error).c_str());
 			}
-			DX11ObjectManager::getInstance()->Textexture.Add(textureName, texture);
+			DX11ObjectManager::getInstance()->Textexture.Add(textureName, this->pCubeMap.second);
 		}
 	}
 }

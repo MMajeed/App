@@ -17,18 +17,8 @@ void Application::Render()
 	
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 
-	ID3D11SamplerState* samplerLinear;
-	if(!DX11ObjectManager::getInstance()->Sampler.Get(this->SamplerLinear, samplerLinear)){ throw std::exception("Sampler Linear not found"); }
-	ID3D11SamplerState* samplerAnisotropic;
-	if(!DX11ObjectManager::getInstance()->Sampler.Get(this->SamplerAnisotropic, samplerAnisotropic)){ throw std::exception("Sampler Anisotropic not found"); }
-
-	pImmediateContext->PSSetSamplers( 0, 1, &samplerLinear );
-	pImmediateContext->PSSetSamplers( 1, 1, &samplerAnisotropic );
-
-	ID3D11Buffer* pCBNeverChanges;
-	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->CBNeverChangesID , pCBNeverChanges)){ throw std::exception("const buffer not found"); }	
-	ID3D11Buffer* pCBChangesOnResize;
-	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->CBChangesOnResizeID , pCBChangesOnResize)){ throw std::exception("const buffer not found"); }
+	pImmediateContext->PSSetSamplers( 0, 1, &(this->pSamplerLinear.second) );
+	pImmediateContext->PSSetSamplers( 1, 1, &(this->pSamplerAnisotropic.second) );
 	
 	cBuffer::cbNeverChanges cbCNV ;
 
@@ -41,11 +31,11 @@ void Application::Render()
 											static_cast<float>(this->window.width) / static_cast<float>(this->window.height), 
 											0.01f, 100000.0f ));
 
-	pImmediateContext->UpdateSubresource( pCBNeverChanges, 0, NULL, &cbCNV, 0, 0 );
-	pImmediateContext->UpdateSubresource( pCBChangesOnResize, 0, NULL, &cbCOR, 0, 0 );
+	pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
+	pImmediateContext->UpdateSubresource( this->pCBChangesOnResizeID.second, 0, NULL, &cbCOR, 0, 0 );
 		
-	pImmediateContext->VSSetConstantBuffers( 0, 1, &pCBNeverChanges );
-	pImmediateContext->VSSetConstantBuffers( 1, 1, &pCBChangesOnResize );
+	pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
+	pImmediateContext->VSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
 
 	for(auto objectIter = this->objects.begin();
 		objectIter != this->objects.end();
@@ -120,35 +110,34 @@ HRESULT Application::InitDevices()
 {
 	DX11App::InitDevices();
 		
-	this->CBNeverChangesID      = "CBNeverChange";
-	this->CBChangesOnResizeID   = "CBChangesOnResize";
+	this->pCBNeverChangesID.first		= "CBNeverChange";
+	this->pCBChangesOnResizeID.first	= "CBChangesOnResize";
+	this->pSamplerLinear.first			= "SamplerLinear";
+	this->pSamplerAnisotropic.first		= "SamplerAnisotropic";
 
 	ID3D11Device* device = ((DX11App*)App::getInstance())->direct3d.pd3dDevice;	
 	std::wstring error;
 
-	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->CBNeverChangesID))
+	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->pCBNeverChangesID.first))
 	{
-		ID3D11Buffer* constantBuffer;
-		if(!cBuffer::LoadBuffer<cBuffer::cbNeverChanges>(device, &constantBuffer, error))
+		if(!cBuffer::LoadBuffer<cBuffer::cbNeverChanges>(device, &(this->pCBNeverChangesID.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->CBuffer.Add(this->CBNeverChangesID, constantBuffer);
+		DX11ObjectManager::getInstance()->CBuffer.Add(this->pCBNeverChangesID.first, this->pCBNeverChangesID.second);
 	}
 
-	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->CBChangesOnResizeID))
+	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->pCBChangesOnResizeID.first))
 	{
-		ID3D11Buffer* constantBuffer;
-		if(!cBuffer::LoadBuffer<cBuffer::cbChangeOnResize>(device, &constantBuffer, error))
+		if(!cBuffer::LoadBuffer<cBuffer::cbChangeOnResize>(device, &(this->pCBChangesOnResizeID.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->CBuffer.Add(this->CBChangesOnResizeID, constantBuffer);
+		DX11ObjectManager::getInstance()->CBuffer.Add(this->pCBChangesOnResizeID.first, this->pCBChangesOnResizeID.second);
 	}
 
-	if(!DX11ObjectManager::getInstance()->Sampler.Exists(this->SamplerLinear))
+	if(!DX11ObjectManager::getInstance()->Sampler.Exists(this->pSamplerLinear.first))
 	{
-		ID3D11SamplerState* samplerLinear;
 		if(!DX11Helper::LoadSamplerState(D3D11_FILTER_MIN_MAG_MIP_LINEAR,
 										D3D11_TEXTURE_ADDRESS_WRAP,
 										D3D11_TEXTURE_ADDRESS_WRAP,
@@ -156,17 +145,16 @@ HRESULT Application::InitDevices()
 										D3D11_COMPARISON_NEVER,
 										0.0f,
 										D3D11_FLOAT32_MAX, device,
-										&samplerLinear,
+										&(this->pSamplerLinear.second),
 										error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->Sampler.Add(this->SamplerLinear, samplerLinear);
+		DX11ObjectManager::getInstance()->Sampler.Add(this->pSamplerLinear.first, this->pSamplerLinear.second);
 	}
 
-	if(!DX11ObjectManager::getInstance()->Sampler.Exists(this->SamplerAnisotropic))
+	if(!DX11ObjectManager::getInstance()->Sampler.Exists(this->pSamplerAnisotropic.first))
 	{
-		ID3D11SamplerState* samplerAnisotropic;
 		if(!DX11Helper::LoadSamplerState(D3D11_FILTER_ANISOTROPIC,
 										D3D11_TEXTURE_ADDRESS_WRAP,
 										D3D11_TEXTURE_ADDRESS_WRAP,
@@ -175,12 +163,12 @@ HRESULT Application::InitDevices()
 										0.0f,
 										D3D11_FLOAT32_MAX,
 										device,
-										&samplerAnisotropic,
+										&(this->pSamplerAnisotropic.second),
 										error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->Sampler.Add(this->SamplerAnisotropic, samplerAnisotropic);
+		DX11ObjectManager::getInstance()->Sampler.Add(this->pSamplerAnisotropic.first, this->pSamplerAnisotropic.second);
 	}
 	
 	for(int i = 0; i < 100; ++i)
@@ -207,9 +195,8 @@ void Application::CleanupDevices()
 		
 	}
 
-	
-	DX11ObjectManager::getInstance()->CBuffer.Erase(this->CBNeverChangesID);
-	DX11ObjectManager::getInstance()->CBuffer.Erase(this->CBChangesOnResizeID);
+	DX11ObjectManager::getInstance()->CBuffer.Erase(this->pCBNeverChangesID.first);
+	DX11ObjectManager::getInstance()->CBuffer.Erase(this->pCBNeverChangesID.first);
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
@@ -260,6 +247,13 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	return DX11App::CB_WndProc(hWnd, message, wParam, lParam);
 }	
+void Application::LoadD3DStuff()
+{
+	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pCBNeverChangesID.first, this->pCBNeverChangesID.second)){ throw std::exception("CB never Changes not found"); }
+	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pCBChangesOnResizeID.first, this->pCBChangesOnResizeID.second)){ throw std::exception("CB Changes on Resize not found"); }
+	if(!DX11ObjectManager::getInstance()->Sampler.Get(this->pSamplerLinear.first, this->pSamplerLinear.second)){ throw std::exception("Sampler Linear not found"); }
+	if(!DX11ObjectManager::getInstance()->Sampler.Get(this->pSamplerAnisotropic.first, this->pSamplerAnisotropic.second)){ throw std::exception("Sampler Anisotropic not found"); }
+}
 App* Application::getInstance()
 {
 	if(singletonFlag == false)
@@ -274,3 +268,4 @@ Application::~Application()
 {
 	this->CleanupDevices();
 }
+

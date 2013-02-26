@@ -10,13 +10,13 @@
 
 PlyFile::PlyFile(std::wstring plyFileName)
 {	
-	this->VertexBufferID        = Helper::WStringtoString( plyFileName);
-	this->IndexBufferID         = Helper::WStringtoString( plyFileName);
-	this->InputLayoutID         = "ShaderFiles/0_Basic.fx";
-	this->VertexShaderID        = "ShaderFiles/0_Basic.fx";
-	this->PixelShaderID         = "ShaderFiles/0_Basic.fx";
-	this->RastersizerStateID    = "RastersizerWireFrame";	
-	this->CBChangesEveryFrameID = "CBChangeEveryFrame";
+	this->pVertexBuffer.first        = Helper::WStringtoString( plyFileName);
+	this->pIndexBuffer.first         = Helper::WStringtoString( plyFileName);
+	this->pCBChangesEveryFrame.first = "CBChangeEveryFrame";
+	this->pInputLayout.first         = "ShaderFiles/0_Basic.fx";
+	this->pVertexShader.first        = "ShaderFiles/0_Basic.fx";
+	this->pPixelShader.first         = "ShaderFiles/0_Basic.fx";
+	this->pRastersizerState.first    = "RastersizerWireFrame";	
 
 	std::wstring error;
 	

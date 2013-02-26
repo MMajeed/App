@@ -19,15 +19,15 @@ public:
 	
 	Object object;
 
-	std::string					VertexBufferID;
-	std::string					IndexBufferID;
-	std::string					CBChangesEveryFrameID;
-	std::string					InputLayoutID;
-	std::string					VertexShaderID;
-	std::string					PixelShaderID;
-	std::string					RastersizerStateID;
-	std::vector<std::string>	TextureIDs;
-	std::string					CubeMapIDs;
+	std::pair<std::string, ID3D11Buffer*> 							pVertexBuffer;
+	std::pair<std::string, ID3D11Buffer*>							pIndexBuffer;
+	std::pair<std::string, ID3D11Buffer*>							pCBChangesEveryFrame;
+	std::pair<std::string, ID3D11InputLayout*>						pInputLayout;
+	std::pair<std::string, ID3D11VertexShader*>						pVertexShader;
+	std::pair<std::string, ID3D11PixelShader*>						pPixelShader;
+	std::pair<std::string, ID3D11RasterizerState*>					pRastersizerState;
+	std::vector<std::pair<std::string, ID3D11ShaderResourceView*>>	pVecTexture;
+	std::pair<std::string, ID3D11ShaderResourceView*>				pCubeMap;
 	
 	virtual void DrawTexture(ID3D11DeviceContext* pImmediateContext);
 
@@ -40,13 +40,7 @@ public:
 	virtual void InitCBChangesEveryFrameBuffer(ID3D11Device* device);
 	virtual void InitTextureAndCube(ID3D11Device* device);
 
-	void LoadD3DStuff(	ID3D11Buffer*& vertexBuffer,	
-						ID3D11Buffer*& indexBuffer,
-						ID3D11InputLayout*& inputLayout,
-						ID3D11VertexShader*& vertexShader,
-						ID3D11PixelShader*& pixelShader,
-						ID3D11RasterizerState*& rastersizerState,
-						ID3D11Buffer*& cbChangeEveryFrame) const;
+	void LoadD3DStuff();
 	
 	BasicObject();
 };

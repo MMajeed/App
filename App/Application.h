@@ -18,11 +18,12 @@ protected:
 	virtual void Render();
 	std::vector<iObjectDrawable*> objects;
 	
-	std::string		CBNeverChangesID;
-	std::string		CBChangesOnResizeID;
-	std::string		SamplerLinear;			
-	std::string		SamplerAnisotropic;
+	std::pair<std::string, ID3D11Buffer*>			pCBNeverChangesID;
+	std::pair<std::string, ID3D11Buffer*>			pCBChangesOnResizeID;
+	std::pair<std::string, ID3D11SamplerState*>		pSamplerLinear;			
+	std::pair<std::string, ID3D11SamplerState*>		pSamplerAnisotropic;
 	
+	void LoadD3DStuff();
 };
 
 #endif
