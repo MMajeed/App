@@ -7,6 +7,7 @@
 #include "cBuffer.h"
 #include "VertexBuffer.h"
 #include "Helper.h"
+#include <sstream>
 
 BasicObject::BasicObject( )
 {		

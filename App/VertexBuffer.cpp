@@ -50,10 +50,11 @@ HRESULT VertexBuffer::CreateIndexBuffer(ID3D11Device* device, ID3D11Buffer** bOu
 
 VertexBuffer buffer;
 
-static int vertexX(p_ply_argument argument) {	
-	VertexBuffer::SimpleVertex sv;
-	buffer.vertices.push_back(sv);
+static int vertexX(p_ply_argument argument) {
+	VertexBuffer::SimpleVertex vertex;
+	memset(&vertex, 0, sizeof(VertexBuffer::SimpleVertex));
 
+	buffer.vertices.push_back(  vertex );
 	float value = static_cast<float>(ply_get_argument_value(argument));
 	buffer.vertices.back().Pos.x = value;
     return 1;
@@ -84,7 +85,7 @@ static int vertexNY(p_ply_argument argument) {
 static int vertexNZ(p_ply_argument argument) {
 	float value = static_cast<float>(ply_get_argument_value(argument));
 	buffer.vertices.back().Normal.z = value;	
-	buffer.vertices.back().Normal.z = 1.0f;	
+	buffer.vertices.back().Normal.w = 1.0f;	
     return 1;
 }
 

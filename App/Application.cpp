@@ -87,12 +87,12 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			timer._absoluteTime = elapsedCount / tickInterval;
 			timer._frameTime = elapsedFrameCount / tickInterval;
 						
-			//Sleep( 10 - timer._frameTime);
+			//Sleep( 10 - timer._frameTime); // Used to lock the framerate. Turned off because I want to see how fast the program is going
 			for(auto objectIter = this->objects.begin();
 				objectIter != this->objects.end();
 				++objectIter)
 			{
-				(*objectIter)->Update(static_cast<float>(timer._absoluteTime));
+				(*objectIter)->Update(static_cast<float>(timer._frameTime));
 			}
 
 			// render
@@ -264,4 +264,3 @@ Application::~Application()
 {
 	this->CleanupDevices();
 }
-
