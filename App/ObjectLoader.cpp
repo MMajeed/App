@@ -39,12 +39,21 @@ void ObjectLoader::LoadXMLFile(std::string loc)
 			}
 			else if (Name.compare(0, 3, "XYZ") == 0)
 			{
-				std::string X = childNodeIter->Attribute("X");
-				info[Name+"X"] = X;
-				std::string Y = childNodeIter->Attribute("Y");
-				info[Name+"Y"] = Y;
-				std::string Z = childNodeIter->Attribute("Z");
-				info[Name+"Z"] = Z;
+				if(childNodeIter->BoolAttribute("X"))
+				{
+					std::string X = childNodeIter->Attribute("X");
+					info[Name+"X"] = X;
+				}
+				if(childNodeIter->BoolAttribute("Y"))
+				{
+					std::string Y = childNodeIter->Attribute("Y");
+					info[Name+"Y"] = Y;
+				}
+				if(childNodeIter->BoolAttribute("Z"))
+				{
+					std::string Z = childNodeIter->Attribute("Z");
+					info[Name+"Z"] = Z;
+				}
 			}
 			else if (Name.compare(0, 6, "Shader") == 0)
 			{

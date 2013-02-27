@@ -22,8 +22,8 @@
     <ShaderInput  FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderVertex FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="5000.0f" Y="5000.0f" Z="5000.0f"/>
+    <XYZScale    X="2000.0f" Y="2000.0f" Z="2000.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <CubeMap>Texture/AboveSea/AboveSea.dds</CubeMap>
+    <CubeMap>Texture/Sky/Sky.dds</CubeMap>
   </Object>
 </Objects>
