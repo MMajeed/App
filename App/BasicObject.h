@@ -29,6 +29,17 @@ public:
 	std::vector<std::pair<std::string, ID3D11ShaderResourceView*>>	pVecTexture;
 	std::pair<std::string, ID3D11ShaderResourceView*>				pCubeMap;
 	
+	struct ShaderFile
+	{
+		std::string FileName;
+		std::string EntryPoint;
+		std::string Mode;
+	};
+
+	ShaderFile ShaderInput;
+	ShaderFile ShaderVertex;
+	ShaderFile ShaderPixel;
+
 	virtual void DrawTexture(ID3D11DeviceContext* pImmediateContext);
 
 	virtual void InitVertexBuffer(ID3D11Device* device);

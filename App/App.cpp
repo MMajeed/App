@@ -1,12 +1,11 @@
 #include "App.h"
 #include <exception>
 
-bool App::singletonFlag;
-App* App::app;
+App* App::app = 0;
 
 App* App::getInstance()
 {
-	if(singletonFlag == false)
+	if(App::app == 0)
 	{
 		throw std::exception("No App setup");
 	}

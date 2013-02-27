@@ -7,6 +7,7 @@
 #include "cBuffer.h"
 #include <sstream>
 #include <iomanip>
+#include "ObjectLoader.h"
 
 void Application::Render()
 {
@@ -171,16 +172,10 @@ HRESULT Application::InitDevices()
 		DX11ObjectManager::getInstance()->Sampler.Add(this->pSamplerAnisotropic.first, this->pSamplerAnisotropic.second);
 	}
 	
-	for(int i = 0; i < 1; ++i)
-	{
-		PlyFile* object = new PlyFile(L"PlyFiles/Box.ply");
-		object->Init();	
-		objects.push_back(object);
-	}
+	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
-	SkyBox* skyBox = new SkyBox("Texture/AboveSea/AboveSea.dds");
-	skyBox->Init();	
-	objects.push_back(skyBox);
+	objects = ObjectLoader::getInstance()->SpawnAll();
+
 
 	return true;
 }
@@ -191,6 +186,7 @@ void Application::CleanupDevices()
 	while(this->objects.size() >= 0)
 	{
 		(*this->objects.begin())->Clean();
+		delete (*this->objects.begin());
 		this->objects.erase(this->objects.begin());		
 	}
 }
@@ -252,10 +248,9 @@ void Application::LoadD3DStuff()
 }
 App* Application::getInstance()
 {
-	if(singletonFlag == false)
+	if(App::app == 0)
 	{
 		app = new Application;
-		singletonFlag = true;
 	}
 
     return app;

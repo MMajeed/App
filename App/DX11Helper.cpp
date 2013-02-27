@@ -40,6 +40,14 @@ HRESULT DX11Helper::CompileShaderFromFile( std::wstring shaderFileName, std::wst
 
 	return true;
 }
+HRESULT DX11Helper::LoadInputLayoutFile( std::string vsFileName, std::string vsEntryPoint, std::string vsModel, ID3D11Device* device, ID3D11InputLayout** ilOut, std::wstring &error )
+{
+	std::wstring wVSFileName = std::wstring(vsFileName.begin(), vsFileName.end());
+	std::wstring wVSEntryPoint = std::wstring(vsEntryPoint.begin(), vsEntryPoint.end());
+	std::wstring wVSModel = std::wstring(vsModel.begin(), vsModel.end());
+
+	return DX11Helper::LoadInputLayoutFile(wVSFileName, wVSEntryPoint, wVSModel, device, ilOut, error);
+}
 HRESULT DX11Helper::LoadInputLayoutFile( std::wstring vsFileName, std::wstring vsEntryPoint, std::wstring vsModel, ID3D11Device* device, ID3D11InputLayout** ilOut, std::wstring &error )
 {
 	HRESULT hr = S_OK;
@@ -76,6 +84,14 @@ HRESULT DX11Helper::LoadInputLayoutFile( std::wstring vsFileName, std::wstring v
 
 	return true;
 }
+HRESULT DX11Helper::LoadVertexShaderFile( std::string vsFileName, std::string vsEntryPoint, std::string vsModel, ID3D11Device* device, ID3D11VertexShader** vsOut, std::wstring &error )
+{
+	std::wstring wVSFileName = std::wstring(vsFileName.begin(), vsFileName.end());
+	std::wstring wVSEntryPoint = std::wstring(vsEntryPoint.begin(), vsEntryPoint.end());
+	std::wstring wVSModel = std::wstring(vsModel.begin(), vsModel.end());
+
+	return DX11Helper::LoadVertexShaderFile(wVSFileName, wVSEntryPoint, wVSModel, device, vsOut, error);
+}
 HRESULT DX11Helper::LoadVertexShaderFile( std::wstring vsFileName, std::wstring vsEntryPoint, std::wstring vsModel, ID3D11Device* device, ID3D11VertexShader** vsOut, std::wstring &error )
 {
 	HRESULT hr = S_OK;
@@ -104,6 +120,14 @@ HRESULT DX11Helper::LoadVertexShaderFile( std::wstring vsFileName, std::wstring 
 	}
 	
 	return true;
+}
+HRESULT DX11Helper::LoadPixelShaderFile( std::string psFileName, std::string psEntryPoint, std::string psModel, ID3D11Device* device, ID3D11PixelShader** pxOut, std::wstring &error  )
+{
+	std::wstring wPSFileName = std::wstring(psFileName.begin(), psFileName.end());
+	std::wstring wPSEntryPoint = std::wstring(psEntryPoint.begin(), psEntryPoint.end());
+	std::wstring wPSModel = std::wstring(psModel.begin(), psModel.end());
+
+	return DX11Helper::LoadPixelShaderFile(wPSFileName, wPSEntryPoint, wPSModel, device, pxOut, error);
 }
 HRESULT DX11Helper::LoadPixelShaderFile( std::wstring psFileName, std::wstring psEntryPoint, std::wstring psModel, ID3D11Device* device, ID3D11PixelShader** pxOut, std::wstring &error  )
 {

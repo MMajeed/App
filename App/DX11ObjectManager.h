@@ -53,7 +53,6 @@ public:
 	D3DMapContainer<ID3D11ShaderResourceView*>		Textexture;
 	D3DMapContainer<ID3D11SamplerState*>			Sampler;
 protected:
-	static bool singletonFlag;
 	static DX11ObjectManager* ObjectManager;
 
     DX11ObjectManager();

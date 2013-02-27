@@ -23,7 +23,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	catch(std::exception ex)
 	{
 		std::wstringstream wss;
-		wss<< "Exception: Unknown exception caught in " __FUNCTION__ << std::endl
+		wss<< "Exception: Something went wrong in " __FUNCTION__ << std::endl
 			<< ex.what();
 
 		OutputDebugStringA( Helper::WStringtoString(wss.str()).c_str() );
@@ -32,7 +32,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	}
 	catch( ... )
 	{
-		OutputDebugStringA( "Exception: Unknown exception caught in " __FUNCTION__ );
+		OutputDebugStringA( "Something went wrong in " __FUNCTION__ );
 		MessageBoxA( NULL, "An unknown exception has been caught in " __FUNCTION__, "Exception", MB_ICONERROR );
 		return EXIT_FAILURE;
 	}

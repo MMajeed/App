@@ -130,7 +130,7 @@ void BasicObject::InitInputLayout(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->InputLayout.Exists(this->pInputLayout.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadInputLayoutFile(Helper::stringToWstring(this->pInputLayout.first), L"VS", L"vs_4_0", device, &(this->pInputLayout.second), error))
+		if(!DX11Helper::LoadInputLayoutFile(ShaderInput.FileName, ShaderInput.EntryPoint, ShaderInput.Mode, device, &(this->pInputLayout.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -142,7 +142,7 @@ void BasicObject::InitVertexShader(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->VertexShader.Exists(this->pVertexShader.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadVertexShaderFile(Helper::stringToWstring(this->pVertexShader.first), L"VS", L"vs_4_0", device, &(this->pVertexShader.second), error))
+		if(!DX11Helper::LoadVertexShaderFile(ShaderVertex.FileName, ShaderVertex.EntryPoint, ShaderVertex.Mode, device, &(this->pVertexShader.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -154,7 +154,7 @@ void BasicObject::InitPixelShader(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->PixelShader.Exists(this->pPixelShader.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadPixelShaderFile(Helper::stringToWstring(this->pPixelShader.first), L"PS", L"ps_4_0", device, &(this->pPixelShader.second), error))
+		if(!DX11Helper::LoadPixelShaderFile(ShaderPixel.FileName, ShaderPixel.EntryPoint, ShaderPixel.Mode, device, &(this->pPixelShader.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}

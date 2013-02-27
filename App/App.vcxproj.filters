@@ -39,19 +39,10 @@
     <ClCompile Include="SkyBox.cpp">
       <Filter>DX11ObjectDrawable\BasicObject\SkyBox</Filter>
     </ClCompile>
-    <ClCompile Include="tinyxml\tinyxml.cpp">
-      <Filter>Tools\TinyXML</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectLoader.cpp">
       <Filter>Tools\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="tinyxml\tinystr.cpp">
-      <Filter>Tools\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
-      <Filter>Tools\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
+    <ClCompile Include="tinyxml2\tinyxml2.cpp">
       <Filter>Tools\TinyXML</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,13 +90,10 @@
     <ClInclude Include="SkyBox.h">
       <Filter>DX11ObjectDrawable\BasicObject\SkyBox</Filter>
     </ClInclude>
-    <ClInclude Include="tinyxml\tinyxml.h">
-      <Filter>Tools\TinyXML</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectLoader.h">
       <Filter>Tools\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="tinyxml\tinystr.h">
+    <ClInclude Include="tinyxml2\tinyxml2.h">
       <Filter>Tools\TinyXML</Filter>
     </ClInclude>
   </ItemGroup>
@@ -196,5 +184,6 @@
     <None Include="ShaderFiles\6_SkyMap.fx">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Commands.xml" />
   </ItemGroup>
 </Project>

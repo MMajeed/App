@@ -351,10 +351,9 @@ void DX11App::Run( HINSTANCE hInstance, int nCmdShow )
 }
 App* DX11App::getInstance()
 {
-	if(singletonFlag == false)
+	if(App::app == 0)
 	{
 		app = new DX11App;
-		singletonFlag = true;
 	}
 
     return app;

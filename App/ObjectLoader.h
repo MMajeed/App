@@ -2,10 +2,27 @@
 #define __ObjectLoader__
 
 #include <string>
-#include "tinyxml\tinyxml.h"
+#include <map>
+#include "iObjectDrawable.h"
 
 class ObjectLoader
 {
+public:
+	// Singelton
+	static ObjectLoader* getInstance();
+
+	void LoadXMLFile(std::string loc);
+	bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object);
+	std::vector<iObjectDrawable*> SpawnAll();
+
+protected:
+	std::map<std::string, std::map<std::string, std::string>> objects;
+	static ObjectLoader* ObjectManager;
+
+    ObjectLoader();
+    ObjectLoader(ObjectLoader const&);              
+    void operator=(ObjectLoader const&); 
+
 };
 
 #endif // __ObjectLoader__

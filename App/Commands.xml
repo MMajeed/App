@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Objects>
+  <Object>
+    <ID>Cube</ID>
+    <Class>PlyFile</Class>
+    <PlyFile>PlyFiles/Box.ply</PlyFile>
+    <ShaderInput  FileName="ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderVertex FileName="ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderPixel  FileName="ShaderFiles/0_Basic.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Texture1>Texture</Texture1>
+    <Texture2>Texture</Texture2>
+    <CubeMap>Texture</CubeMap>
+  </Object>
+  <Object>
+    <ID>SkyBox</ID>
+    <Class>SkyBox</Class>
+    <PlyFile>PlyFiles/Sphere_Smooth_3.ply</PlyFile>
+    <ShaderInput  FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderVertex FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderPixel  FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <XYZScale    X="5000.0f" Y="5000.0f" Z="5000.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <CubeMap>Texture/AboveSea/AboveSea.dds</CubeMap>
+  </Object>
+</Objects>

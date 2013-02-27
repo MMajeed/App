@@ -38,7 +38,6 @@ public:
 
 
 protected:
-	static bool singletonFlag;
 	static App* app;
 };
 

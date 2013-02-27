@@ -155,10 +155,7 @@
     <ClCompile Include="PlyFile.cpp" />
     <ClCompile Include="PlyLib\rply.c" />
     <ClCompile Include="SkyBox.cpp" />
-    <ClCompile Include="tinyxml\tinystr.cpp" />
-    <ClCompile Include="tinyxml\tinyxml.cpp" />
-    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
-    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,11 +174,11 @@
     <ClInclude Include="PlyFile.h" />
     <ClInclude Include="PlyLib\rply.h" />
     <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="tinyxml\tinystr.h" />
-    <ClInclude Include="tinyxml\tinyxml.h" />
+    <ClInclude Include="tinyxml2\tinyxml2.h" />
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Commands.xml" />
     <None Include="ShaderFiles\0_Basic.fx" />
     <None Include="ShaderFiles\1_LightingOnly_DX11.fx" />
     <None Include="ShaderFiles\2_TwoTexturesOnly_DX11.fx" />

@@ -6,14 +6,18 @@
 #include "DX11Helper.h"
 #include "VertexBuffer.h"
 #include <string>
+#include <map>
 
 class SkyBox : public BasicObject
 {
 public:	
 	SkyBox(std::string cubeMap);
+	SkyBox();
 
 	virtual void Update(float delta);
 	virtual void InitRastersizerState(ID3D11Device* device);
+
+	static SkyBox* Spawn(std::map<std::string, std::string> info);
 };
 
 
