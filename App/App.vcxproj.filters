@@ -75,9 +75,6 @@
     <ClInclude Include="cBuffer.h">
       <Filter>Tools\Helper\cBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Tools\Helper\VertexBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="PlyLib\rply.h">
       <Filter>Tools\Helper\PlyFile</Filter>
     </ClInclude>
@@ -95,6 +92,9 @@
     </ClInclude>
     <ClInclude Include="tinyxml2\tinyxml2.h">
       <Filter>Tools\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Tools\Helper\VertexBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

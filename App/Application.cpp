@@ -215,7 +215,13 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				case VK_PRIOR:	            // PgDown
 					camera.Pitch(-0.1f);	// Move "away"
 					return 0;
+				case 'A': case 'a':	            // PgDown
+					{
+						((BasicObject*)this->objects.front())->object.Pos.x += 1.0f;;
 
+
+					}
+					return 0;
 			}
 		case WM_TIMER:
 		{

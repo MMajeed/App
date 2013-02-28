@@ -89,6 +89,19 @@ static int vertexNZ(p_ply_argument argument) {
     return 1;
 }
 
+static int vertexU(p_ply_argument argument) {
+	float value = static_cast<float>(ply_get_argument_value(argument));
+	buffer.vertices.back().Texture0.x = value;
+	buffer.vertices.back().Texture1.x = value;
+    return 1;
+}
+static int vertexV(p_ply_argument argument) {
+	float value = static_cast<float>(ply_get_argument_value(argument));
+	buffer.vertices.back().Texture0.y = value;
+	buffer.vertices.back().Texture1.y = value;
+    return 1;
+}
+
 static int face_cb(p_ply_argument argument) {
 	long length, value_index;
     ply_get_argument_property(argument, NULL, &length, &value_index);
@@ -100,6 +113,7 @@ static int face_cb(p_ply_argument argument) {
 	}
     return 1;
 }
+
 
 bool VertexBuffer::LoadFromPlyFile(std::wstring fileName, VertexBuffer& vbOut, std::wstring error)
 {
@@ -119,7 +133,9 @@ bool VertexBuffer::LoadFromPlyFile(std::wstring fileName, VertexBuffer& vbOut, s
     ply_set_read_cb(ply, "vertex", "z", vertexZ, NULL, 0);
 	ply_set_read_cb(ply, "vertex", "nx", vertexNX, NULL, 0);
 	ply_set_read_cb(ply, "vertex", "ny", vertexNY, NULL, 0);
-	ply_set_read_cb(ply, "vertex", "nz", vertexNZ, NULL, 1);
+	ply_set_read_cb(ply, "vertex", "nz", vertexNZ, NULL, 0);
+	ply_set_read_cb(ply, "vertex", "u", vertexU, NULL, 0);
+	ply_set_read_cb(ply, "vertex", "v", vertexV, NULL, 1);
 
     ntriangles = ply_set_read_cb(ply, "face", "vertex_indices", face_cb, NULL, 0);
 

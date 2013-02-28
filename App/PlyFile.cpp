@@ -146,12 +146,12 @@ PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 		}
 		else
 		{
-			//newPlyFile->pVecTexture.emplace_back(std::make_pair<std::string, ID3D11ShaderResourceView*>(ss.str(), NULL));
+			newPlyFile->pVecTexture.emplace_back(std::make_pair<std::string, ID3D11ShaderResourceView*>(iter->second, NULL));
 		}
 	}
 
 	iter = info.find("CubeMap");
-	//if(iter != info.end()) { newPlyFile->pCubeMap.first = iter->second; } 
+	if(iter != info.end()) { newPlyFile->pCubeMap.first = iter->second; } 
 
 	return newPlyFile;
 }
