@@ -170,11 +170,11 @@
     <Filter Include="Tools\Loader">
       <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile\Transparent">
-      <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\MathHelper">
       <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile\Transparent">
+      <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

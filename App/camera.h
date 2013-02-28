@@ -8,17 +8,10 @@
 class Camera
 {
 public:
-	XMFLOAT4 eye;	
-	XMFLOAT4 target;
-	XMFLOAT4 up;
-
-	float RadianRoll;
-	float RadianPitch;
-	float RadianYaw;
 	
-	XMFLOAT4X4 const& GetViewMatrix() const ;
-	XMFLOAT4X4 const& Update();
+	XMFLOAT4X4 GetViewMatrix() const;
 
+	XMFLOAT4 Eye() const;
 	XMFLOAT4 Target() const;
 
 	void SetPosition(float x, float y, float z, float w = 1.0f);
@@ -35,7 +28,13 @@ public:
 	virtual ~Camera();
 
 protected:	
-	XMFLOAT4X4  view_;
+	XMFLOAT4 eye;	
+	XMFLOAT4 target;
+	XMFLOAT4 up;
+
+	float RadianRoll;
+	float RadianPitch;
+	float RadianYaw;
 };
 
 #endif // __CAMERA_HPP__

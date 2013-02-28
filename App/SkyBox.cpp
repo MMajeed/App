@@ -30,7 +30,7 @@ void SkyBox::InitRastersizerState(ID3D11Device* device)
 void SkyBox::Update(float delta)
 {
 	// Set the pos to where the camera is so the skymap dosn't move
-	this->object.Pos = App::getInstance()->camera.eye;
+	this->object.Pos = App::getInstance()->camera.Eye();
 }
 
 SkyBox* SkyBox::Spawn(std::map<std::string, std::string> info)

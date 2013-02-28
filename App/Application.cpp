@@ -25,9 +25,9 @@ void Application::Render()
 	
 	cBuffer::cbNeverChanges cbCNV ;
 
-	cbCNV.mView = XMMatrixTranspose(XMLoadFloat4x4(&camera.Update()));
-	cbCNV.eye = App::getInstance()->camera.eye;
-	cbCNV.target = App::getInstance()->camera.target;
+	cbCNV.mView = XMMatrixTranspose(XMLoadFloat4x4(&camera.GetViewMatrix()));
+	cbCNV.eye = App::getInstance()->camera.Eye();
+	cbCNV.target = App::getInstance()->camera.Target();
 
 	float minViewable = 0.01f;
 	float maxViewable = 100000.0f;
@@ -54,8 +54,8 @@ void Application::Render()
 			if(V1IsSkyMap) return false;
 			if(V2IsSkyMap) return true;
 
-			float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Target());
-			float v2Distance = MathHelper::Length(v2->object.Pos, App::getInstance()->camera.Target());
+			float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Eye());
+			float v2Distance = MathHelper::Length(v2->object.Pos, App::getInstance()->camera.Eye());
 
 			return v1Distance > v2Distance;
 		}

@@ -1,33 +1,18 @@
 #include "camera.h"
 
-XMFLOAT4X4 const& Camera::Update()
+XMFLOAT4 Camera::Eye() const
 {
-	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
-	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
-	XMVECTOR Up = XMVectorSet(  this->up.x, this->up.y, this->up.z, this->up.w );
-
-	XMMATRIX RotationMatrix( XMMatrixRotationRollPitchYaw( this->RadianPitch, this->RadianYaw, this->RadianRoll ));
-
-	At = XMVector3TransformCoord( At, RotationMatrix );
-    Up = XMVector3TransformCoord( Up, RotationMatrix );
-	
-	At += Eye;
-
-	XMStoreFloat4x4(&this->view_, XMMatrixLookAtLH( Eye, At, Up ));
-
-	return this->view_;
+	return this->eye;
 }
 
 XMFLOAT4 Camera::Target() const
 {
 	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
 	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
-	XMVECTOR Up = XMVectorSet(  this->up.x, this->up.y, this->up.z, this->up.w );
 
 	XMMATRIX RotationMatrix( XMMatrixRotationRollPitchYaw( this->RadianPitch, this->RadianYaw, this->RadianRoll ));
 
 	At = XMVector3TransformCoord( At, RotationMatrix );
-    Up = XMVector3TransformCoord( Up, RotationMatrix );
 	
 	At += Eye;
 
@@ -36,9 +21,24 @@ XMFLOAT4 Camera::Target() const
 	return returnValue;
 }
 
-XMFLOAT4X4 const& Camera::GetViewMatrix() const 
+XMFLOAT4X4 Camera::GetViewMatrix() const 
 {
-	return view_; 
+	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
+	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
+	XMVECTOR Up = XMVectorSet(  this->up.x, this->up.y, this->up.z, this->up.w );
+
+	XMMATRIX RotationMatrix( XMMatrixRotationRollPitchYaw( this->RadianPitch, this->RadianYaw, this->RadianRoll ));
+
+	At = XMVector3TransformCoord( At, RotationMatrix );
+    Up = XMVector3TransformCoord( Up, RotationMatrix );
+	
+	At += Eye;
+
+	
+	XMFLOAT4X4  view_;
+	XMStoreFloat4x4(&view_, XMMatrixLookAtLH( Eye, At, Up ));
+
+	return view_;
 }
 
 void Camera::SetPosition(float x, float y, float z, float w)
