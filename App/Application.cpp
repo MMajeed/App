@@ -171,6 +171,8 @@ HRESULT Application::InitDevices()
 		}
 		DX11ObjectManager::getInstance()->Sampler.Add(this->pSamplerAnisotropic.first, this->pSamplerAnisotropic.second);
 	}
+
+	this->LoadD3DStuff();
 	
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 

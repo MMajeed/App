@@ -3,23 +3,26 @@
   <Object>
     <ID>Cube</ID>
     <Class>PlyFile</Class>
-    <PlyFile>PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
-    <ShaderInput  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <PlyFile>PlyFiles/bun_zipper_res3.ply</PlyFile>
+    <ShaderInput  FileName="ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderVertex FileName="ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderPixel  FileName="ShaderFiles/0_Basic.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <XYZScale    X="5.0f" Y="5.0f" Z="5.0f"/>
     <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZRotation X="1.57f" Y="0.0f" Z="0.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZDiffuse  X="1.0f" Y="0.0f" Z="0.0f" W="1.0f"/>
+    <XYZAmbent   X="1.0f" Y="0.0f" Z="0.0f"/>
+    <XYZSpec     X="1.0f" Y="0.0f" Z="0.0f"/>
     <Texture0>Texture/Sky/+Y.jpg</Texture0>
   </Object>
   <Object>
     <ID>SkyBox</ID>
     <Class>SkyBox</Class>
     <PlyFile>PlyFiles/Sphere_Smooth_3.ply</PlyFile>
-    <ShaderInput  FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="ShaderFiles/6_SkyMap.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <ShaderInput  FileName="ShaderFiles/5_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderVertex FileName="ShaderFiles/5_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderPixel  FileName="ShaderFiles/5_SkyMap.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="2000.0f" Y="2000.0f" Z="2000.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <CubeMap>Texture/Sky/Sky.dds</CubeMap>

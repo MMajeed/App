@@ -14,6 +14,9 @@ public:
 	virtual void Clean();
 	virtual void Update(float delta);
 	virtual void Draw();
+	virtual void SetupDraw();
+	virtual void SetupTexture();
+	virtual void DrawObject();
 
 	VertexBuffer vertexBuffer;	
 	
@@ -39,8 +42,6 @@ public:
 	ShaderFile ShaderInput;
 	ShaderFile ShaderVertex;
 	ShaderFile ShaderPixel;
-
-	virtual void DrawTexture(ID3D11DeviceContext* pImmediateContext);
 
 	virtual void InitVertexBuffer(ID3D11Device* device);
 	virtual void InitIndexBuffer(ID3D11Device* device);

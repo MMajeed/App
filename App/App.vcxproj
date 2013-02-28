@@ -156,6 +156,7 @@
     <ClCompile Include="PlyLib\rply.c" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="tinyxml2\tinyxml2.cpp" />
+    <ClCompile Include="Transparent.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     <ClInclude Include="PlyLib\rply.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="tinyxml2\tinyxml2.h" />
+    <ClInclude Include="Transparent.h" />
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -184,8 +186,7 @@
     <None Include="ShaderFiles\2_TwoTexturesOnly_DX11.fx" />
     <None Include="ShaderFiles\3_TexturingAndLighting_DX11.fx" />
     <None Include="ShaderFiles\4_CubeMapping.fx" />
-    <None Include="ShaderFiles\5_Reflection.fx" />
-    <None Include="ShaderFiles\6_SkyMap.fx" />
+    <None Include="ShaderFiles\5_SkyMap.fx" />
     <None Include="ShaderFiles\HLSL_4_BasicLightFunctions.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -34,7 +34,7 @@ public:
 			auto iter = this->mapObject.find(name);
 
 			out = iter->second;
-			return true;
+			return iter != this->mapObject.end();
 		}
 		bool Exists(std::string name)
 		{
@@ -52,6 +52,7 @@ public:
 	D3DMapContainer<ID3D11RasterizerState*>			RastersizerState;
 	D3DMapContainer<ID3D11ShaderResourceView*>		Textexture;
 	D3DMapContainer<ID3D11SamplerState*>			Sampler;
+	D3DMapContainer<ID3D11BlendState*>				BelnderState;
 protected:
 	static DX11ObjectManager* ObjectManager;
 

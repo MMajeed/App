@@ -10,7 +10,8 @@
 #include <sstream>
 
 BasicObject::BasicObject( )
-{		
+{	
+	this->pCBChangesEveryFrame.first = "ChangesEveryFrame";
 }
 void BasicObject::Init()
 {
@@ -36,12 +37,20 @@ void BasicObject::Update(float delta)
 }
 void BasicObject::Draw()
 {
+	this->SetupDraw();
+	this->SetupTexture();
+	this->DrawObject();
+}
+void BasicObject::SetupDraw()
+{
 	cBuffer::cbChangeEveryFrame cbCEF ;
 	XMFLOAT4X4 world = this->object.CalculateMatrix();
 	cbCEF.mWorld = XMLoadFloat4x4(&world);
+	cbCEF.colour.diffuse = this->object.Colour.Diffuse;
+	cbCEF.colour.ambient = this->object.Colour.Ambient;
+	cbCEF.colour.spec = this->object.Colour.Spec;
+
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
-		
-	this->DrawTexture(pImmediateContext);
 
 	// Set vertex buffer 
 	UINT stride = sizeof( VertexBuffer::SimpleVertex );
@@ -57,6 +66,29 @@ void BasicObject::Draw()
 	pImmediateContext->PSSetShader( this->pPixelShader.second, NULL, 0 );
 	pImmediateContext->RSSetState(this->pRastersizerState.second);
 	pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
+}
+void BasicObject::SetupTexture()
+{
+	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	
+	int counter = 0;
+	for(auto textureIter = pVecTexture.begin();
+		textureIter != pVecTexture.end();
+		++textureIter)
+	{
+		pImmediateContext->PSSetShaderResources( counter, 1, &(textureIter->second) );
+		++counter;
+	}
+
+	if(this->pCubeMap.first != "")
+	{
+		pImmediateContext->PSSetShaderResources( counter, 1, &this->pCubeMap.second );	
+	}
+}
+void BasicObject::DrawObject()
+{
+	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	
 	pImmediateContext->DrawIndexed( this->vertexBuffer.indices.size() * 3, 0, 0 );
 }
 void BasicObject::LoadD3DStuff()
@@ -79,24 +111,6 @@ void BasicObject::LoadD3DStuff()
 	if(this->pCubeMap.first != "")
 	{
 		if(!DX11ObjectManager::getInstance()->Textexture.Get(this->pCubeMap.first, this->pCubeMap.second)){ throw std::exception("Cube Map not found"); }	
-	}
-}
-
-void BasicObject::DrawTexture(ID3D11DeviceContext* pImmediateContext)
-{
-	int counter = 0;
-
-	for(auto textureIter = pVecTexture.begin();
-		textureIter != pVecTexture.end();
-		++textureIter)
-	{
-		pImmediateContext->PSSetShaderResources( counter, 1, &(textureIter->second) );
-		++counter;
-	}
-
-	if(this->pCubeMap.first != "")
-	{
-		pImmediateContext->PSSetShaderResources( counter, 1, &this->pCubeMap.second );	
 	}
 }
 

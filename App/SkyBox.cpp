@@ -11,40 +11,7 @@
 
 SkyBox::SkyBox()
 {
-
-}
-
-SkyBox::SkyBox(std::string cubeMap)
-{	
-	this->pVertexBuffer.first        = "PlyFiles/Sphere_Smooth_3.ply";
-	this->pIndexBuffer.first         = "PlyFiles/Sphere_Smooth_3.ply";
-	this->pCBChangesEveryFrame.first = "CBChangeEveryFrame";
-	this->pInputLayout.first         = "ShaderFiles/6_SkyMap.fx";
-	this->pVertexShader.first        = "ShaderFiles/6_SkyMap.fx";
-	this->pPixelShader.first         = "ShaderFiles/6_SkyMap.fx";
-	this->pRastersizerState.first    = "SkyBox";	
-	this->pCubeMap.first 			 = cubeMap;
-	std::wstring error;
-	
-	this->ShaderInput.FileName		= "ShaderFiles/6_SkyMap.fx";
-	this->ShaderInput.EntryPoint	= "VS";	
-	this->ShaderInput.Mode			= "vs_4_0";
-
-	this->ShaderVertex.FileName		= "ShaderFiles/6_SkyMap.fx";
-	this->ShaderVertex.EntryPoint	= "VS";	
-	this->ShaderVertex.Mode			= "vs_4_0";
-
-	this->ShaderPixel.FileName		= "ShaderFiles/6_SkyMap.fx";
-	this->ShaderPixel.EntryPoint	= "PS";	
-	this->ShaderPixel.Mode			= "ps_4_0";
-
-	bool hr = VertexBuffer::LoadFromPlyFile(L"PlyFiles/Sphere_Smooth_3.ply", this->vertexBuffer,error); 
-	if(!hr)
-	{
-		throw std::exception("Error loading ply file");
-	}	
-
-	this->object.Scale = XMFLOAT4(5000.0f, 5000.0f, 5000.0f, 1.0f);
+	this->pRastersizerState.first = "InsideOut";
 }
 
 void SkyBox::InitRastersizerState(ID3D11Device* device)

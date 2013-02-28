@@ -3,6 +3,7 @@
 #include "PlyFile.h"
 #include "SkyBox.h"
 #include "Helper.h"
+#include "Transparent.h"
 
 ObjectLoader* ObjectLoader::ObjectManager = 0;
 
@@ -39,20 +40,14 @@ void ObjectLoader::LoadXMLFile(std::string loc)
 			}
 			else if (Name.compare(0, 3, "XYZ") == 0)
 			{
-				if(childNodeIter->BoolAttribute("X"))
+				for(auto iterAttribute = childNodeIter->FirstAttribute();
+					iterAttribute;
+					iterAttribute = iterAttribute->Next())
 				{
-					std::string X = childNodeIter->Attribute("X");
-					info[Name+"X"] = X;
-				}
-				if(childNodeIter->BoolAttribute("Y"))
-				{
-					std::string Y = childNodeIter->Attribute("Y");
-					info[Name+"Y"] = Y;
-				}
-				if(childNodeIter->BoolAttribute("Z"))
-				{
-					std::string Z = childNodeIter->Attribute("Z");
-					info[Name+"Z"] = Z;
+					std::string attributeName = iterAttribute->Name();
+
+					info[Name+attributeName] = iterAttribute->Value();
+
 				}
 			}
 			else if (Name.compare(0, 6, "Shader") == 0)
@@ -95,6 +90,10 @@ bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object)
 	else if(objectIter->second["Class"] == "SkyBox")
 	{
 		object = SkyBox::Spawn(objectIter->second);
+	}
+	else if(objectIter->second["Class"] == "TransparentPly")
+	{
+		object = Transparent::Spawn(objectIter->second);
 	}
 
 	object->Init();

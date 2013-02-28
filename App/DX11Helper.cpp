@@ -211,3 +211,25 @@ HRESULT DX11Helper::LoadSamplerState( D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS
 
 	return true;
 }
+HRESULT DX11Helper::LoadTransparent( ID3D11Device* device, ID3D11BlendState** bsOut, std::wstring &error  )
+{
+	D3D11_BLEND_DESC transparentDesc = {0};
+	transparentDesc.AlphaToCoverageEnable = false;
+	transparentDesc.IndependentBlendEnable = false;
+
+	transparentDesc.RenderTarget[0].BlendEnable = true;
+	transparentDesc.RenderTarget[0].SrcBlend       = D3D11_BLEND_SRC_ALPHA;
+	transparentDesc.RenderTarget[0].DestBlend      = D3D11_BLEND_INV_SRC_ALPHA;
+	transparentDesc.RenderTarget[0].BlendOp        = D3D11_BLEND_OP_ADD;
+	transparentDesc.RenderTarget[0].SrcBlendAlpha  = D3D11_BLEND_ONE;
+	transparentDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	transparentDesc.RenderTarget[0].BlendOpAlpha   = D3D11_BLEND_OP_ADD;
+	transparentDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	HRESULT hr = device->CreateBlendState(&transparentDesc, bsOut );
+    if ( FAILED(hr) )
+	{
+		error = L"ERROR: Can't create Sampler State";
+		return false;
+	}
+	return true;
+}

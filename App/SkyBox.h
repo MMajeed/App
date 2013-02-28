@@ -11,7 +11,6 @@
 class SkyBox : public BasicObject
 {
 public:	
-	SkyBox(std::string cubeMap);
 	SkyBox();
 
 	virtual void Update(float delta);

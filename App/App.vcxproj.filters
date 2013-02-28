@@ -45,6 +45,9 @@
     <ClCompile Include="tinyxml2\tinyxml2.cpp">
       <Filter>Tools\TinyXML</Filter>
     </ClCompile>
+    <ClCompile Include="Transparent.cpp">
+      <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -62,9 +65,6 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="DX11ObjectManager.h">
       <Filter>Tools\DX11ObjectManager</Filter>
-    </ClInclude>
-    <ClInclude Include="DX11Helper.h">
-      <Filter>Tools\Helper\DX11Helper</Filter>
     </ClInclude>
     <ClInclude Include="Helper.h">
       <Filter>Tools\Helper\Helper</Filter>
@@ -95,6 +95,12 @@
     </ClInclude>
     <ClInclude Include="VertexBuffer.h">
       <Filter>Tools\Helper\VertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Transparent.h">
+      <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11Helper.h">
+      <Filter>Tools\Helper\DX11Helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +164,9 @@
     <Filter Include="Tools\Loader">
       <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile\Transparent">
+      <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShaderFiles\2_TwoTexturesOnly_DX11.fx">
@@ -175,15 +184,12 @@
     <None Include="ShaderFiles\0_Basic.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="ShaderFiles\5_Reflection.fx">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="ShaderFiles\HLSL_4_BasicLightFunctions.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="ShaderFiles\6_SkyMap.fx">
+    <None Include="Commands.xml" />
+    <None Include="ShaderFiles\5_SkyMap.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Commands.xml" />
   </ItemGroup>
 </Project>

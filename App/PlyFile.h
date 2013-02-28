@@ -11,10 +11,9 @@
 class PlyFile : public BasicObject
 {
 public:	
-	PlyFile(std::wstring plyFileName);
 	PlyFile();
 	static PlyFile* Spawn(std::map<std::string, std::string> info);
 };
 
 
-#endif //__BasicObject__
+#endif //__PlyFile__

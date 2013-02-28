@@ -67,14 +67,7 @@ PS_INPUT VS( VS_INPUT input )
 
 	// Passed to the pixel shader for correct lighting:
 	output.VertexPosWorld = mul( input.VertexPos, mWorld );
-	output.VertexNormalWorld = mul( input.VertexNorm, mWorld );
-
-	output.VertexNormalWorld = normalize( output.VertexNormalWorld );
-
-	// Pass the texture coordinates to the pixel shader
-	// (remember, if we don't pass them, the pixel shader is unaware of them)
-	output.tex0 = input.tex0;
-	//output.tex1 = input.tex1;
+	output.VertexNormalWorld = mul( input.VertexNorm, mWorld );;
 
     return output;
 }
@@ -85,7 +78,7 @@ PS_INPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input ) : SV_Target
 {
-	float4 finalLightColour = float4( 1.0f, 1.0f, 1.0f, 1.0f );
+	float4 finalLightColour = objectMaterial.diffuse;
 
 	return finalLightColour;
 }

@@ -43,7 +43,6 @@ public:
 	struct cbChangeEveryFrame
 	{
 		XMMATRIX mWorld;
-		// ADD the colour of the bunny
 		MaterialInfo colour;   
 	};
 		

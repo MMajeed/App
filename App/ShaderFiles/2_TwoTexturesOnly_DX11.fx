@@ -1,3 +1,6 @@
+// mfeeney@fanshawec.ca
+// The lighting functions are (modified) from Frank Luna's DirectX 10 book (chapter 6)
+
 #include "HLSL_4_BasicLightFunctions.fx"
 
 //--------------------------------------------------------------------------------------
@@ -26,8 +29,8 @@ cbuffer cbChangesEveryFrame : register( b2 )
 
 Texture2D texture00 : register( t0 );
 Texture2D texture01 : register( t1 );
-// And the cube map
-TextureCube   myCubeMap : register( t2 );
+//TextureCube cubeMap : register( t2 );
+
 
 SamplerState samLinear : register( s0 );
 SamplerState samAnisotropic : register( s1 );
@@ -86,12 +89,6 @@ PS_INPUT VS( VS_INPUT input )
 float4 PS( PS_INPUT input ) : SV_Target
 {
 	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
-
-	//// Apply the mTexture transform to the matrix coordinates...
-	//float4 originalUV = float4( input.tex0.x, input.tex0.y, 0.0f, 1.0f );
-	//float4 f4newUV = mul( originalUV, mTexture );
-	//float2 newUV = float2( f3newUV.x, f3newUV.y );
-//
 
 	float4 texColour0 = texture00.Sample( samLinear, input.tex0 );
 	//float4 texColour0 = texture00.Sample( samLinear, newUV );

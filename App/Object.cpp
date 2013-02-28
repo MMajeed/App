@@ -39,8 +39,11 @@ void Object::Update(float delta)
 
 Object::Object()
 {
-	this->Pos = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	this->Rot = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	this->Scale = XMFLOAT4(1.f, 1.f, 1.f, 0.0f);
-	this->Orbit = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	this->Pos				= XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	this->Rot				= XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	this->Scale				= XMFLOAT4(1.f, 1.f, 1.f, 0.0f);
+	this->Orbit				= XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	this->Colour.Ambient	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	this->Colour.Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	this->Colour.Spec		= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 }

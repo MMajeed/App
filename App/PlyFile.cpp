@@ -11,41 +11,8 @@
 
 PlyFile::PlyFile()
 {
-
+	this->pRastersizerState.first = "FillSolid";
 }
-
-PlyFile::PlyFile(std::wstring plyFileName)
-{	
-	this->pVertexBuffer.first        = Helper::WStringtoString( plyFileName);
-	this->pIndexBuffer.first         = Helper::WStringtoString( plyFileName);
-	this->pCBChangesEveryFrame.first = "CBChangeEveryFrame";
-	this->pInputLayout.first         = "ShaderFiles/0_Basic.fx";
-	this->pVertexShader.first        = "ShaderFiles/0_Basic.fx";
-	this->pPixelShader.first         = "ShaderFiles/0_Basic.fx";
-	this->pRastersizerState.first    = "RastersizerWireFrame";	
-
-	this->ShaderInput.FileName		= "ShaderFiles/0_Basic.fx";
-	this->ShaderInput.EntryPoint	= "VS";	
-	this->ShaderInput.Mode			= "vs_4_0";
-
-	this->ShaderVertex.FileName		= "ShaderFiles/0_Basic.fx";
-	this->ShaderVertex.EntryPoint	= "VS";	
-	this->ShaderVertex.Mode			= "vs_4_0";
-
-	this->ShaderPixel.FileName		= "ShaderFiles/0_Basic.fx";
-	this->ShaderPixel.EntryPoint	= "PS";	
-	this->ShaderPixel.Mode			= "ps_4_0";
-
-
-	std::wstring error;
-	
-	bool hr = VertexBuffer::LoadFromPlyFile(plyFileName, this->vertexBuffer,error); 
-	if(!hr)
-	{
-		throw std::exception("Error loading ply file");
-	}	
-}
-
 PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 {
 	PlyFile* newPlyFile = new PlyFile;
@@ -132,6 +99,32 @@ PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 	if(iter != info.end()) { newPlyFile->object.Orbit.y = Helper::StringToFloat(iter->second); } 
 	iter = info.find("XYZOrbitZ");
 	if(iter != info.end()) { newPlyFile->object.Orbit.z = Helper::StringToFloat(iter->second); } 
+
+	// XYZDiffuse
+	iter = info.find("XYZDiffuseX");
+	if(iter != info.end()) { newPlyFile->object.Colour.Diffuse.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZDiffuseY");
+	if(iter != info.end()) { newPlyFile->object.Colour.Diffuse.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZDiffuseZ");
+	if(iter != info.end()) { newPlyFile->object.Colour.Diffuse.z = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZDiffuseW");
+	if(iter != info.end()) { newPlyFile->object.Colour.Diffuse.w = Helper::StringToFloat(iter->second); } 
+
+	// XYZAmbent
+	iter = info.find("XYZAmbentX");
+	if(iter != info.end()) { newPlyFile->object.Colour.Ambient.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZAmbentY");
+	if(iter != info.end()) { newPlyFile->object.Colour.Ambient.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZAmbentZ");
+	if(iter != info.end()) { newPlyFile->object.Colour.Ambient.z = Helper::StringToFloat(iter->second); } 
+
+	// XYZAmbent
+	iter = info.find("XYZSpecX");
+	if(iter != info.end()) { newPlyFile->object.Colour.Spec.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZSpecY");
+	if(iter != info.end()) { newPlyFile->object.Colour.Spec.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZSpecZ");
+	if(iter != info.end()) { newPlyFile->object.Colour.Spec.z = Helper::StringToFloat(iter->second); } 
 
 
 	for(int counter = 0; true; ++counter)
