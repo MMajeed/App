@@ -31,7 +31,10 @@ void BasicObject::Init()
 void BasicObject::Clean()
 {
 }
-void BasicObject::Update(float delta)
+void BasicObject::UpdateDrawing(float delta)
+{
+}
+void BasicObject::UpdateObject(float delta)
 {
 	this->object.Update(delta);
 }

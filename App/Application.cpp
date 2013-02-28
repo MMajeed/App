@@ -122,7 +122,12 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			
 			for(std::size_t i = 0; i < this->objects.size(); ++i)
 			{
-				objects[i]->Update(static_cast<float>(timer._frameTime));
+				objects[i]->UpdateDrawing(static_cast<float>(timer._frameTime));
+			}
+
+			for(std::size_t i = 0; i < this->objects.size(); ++i)
+			{
+				objects[i]->UpdateObject(static_cast<float>(timer._frameTime));
 			}
 
 			// render
@@ -207,10 +212,6 @@ HRESULT Application::InitDevices()
 
 	objects = ObjectLoader::getInstance()->SpawnAll();
 	
-	Sniper* sniper = new Sniper();
-	sniper->Init();
-	objects.push_back(sniper);
-
 	return true;
 }
 void Application::CleanupDevices()
@@ -252,8 +253,29 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				case 'A': case 'a':	            // PgDown
 					{
 						((BasicObject*)this->objects.front())->object.Pos.x += 1.0f;;
+					}
+					return 0;
+				case 'Z': case 'z':
+					{
+						bool found = false;
+						for(auto objectIter = this->objects.begin();
+							objectIter != this->objects.end();
+							++objectIter)
+						{
+							if( dynamic_cast<Sniper*>(*objectIter) != 0)
+							{
+								found = true;
+								this->objects.erase(objectIter);
+								break;
+							}
+						}
 
-
+						if(found == false)
+						{
+							Sniper* sniper = new Sniper;
+							sniper->Init();
+							this->objects.push_back(sniper);
+						}
 					}
 					return 0;
 			}

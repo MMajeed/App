@@ -14,6 +14,10 @@ public:
 	XMFLOAT4 Eye() const;
 	XMFLOAT4 Target() const;
 
+	float Pitch() const;
+	float Roll() const;
+	float Yaw() const;
+
 	void SetPosition(float x, float y, float z, float w = 1.0f);
 	void SetUp(float x, float y, float z, float w = 1.0f);
 	void SetLook(float x, float y, float z, float w = 1.0f);

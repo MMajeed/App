@@ -27,7 +27,7 @@ void SkyBox::InitRastersizerState(ID3D11Device* device)
 	}
 }
 
-void SkyBox::Update(float delta)
+void SkyBox::UpdateObject(float delta)
 {
 	// Set the pos to where the camera is so the skymap dosn't move
 	this->object.Pos = App::getInstance()->camera.Eye();

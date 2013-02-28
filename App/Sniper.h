@@ -9,7 +9,8 @@ class Sniper : public BasicObject
 public:	
 	Sniper();
 	
-	virtual void Update(float delta);
+	void UpdateDrawing(float delta);
+	void UpdateObject(float delta);
 
 	virtual void Init();
 
@@ -18,7 +19,8 @@ public:
 
 	CDrawableTex2D_DX11		OffScreen2DTexture;
 
-	ID3D11ShaderResourceView *temp2DTexture;
+	ID3D11ShaderResourceView* temp2DTexture;
+	std::pair<std::string, ID3D11ShaderResourceView*>				pTextureAlpha;
 };
 
 

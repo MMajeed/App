@@ -8,6 +8,7 @@ class MathHelper
 {
 public:
 	static float Length(XMFLOAT4 v1, XMFLOAT4 v2);
+	static XMFLOAT4 Normalize(XMFLOAT4 v1);
 };
 
 #endif //__MathHelper__

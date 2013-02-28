@@ -4,7 +4,6 @@ XMFLOAT4 Camera::Eye() const
 {
 	return this->eye;
 }
-
 XMFLOAT4 Camera::Target() const
 {
 	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
@@ -19,6 +18,18 @@ XMFLOAT4 Camera::Target() const
 	XMFLOAT4 returnValue;
 	XMStoreFloat4(&returnValue,At);
 	return returnValue;
+}
+float Camera::Pitch() const
+{
+	return this->RadianPitch;
+}
+float Camera::Roll() const
+{
+	return this->RadianRoll;
+}
+float Camera::Yaw() const
+{
+	return this->RadianYaw;
 }
 
 XMFLOAT4X4 Camera::GetViewMatrix() const 

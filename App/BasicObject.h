@@ -12,7 +12,8 @@ class BasicObject : public iObjectDrawable
 public:
 	virtual void Init();
 	virtual void Clean();
-	virtual void Update(float delta);
+	virtual void UpdateDrawing(float delta);
+	virtual void UpdateObject(float delta);
 	virtual void Draw();
 	virtual void SetupDraw();
 	virtual void SetupTexture();

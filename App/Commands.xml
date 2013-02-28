@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Objects>
   <Object>
-    <ID>Cube1</ID>
+    <ID>TransparentPly</ID>
     <Class>PlyFile</Class>
     <PlyFile>PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
     <ShaderInput  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>

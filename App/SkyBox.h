@@ -13,7 +13,7 @@ class SkyBox : public BasicObject
 public:	
 	SkyBox();
 
-	virtual void Update(float delta);
+	virtual void UpdateObject(float delta);
 	virtual void InitRastersizerState(ID3D11Device* device);
 
 	static SkyBox* Spawn(std::map<std::string, std::string> info);
