@@ -33,12 +33,11 @@ XMFLOAT4X4 Camera::GetViewMatrix() const
     Up = XMVector3TransformCoord( Up, RotationMatrix );
 	
 	At += Eye;
-
 	
-	XMFLOAT4X4  view_;
-	XMStoreFloat4x4(&view_, XMMatrixLookAtLH( Eye, At, Up ));
+	XMFLOAT4X4  view;
+	XMStoreFloat4x4(&view, XMMatrixLookAtLH( Eye, At, Up ));
 
-	return view_;
+	return view;
 }
 
 void Camera::SetPosition(float x, float y, float z, float w)
@@ -56,17 +55,13 @@ void Camera::SetLook(float x, float y, float z, float w)
 
 void Camera::MoveForward(float delta)
 {
-	this->target.x = 0.0f;
-	this->target.y = 0.0f;
-	this->target.z = 1.0f;
-
 	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
 	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
 	
 	XMMATRIX RotationMatrix( XMMatrixRotationRollPitchYaw( this->RadianPitch, this->RadianYaw, this->RadianRoll ));
 
 	At = XMVector3TransformCoord( At, RotationMatrix );
-
+	At = XMVector4Normalize(At);
 	Eye += At * delta;
 
 	XMStoreFloat4(&this->eye, Eye);

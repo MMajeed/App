@@ -49,10 +49,10 @@ void Application::Render()
 	{
 		bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
 		{
-			bool V1IsSkyMap = dynamic_cast<SkyBox*>(v1) != 0;
-			bool V2IsSkyMap = dynamic_cast<SkyBox*>(v2) != 0;
-			if(V1IsSkyMap) return false;
-			if(V2IsSkyMap) return true;
+			bool v1Ignore = dynamic_cast<SkyBox*>(v1) != 0;
+			bool v2Ignore = dynamic_cast<SkyBox*>(v2) != 0;
+			if(v1Ignore) return false;
+			if(v2Ignore) return true;
 
 			float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Eye());
 			float v2Distance = MathHelper::Length(v2->object.Pos, App::getInstance()->camera.Eye());
@@ -203,8 +203,7 @@ HRESULT Application::InitDevices()
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
 	objects = ObjectLoader::getInstance()->SpawnAll();
-
-
+	
 	return true;
 }
 void Application::CleanupDevices()
@@ -291,5 +290,4 @@ App* Application::getInstance()
 }
 Application::~Application()
 {
-	this->CleanupDevices();
 }

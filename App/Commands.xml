@@ -2,7 +2,7 @@
 <Objects>
   <Object>
     <ID>Cube1</ID>
-    <Class>TransparentPly</Class>
+    <Class>PlyFile</Class>
     <PlyFile>PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
     <ShaderInput  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderVertex FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>

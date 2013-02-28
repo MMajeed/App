@@ -123,7 +123,10 @@ bool VertexBuffer::LoadFromPlyFile(std::wstring fileName, VertexBuffer& vbOut, s
 
 	// Check that file is okay
     if (!ply) 
+	{
+		error = L"Failed at loading file " + fileName;
 		return false;
+	}
     if (!ply_read_header(ply)) 
 		return false;
 

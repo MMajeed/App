@@ -29,7 +29,7 @@ public:
 
 protected:	
 	XMFLOAT4 eye;	
-	XMFLOAT4 target;
+	XMFLOAT4 target; // Relative to the eye
 	XMFLOAT4 up;
 
 	float RadianRoll;

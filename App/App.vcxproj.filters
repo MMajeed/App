@@ -49,7 +49,7 @@
       <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
     </ClCompile>
     <ClCompile Include="MathHelper.cpp">
-      <Filter>Tools\MathHelper</Filter>
+      <Filter>Tools\Helper\MathHelper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +106,7 @@
       <Filter>Tools\Helper\DX11Helper</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h">
-      <Filter>Tools\MathHelper</Filter>
+      <Filter>Tools\Helper\MathHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,20 +161,17 @@
     <Filter Include="DX11ObjectDrawable\BasicObject\SkyBox">
       <UniqueIdentifier>{b6e007ae-fb76-445b-a805-b744dee49213}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\Logger">
-      <UniqueIdentifier>{1b581665-65bc-4d9a-a4de-9bcff79dc218}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\TinyXML">
       <UniqueIdentifier>{a12b96c1-20f9-48af-9d3b-da5e4104e7a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools\Loader">
       <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\MathHelper">
-      <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile\Transparent">
       <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Helper\MathHelper">
+      <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
