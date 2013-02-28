@@ -1,4 +1,3 @@
-// mfeeney@fanshawec.ca
 // The lighting functions are (modified) from Frank Luna's DirectX 10 book (chapter 6)
 
 #include "HLSL_4_BasicLightFunctions.fx"

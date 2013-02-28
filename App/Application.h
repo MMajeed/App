@@ -14,10 +14,10 @@ public:
 	virtual LRESULT CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );	
 	virtual ~Application();
 	virtual void Run( HINSTANCE hInstance, int nCmdShow );
-protected:	
 	virtual void Render();
-	std::vector<iObjectDrawable*> objects;
-	
+	virtual void Present();
+	std::vector<iObjectDrawable*> objects;	
+protected:	
 	std::pair<std::string, ID3D11Buffer*>			pCBNeverChangesID;
 	std::pair<std::string, ID3D11Buffer*>			pCBChangesOnResizeID;
 	std::pair<std::string, ID3D11SamplerState*>		pSamplerLinear;			

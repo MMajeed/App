@@ -145,6 +145,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BasicObject.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="CDrawableTex2D_DX11.cpp" />
     <ClCompile Include="DX11App.cpp" />
     <ClCompile Include="DX11Helper.cpp" />
     <ClCompile Include="Helper.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="PlyFile.cpp" />
     <ClCompile Include="PlyLib\rply.c" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="Sniper.cpp" />
     <ClCompile Include="tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="Transparent.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -166,6 +168,7 @@
     <ClInclude Include="BasicObject.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cBuffer.h" />
+    <ClInclude Include="CDrawableTex2D_DX11.h" />
     <ClInclude Include="DX11App.h" />
     <ClInclude Include="DX11Helper.h" />
     <ClInclude Include="Helper.h" />
@@ -177,6 +180,7 @@
     <ClInclude Include="PlyFile.h" />
     <ClInclude Include="PlyLib\rply.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="Sniper.h" />
     <ClInclude Include="tinyxml2\tinyxml2.h" />
     <ClInclude Include="Transparent.h" />
     <ClInclude Include="VertexBuffer.h" />

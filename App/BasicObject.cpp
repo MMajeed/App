@@ -40,6 +40,7 @@ void BasicObject::Draw()
 	this->SetupDraw();
 	this->SetupTexture();
 	this->DrawObject();
+	this->CleanupAfterDraw();
 }
 void BasicObject::SetupDraw()
 {
@@ -92,7 +93,16 @@ void BasicObject::DrawObject()
 {
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 	
-	pImmediateContext->DrawIndexed( this->vertexBuffer.indices.size() * 3, 0, 0 );
+	pImmediateContext->DrawIndexed( this->vertexBuffer.indices.size(), 0, 0 );
+}
+void BasicObject::CleanupAfterDraw()
+{
+	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	
+	ID3D11ShaderResourceView* tab = NULL;
+	pImmediateContext->PSSetShaderResources(0,1,&tab);
+	pImmediateContext->PSSetShaderResources(1,1,&tab);
+	pImmediateContext->PSSetShaderResources(2,1,&tab);
 }
 void BasicObject::LoadD3DStuff()
 {

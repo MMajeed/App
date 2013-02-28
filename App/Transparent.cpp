@@ -15,7 +15,7 @@ void Transparent::DrawObject()
 	float blendFactor[] = {0.0f, 0.0f, 0.0f, 0.0f};
 	pImmediateContext->OMSetBlendState(this->pTransparent.second, blendFactor, 0xffffffff);
 
-	pImmediateContext->DrawIndexed( this->vertexBuffer.indices.size() * 3, 0, 0 );
+	PlyFile::DrawObject();
 
 	pImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff);
 }

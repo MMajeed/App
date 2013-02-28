@@ -51,6 +51,12 @@
     <ClCompile Include="MathHelper.cpp">
       <Filter>Tools\Helper\MathHelper</Filter>
     </ClCompile>
+    <ClCompile Include="Sniper.cpp">
+      <Filter>DX11ObjectDrawable\BasicObject\Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="CDrawableTex2D_DX11.cpp">
+      <Filter>Tools\OffScreenTexture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -107,6 +113,12 @@
     </ClInclude>
     <ClInclude Include="MathHelper.h">
       <Filter>Tools\Helper\MathHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Sniper.h">
+      <Filter>DX11ObjectDrawable\BasicObject\Sniper</Filter>
+    </ClInclude>
+    <ClInclude Include="CDrawableTex2D_DX11.h">
+      <Filter>Tools\OffScreenTexture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +184,12 @@
     </Filter>
     <Filter Include="Tools\Helper\MathHelper">
       <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\BasicObject\Sniper">
+      <UniqueIdentifier>{01de3689-034b-4538-84a3-9c21b4760d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\OffScreenTexture">
+      <UniqueIdentifier>{5cba1bf5-822a-41ef-b6d6-76bd0f4478f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

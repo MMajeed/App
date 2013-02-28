@@ -17,6 +17,7 @@ public:
 	virtual void SetupDraw();
 	virtual void SetupTexture();
 	virtual void DrawObject();
+	virtual void CleanupAfterDraw();
 
 	VertexBuffer vertexBuffer;	
 

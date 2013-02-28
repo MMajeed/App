@@ -5,11 +5,12 @@
 #include "Helper.h"
 #include "DX11Helper.h"
 #include "cBuffer.h"
+#include "ObjectLoader.h"
+#include "MathHelper.h"
+#include "Sniper.h"
+#include <algorithm>
 #include <sstream>
 #include <iomanip>
-#include "ObjectLoader.h"
-#include <algorithm>
-#include "MathHelper.h"
 
 void Application::Render()
 {
@@ -48,12 +49,16 @@ void Application::Render()
 	struct SortFromCamera
 	{
 		bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
-		{
-			bool v1Ignore = dynamic_cast<SkyBox*>(v1) != 0;
-			bool v2Ignore = dynamic_cast<SkyBox*>(v2) != 0;
-			if(v1Ignore) return false;
-			if(v2Ignore) return true;
+		{			
+			// Make Sniper first
+			if( dynamic_cast<Sniper*>(v1) != 0) return true;
+			if( dynamic_cast<Sniper*>(v2) != 0) return false;
 
+			// Make skybox last
+			if( dynamic_cast<SkyBox*>(v1) != 0) return false;
+			if( dynamic_cast<SkyBox*>(v2) != 0) return true;
+
+			// Otherwise order them by how far away they are
 			float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Eye());
 			float v2Distance = MathHelper::Length(v2->object.Pos, App::getInstance()->camera.Eye());
 
@@ -63,14 +68,13 @@ void Application::Render()
 
 	std::sort(this->objects.begin(), this->objects.end(), SortFromCamera());
 
-	for(auto objectIter = this->objects.begin();
-		objectIter != this->objects.end();
-		++objectIter)
+	for(std::size_t i = 0; i < this->objects.size(); ++i)
 	{
-		(*objectIter)->Draw();
+		this->objects[i]->Draw();
 	}
-	
-
+}
+void  Application::Present()
+{
 	// Present the information rendered to the back buffer to the front buffer (the screen)
 	this->direct3d.pSwapChain->Present( 0, 0 );
 }
@@ -115,16 +119,15 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			timer._frameTime = elapsedFrameCount / tickInterval;
 						
 			//Sleep( 10 - timer._frameTime); // Used to lock the framerate. Turned off because I want to see how fast the program is going
-			for(auto objectIter = this->objects.begin();
-				objectIter != this->objects.end();
-				++objectIter)
+			
+			for(std::size_t i = 0; i < this->objects.size(); ++i)
 			{
-				(*objectIter)->Update(static_cast<float>(timer._frameTime));
+				objects[i]->Update(static_cast<float>(timer._frameTime));
 			}
 
 			// render
 			this->Render();
-
+			this->Present();
 			// update fps
 			timerLast = timerNow;
 			++(timer._frameCount);
@@ -204,6 +207,10 @@ HRESULT Application::InitDevices()
 
 	objects = ObjectLoader::getInstance()->SpawnAll();
 	
+	Sniper* sniper = new Sniper();
+	sniper->Init();
+	objects.push_back(sniper);
+
 	return true;
 }
 void Application::CleanupDevices()
