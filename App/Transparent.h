@@ -7,6 +7,7 @@ class Transparent : public PlyFile
 {
 public:	
 	Transparent();
+	Transparent(PlyFile base);
 	static Transparent* Spawn(std::map<std::string, std::string> info);
 
 	std::pair<std::string, ID3D11BlendState*> 		pTransparent;

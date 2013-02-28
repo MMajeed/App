@@ -154,6 +154,8 @@ float4 PS( PS_INPUT input ) : SV_Target
 	finalLightColour = myCubeMap.Sample( samLinear, directionOfReflection.xyz );
 	//refract();
 
+	finalLightColour.w = objectMaterial.diffuse.w;
+
 	return finalLightColour;
 }
 

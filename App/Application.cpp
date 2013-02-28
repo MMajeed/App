@@ -8,11 +8,13 @@
 #include <sstream>
 #include <iomanip>
 #include "ObjectLoader.h"
+#include <algorithm>
+#include "MathHelper.h"
 
 void Application::Render()
 {
 	// Clear the back buffer 
-	float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; // red,green,blue,alpha
+	float ClearColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; // red,green,blue,alpha
 	this->direct3d.pImmediateContext->ClearRenderTargetView( this->direct3d.pRenderTargetView, ClearColor );
 	this->direct3d.pImmediateContext->ClearDepthStencilView( this->direct3d.pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 	
@@ -27,16 +29,39 @@ void Application::Render()
 	cbCNV.eye = App::getInstance()->camera.eye;
 	cbCNV.target = App::getInstance()->camera.target;
 
+	float minViewable = 0.01f;
+	float maxViewable = 100000.0f;
+
 	cBuffer::cbChangeOnResize cbCOR ;
 	cbCOR.mProjection = XMMatrixTranspose(XMMatrixPerspectiveFovLH( XM_PIDIV4, 
 											static_cast<float>(this->window.width) / static_cast<float>(this->window.height), 
-											0.01f, 100000.0f ));
+											minViewable, maxViewable ));
 
 	pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
-	pImmediateContext->UpdateSubresource( this->pCBChangesOnResizeID.second, 0, NULL, &cbCOR, 0, 0 );
-		
 	pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
+	pImmediateContext->PSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
+	pImmediateContext->UpdateSubresource( this->pCBChangesOnResizeID.second, 0, NULL, &cbCOR, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
+	pImmediateContext->PSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
+
+	
+	struct SortFromCamera
+	{
+		bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
+		{
+			bool V1IsSkyMap = dynamic_cast<SkyBox*>(v1) != 0;
+			bool V2IsSkyMap = dynamic_cast<SkyBox*>(v2) != 0;
+			if(V1IsSkyMap) return false;
+			if(V2IsSkyMap) return true;
+
+			float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Target());
+			float v2Distance = MathHelper::Length(v2->object.Pos, App::getInstance()->camera.Target());
+
+			return v1Distance > v2Distance;
+		}
+	};
+
+	std::sort(this->objects.begin(), this->objects.end(), SortFromCamera());
 
 	for(auto objectIter = this->objects.begin();
 		objectIter != this->objects.end();
@@ -44,6 +69,7 @@ void Application::Render()
 	{
 		(*objectIter)->Draw();
 	}
+	
 
 	// Present the information rendered to the back buffer to the front buffer (the screen)
 	this->direct3d.pSwapChain->Present( 0, 0 );

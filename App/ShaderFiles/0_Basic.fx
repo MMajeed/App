@@ -23,12 +23,6 @@ cbuffer cbChangesEveryFrame : register( b2 )
 };
 //************************************************/
 
-Texture2D texture00 : register( t0 );
-Texture2D texture01 : register( t1 );
-// And the cube map
-//TextureCube   myCubeMap : register( t2 );
-
-
 SamplerState samLinear : register( s0 );
 SamplerState samAnisotropic : register( s1 );
 

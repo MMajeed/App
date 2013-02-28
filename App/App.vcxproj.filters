@@ -48,6 +48,9 @@
     <ClCompile Include="Transparent.cpp">
       <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
     </ClCompile>
+    <ClCompile Include="MathHelper.cpp">
+      <Filter>Tools\MathHelper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="DX11Helper.h">
       <Filter>Tools\Helper\DX11Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>Tools\MathHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +172,9 @@
     </Filter>
     <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile\Transparent">
       <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\MathHelper">
+      <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

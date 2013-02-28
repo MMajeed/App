@@ -109,11 +109,6 @@ float4 PS( PS_INPUT input ) : SV_Target
 		}
 	}	// for (int index = 0;....
 
-	// Since we are adding all lights, they will be GT 1.0.
-	//finalLightColour = saturate( finalColour );
-	//finalLightColour = normalize( finalColour );	
-	//finalLightColour = normalize( finalLightColour );
-
 	float4 texColour0 = texture00.Sample( samLinear, input.tex0 );
 	float4 texColour1 = texture01.Sample( samAnisotropic, input.tex1 );
 
@@ -123,13 +118,10 @@ float4 PS( PS_INPUT input ) : SV_Target
 
 	// NOTE that these are multiplied (aka "modulate")
 	float4 finalColour =  finalLightColour * finalTexColour;
-	//float4 finalColour =  texColour1;
 
-	finalLightColour = saturate( finalColour );
-
-	// Show only texture 1
-	finalLightColour = texColour0;
-
+	finalColour = saturate( finalColour );
+	
+	finalColour.w = objectMaterial.diffuse.w;
 
 	return finalLightColour;
 }

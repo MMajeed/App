@@ -3,6 +3,8 @@
 
 #include <windows.h>
 #include <xnamath.h>
+#include "App.h"
+#include "MathHelper.h"
 
 class Object
 {

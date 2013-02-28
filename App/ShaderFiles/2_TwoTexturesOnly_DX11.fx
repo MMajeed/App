@@ -100,6 +100,8 @@ float4 PS( PS_INPUT input ) : SV_Target
 
 	finalTexColour = normalize( finalTexColour );
 
+	finalTexColour.w = objectMaterial.diffuse.w;
+
 	return finalTexColour;
 }
 

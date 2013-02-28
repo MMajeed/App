@@ -52,10 +52,13 @@ void BasicObject::SetupDraw()
 
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 
+	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cbCEF, 0, 0 );
+	pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
+	pImmediateContext->PSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
+		
 	// Set vertex buffer 
 	UINT stride = sizeof( VertexBuffer::SimpleVertex );
 	UINT offset = 0;
-	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cbCEF, 0, 0 );
 	pImmediateContext->IASetVertexBuffers( 0, 1, &this->pVertexBuffer.second, &stride, &offset );
 	pImmediateContext->IASetIndexBuffer( this->pIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
 	pImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
@@ -64,8 +67,8 @@ void BasicObject::SetupDraw()
 	pImmediateContext->IASetInputLayout( this->pInputLayout.second );
 	pImmediateContext->VSSetShader( this->pVertexShader.second, NULL, 0 );	
 	pImmediateContext->PSSetShader( this->pPixelShader.second, NULL, 0 );
+
 	pImmediateContext->RSSetState(this->pRastersizerState.second);
-	pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 }
 void BasicObject::SetupTexture()
 {

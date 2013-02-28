@@ -2,10 +2,6 @@
 
 XMFLOAT4X4 const& Camera::Update()
 {
-	this->target.x = 0.0f;
-	this->target.y = 0.0f;
-	this->target.z = 1.0f;
-
 	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
 	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
 	XMVECTOR Up = XMVectorSet(  this->up.x, this->up.y, this->up.z, this->up.w );
@@ -17,11 +13,27 @@ XMFLOAT4X4 const& Camera::Update()
 	
 	At += Eye;
 
-	XMStoreFloat4(&this->target, At);
-
 	XMStoreFloat4x4(&this->view_, XMMatrixLookAtLH( Eye, At, Up ));
 
 	return this->view_;
+}
+
+XMFLOAT4 Camera::Target() const
+{
+	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
+	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
+	XMVECTOR Up = XMVectorSet(  this->up.x, this->up.y, this->up.z, this->up.w );
+
+	XMMATRIX RotationMatrix( XMMatrixRotationRollPitchYaw( this->RadianPitch, this->RadianYaw, this->RadianRoll ));
+
+	At = XMVector3TransformCoord( At, RotationMatrix );
+    Up = XMVector3TransformCoord( Up, RotationMatrix );
+	
+	At += Eye;
+
+	XMFLOAT4 returnValue;
+	XMStoreFloat4(&returnValue,At);
+	return returnValue;
 }
 
 XMFLOAT4X4 const& Camera::GetViewMatrix() const 

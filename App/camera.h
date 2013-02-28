@@ -15,6 +15,11 @@ public:
 	float RadianRoll;
 	float RadianPitch;
 	float RadianYaw;
+	
+	XMFLOAT4X4 const& GetViewMatrix() const ;
+	XMFLOAT4X4 const& Update();
+
+	XMFLOAT4 Target() const;
 
 	void SetPosition(float x, float y, float z, float w = 1.0f);
 	void SetUp(float x, float y, float z, float w = 1.0f);
@@ -28,8 +33,6 @@ public:
 
 	Camera();
 	virtual ~Camera();
-	XMFLOAT4X4 const& GetViewMatrix() const ;
-	XMFLOAT4X4 const& Update();
 
 protected:	
 	XMFLOAT4X4  view_;

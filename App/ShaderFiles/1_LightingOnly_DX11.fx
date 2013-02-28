@@ -118,8 +118,7 @@ float4 PS( PS_INPUT input ) : SV_Target
 
 	finalLightColour = saturate( finalLightColour );
 
-	finalLightColour = float4( 1.0f, 1.0f, 1.0f, 1.0f);
-
+	finalLightColour.w = objectMaterial.diffuse.w;
 
 	return finalLightColour;
 }

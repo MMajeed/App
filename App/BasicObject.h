@@ -19,8 +19,6 @@ public:
 	virtual void DrawObject();
 
 	VertexBuffer vertexBuffer;	
-	
-	Object object;
 
 	std::pair<std::string, ID3D11Buffer*> 							pVertexBuffer;
 	std::pair<std::string, ID3D11Buffer*>							pIndexBuffer;
