@@ -34,7 +34,7 @@ void Sniper::UpdateObject(float delta)
 	this->object.Pos = App::getInstance()->camera.Target();
 
 	this->object.Rot.x = App::getInstance()->camera.Pitch() + 1.57f;
-	this->object.Rot.y = App::getInstance()->camera.Yaw();
+	this->object.Rot.y = App::getInstance()->camera.Yaw() ;
 	this->object.Rot.z = App::getInstance()->camera.Roll();
 
 	this->object.Scale = XMFLOAT4(0.56f, 1.0f, 0.43f, 0.5f);
