@@ -8,8 +8,8 @@
 class DX11App : public App
 {
 public:
-	virtual HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow );
-	virtual HRESULT InitDevices();
+	virtual void InitWindow( HINSTANCE hInstance, int nCmdShow );
+	virtual void InitDevices();
 	virtual void CleanupDevices();
 	virtual void Run( HINSTANCE hInstance, int nCmdShow );
 	static App* getInstance();

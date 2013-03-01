@@ -2,7 +2,7 @@
 
 #include <exception>
 
-HRESULT DX11App::InitWindow( HINSTANCE hInstance, int nCmdShow )
+void DX11App::InitWindow( HINSTANCE hInstance, int nCmdShow )
 {
 	// Register class
     WNDCLASSEX wcex;
@@ -21,7 +21,7 @@ HRESULT DX11App::InitWindow( HINSTANCE hInstance, int nCmdShow )
 	// Try a "register" this type of window... so that we can create it later
     if( !RegisterClassEx( &wcex ) )
 	{
-        return false;
+        throw std::exception("Failed at registering Window");
 	}
 
     // Create window
@@ -36,14 +36,12 @@ HRESULT DX11App::InitWindow( HINSTANCE hInstance, int nCmdShow )
 	// Try to create the window...
     if( !(this->window.hWnd) )
 	{
-        return false;
+        throw std::exception("Failed at creating window");
 	}
 
     ShowWindow( this->window.hWnd, nCmdShow );
-
-	return S_OK;
 }
-HRESULT DX11App::InitDevices()
+void DX11App::InitDevices()
 {
 	HRESULT hr = S_OK;
 
@@ -96,18 +94,18 @@ HRESULT DX11App::InitDevices()
 			break;
 	}
 	if( FAILED( hr ) )
-		return hr;
+		throw std::exception("Failed at creating device and SwapChain");
 
 	// Create a render target view
 	ID3D11Texture2D* pBackBuffer = NULL;
 	hr = this->direct3d.pSwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), ( LPVOID* )&pBackBuffer );
 	if( FAILED( hr ) )
-		return hr;
+		throw std::exception("Failed at creating back buffer");
 
 	hr = this->direct3d.pd3dDevice->CreateRenderTargetView( pBackBuffer, NULL, &this->direct3d.pRenderTargetView );
 	pBackBuffer->Release();
 	if( FAILED( hr ) )
-		return hr;
+		throw std::exception("Failed at creating Render Target view");
 
 	// Set up depth & stencil buffer
 	// Initialize the description of the depth buffer.
@@ -131,7 +129,7 @@ HRESULT DX11App::InitDevices()
 	hr = this->direct3d.pd3dDevice->CreateTexture2D(&depthBufferDesc, NULL, &this->direct3d.pDepthStencilBuffer);
 	if(FAILED(hr))
 	{
-		return(hr);
+		throw std::exception("Failed at creating dept buffer");
 	}
 
 	// Initialize the description of the stencil state.
@@ -164,7 +162,7 @@ HRESULT DX11App::InitDevices()
 	hr = this->direct3d.pd3dDevice->CreateDepthStencilState(&depthStencilDesc, &this->direct3d.pDepthStencilState);
 	if(FAILED(hr)) 
 	{
-		return(hr);
+		throw std::exception("Failed at creating Dept stencil State");
 	}
 
 	// Set the depth stencil state.
@@ -182,7 +180,7 @@ HRESULT DX11App::InitDevices()
 	hr = this->direct3d.pd3dDevice->CreateDepthStencilView(this->direct3d.pDepthStencilBuffer, &depthStencilViewDesc, &this->direct3d.pDepthStencilView);
 	if(FAILED(hr))
 	{
-		return(hr);
+		throw std::exception("Failed at creating depth stencil view");
 	}
 
 	this->direct3d.pImmediateContext->OMSetRenderTargets( 1, &this->direct3d.pRenderTargetView, this->direct3d.pDepthStencilView );
@@ -195,8 +193,6 @@ HRESULT DX11App::InitDevices()
 	this->direct3d.vp.TopLeftX = 0;
 	this->direct3d.vp.TopLeftY = 0;
 	this->direct3d.pImmediateContext->RSSetViewports( 1, &(this->direct3d.vp) );
-
-	return(S_OK);
 }
 void DX11App::CleanupDevices()
 {

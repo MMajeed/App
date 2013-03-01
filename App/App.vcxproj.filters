@@ -58,7 +58,7 @@
       <Filter>Tools\OffScreenTexture</Filter>
     </ClCompile>
     <ClCompile Include="SphericalMirror.cpp">
-      <Filter>DX11ObjectDrawable\BasicObject\DynamicSkyBox</Filter>
+      <Filter>DX11ObjectDrawable\BasicObject\SphericalMirror</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,7 +124,7 @@
       <Filter>Tools\OffScreenTexture</Filter>
     </ClInclude>
     <ClInclude Include="SphericalMirror.h">
-      <Filter>DX11ObjectDrawable\BasicObject\DynamicSkyBox</Filter>
+      <Filter>DX11ObjectDrawable\BasicObject\SphericalMirror</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +197,7 @@
     <Filter Include="Tools\OffScreenTexture">
       <UniqueIdentifier>{5cba1bf5-822a-41ef-b6d6-76bd0f4478f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject\DynamicSkyBox">
+    <Filter Include="DX11ObjectDrawable\BasicObject\SphericalMirror">
       <UniqueIdentifier>{517d0841-3de0-4907-91e9-171d8ea6849a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

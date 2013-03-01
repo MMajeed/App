@@ -8,7 +8,7 @@
 class Application : public DX11App
 {
 public:
-	virtual HRESULT InitDevices();
+	virtual void InitDevices();
 	virtual void CleanupDevices();
 	static App* getInstance();
 	virtual LRESULT CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );	

@@ -154,7 +154,7 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 
 	KillTimer( this->window.hWnd, FRAMERATE_UPDATE_TIMER );
 }
-HRESULT Application::InitDevices()
+void Application::InitDevices()
 {
 	DX11App::InitDevices();
 		
@@ -228,8 +228,6 @@ HRESULT Application::InitDevices()
 	SphericalMirror* dsb = new SphericalMirror();
 	dsb->Init();
 	objects.push_back(dsb);
-
-	return true;
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {

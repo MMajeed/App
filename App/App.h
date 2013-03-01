@@ -7,8 +7,8 @@
 class App
 {
 public:
-	virtual HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow )                     = 0;
-	virtual HRESULT InitDevices()                                                       = 0;
+	virtual void InitWindow( HINSTANCE hInstance, int nCmdShow )                     = 0;
+	virtual void InitDevices()                                                       = 0;
 	virtual void CleanupDevices()                                                       = 0;
 	virtual void Render()                                                               = 0;
 	virtual void Run( HINSTANCE hInstance, int nCmdShow )			                    = 0;
