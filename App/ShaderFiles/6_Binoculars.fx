@@ -93,7 +93,10 @@ float4 PS( PS_INPUT input ) : SV_Target
 
 	if ( texColour1.x < 0.999 )	  // closer to 'black'
 	{
-		float4 texColour0 = texture00.Sample( samAnisotropic, input.tex1 );
+		float2 x = input.tex1;
+		x.x *= -1;
+		x.y *= -1;
+		float4 texColour0 = texture00.Sample( samAnisotropic, x );
 		finalTexColour = texColour0 ;
 		finalTexColour.x = 0.0f;
 		finalTexColour.z = 0.0f;

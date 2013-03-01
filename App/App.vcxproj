@@ -186,7 +186,9 @@
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Commands.xml" />
+    <None Include="Commands.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ShaderFiles\0_Basic.fx" />
     <None Include="ShaderFiles\1_LightingOnly_DX11.fx" />
     <None Include="ShaderFiles\2_TwoTexturesOnly_DX11.fx" />

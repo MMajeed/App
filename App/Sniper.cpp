@@ -35,7 +35,7 @@ void Sniper::UpdateObject(float delta)
 
 	this->object.Rot.x = App::getInstance()->camera.Pitch() + 1.57f;
 	this->object.Rot.y = App::getInstance()->camera.Yaw() ;
-	this->object.Rot.z = App::getInstance()->camera.Roll();
+	this->object.Rot.z = App::getInstance()->camera.Roll() ;
 
 	this->object.Scale = XMFLOAT4(0.56f, 1.0f, 0.43f, 0.5f);
 }
@@ -74,7 +74,7 @@ void Sniper::Init()
 }
 Sniper::Sniper()
 {
-	this->pTextureAlpha.first		 = "Texture/Binoculars.png";
+	this->pTextureAlpha.first		 = "Texture/sniper.png";
 	temp2DTexture = 0;
 	this->pVertexBuffer.first        = "PlyFiles/1x1_2Tri_Quad_2_Sided.ply";
 	this->pIndexBuffer.first         = "PlyFiles/1x1_2Tri_Quad_2_Sided.ply";
