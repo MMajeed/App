@@ -3,7 +3,7 @@
 #include "Helper.h"
 #include "Application.h"
 #include "camera.h"
-	
+#include "Sniper.h"
 void SphericalMirror::Init()
 {
 	BasicObject::Init();
@@ -205,24 +205,31 @@ void SphericalMirror::GetNewDynamicTexture()
 }
 void SphericalMirror::UpdateDrawing(float delta)
 {
-	// Remove this object from the list because we don't want to see it
-	int counter = 0;
-	for(auto objectIter = ((Application*)App::getInstance())->objects.begin();
-		objectIter != ((Application*)App::getInstance())->objects.end();
-		++objectIter)
+	// Remove this object from the list that we don't want to see	
+	std::size_t counter = 0;
+	std::vector<iObjectDrawable*> removed;
+	std::vector<iObjectDrawable*>& applciationList = ((Application*)App::getInstance())->objects;
+	for(counter = 0; counter < applciationList.size(); ++counter)
 	{
-		if( (*objectIter) == this)
+		if( dynamic_cast<SphericalMirror*>(applciationList[counter]) != 0
+			|| dynamic_cast<Sniper*>(applciationList[counter]) != 0)
 		{
-			((Application*)App::getInstance())->objects.erase(objectIter);
-			break;
-		}		
-		++counter;
+			removed.push_back(applciationList[counter]);
+			applciationList.erase(applciationList.begin() + counter);
+			--counter;
+		}
 	}
 
+	// Get the new texture
 	this->GetNewDynamicTexture();
 
-
-	((Application*)App::getInstance())->objects.insert( (((Application*)App::getInstance())->objects.begin() + counter), this);
+	// Put back the ones we removed
+	for(auto removedIter = removed.begin();
+		removedIter != removed.end();
+		++removedIter)
+	{
+		applciationList.push_back(*removedIter);
+	}
 }
 void SphericalMirror::UpdateObject(float delta)
 {

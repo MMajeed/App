@@ -239,26 +239,41 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
             switch (wParam) 
             { 
                 case VK_LEFT: 
-					camera.Yaw(-0.1f);	// Move "left"
+					camera.Yaw(-0.1f);
                     return 0;
 				case VK_RIGHT:
-					camera.Yaw(+0.1f);	    // Move "right"
+					camera.Yaw(+0.1f);
 					return 0;
 				case VK_UP:
-					camera.MoveForward(0.5f);	    // Move "up"
+					camera.MoveForward(0.5f);
 					return 0;
 				case VK_DOWN:
-					camera.MoveForward(-0.5f);	// Move "down"
+					camera.MoveForward(-0.5f);
 					return 0;
-				case VK_NEXT:	            // PgUp
-					camera.Pitch(0.1f);	    // Move "towards"
+				case VK_NEXT:
+					camera.Pitch(0.1f);
 					return 0;
-				case VK_PRIOR:	            // PgDown
-					camera.Pitch(-0.1f);	// Move "away"
+				case VK_PRIOR:
+					camera.Pitch(-0.1f);
 					return 0;
-				case 'A': case 'a':	            // PgDown
+				case 'A': case 'a':
 					{
-						((BasicObject*)this->objects.front())->object.Pos.x += 1.0f;;
+						this->objects.back()->object.Pos.x -= 1.0f;
+					}
+					return 0;
+				case 'D': case 'd':
+					{
+						this->objects.back()->object.Pos.x += 1.0f;
+					}
+					return 0;
+				case 'W': case 'w':
+					{
+						this->objects.back()->object.Pos.z += 1.0f;
+					}
+					return 0;
+				case 'S': case 's':
+					{
+						this->objects.back()->object.Pos.z -= 1.0f;
 					}
 					return 0;
 				case 'Z': case 'z':
