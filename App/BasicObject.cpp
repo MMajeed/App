@@ -12,6 +12,7 @@
 BasicObject::BasicObject( )
 {	
 	this->pCBChangesEveryFrame.first = "ChangesEveryFrame";
+	this->pRastersizerState.first = "FillSolid";
 }
 void BasicObject::Init()
 {

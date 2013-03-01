@@ -188,14 +188,13 @@ HRESULT DX11App::InitDevices()
 	this->direct3d.pImmediateContext->OMSetRenderTargets( 1, &this->direct3d.pRenderTargetView, this->direct3d.pDepthStencilView );
 	
 	// Setup the viewport
-	D3D11_VIEWPORT vp;
-	vp.Width = (FLOAT)this->window.width;
-	vp.Height = (FLOAT)this->window.height;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	this->direct3d.pImmediateContext->RSSetViewports( 1, &vp );
+	this->direct3d.vp.Width = (FLOAT)this->window.width;
+	this->direct3d.vp.Height = (FLOAT)this->window.height;
+	this->direct3d.vp.MinDepth = 0.0f;
+	this->direct3d.vp.MaxDepth = 1.0f;
+	this->direct3d.vp.TopLeftX = 0;
+	this->direct3d.vp.TopLeftY = 0;
+	this->direct3d.pImmediateContext->RSSetViewports( 1, &(this->direct3d.vp) );
 
 	return(S_OK);
 }

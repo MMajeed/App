@@ -21,7 +21,8 @@ void Sniper::UpdateDrawing(float delta)
 	}
 
 	OffScreen2DTexture.begin();
-	App::getInstance()->Render();
+	((Application*)App::getInstance())->ClearScreen();
+	((Application*)App::getInstance())->DrawObjects();
 	OffScreen2DTexture.end();
 	temp2DTexture = OffScreen2DTexture.colorMap();
 	auto direct3d = ((DX11App*)App::getInstance())->direct3d;

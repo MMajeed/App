@@ -11,14 +11,23 @@
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
+#include "SphericalMirror.h"
 
 void Application::Render()
+{
+	this->ClearScreen();
+	this->DrawObjects();
+	this->Present();	
+}
+void Application::ClearScreen()
 {
 	// Clear the back buffer 
 	float ClearColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; // red,green,blue,alpha
 	this->direct3d.pImmediateContext->ClearRenderTargetView( this->direct3d.pRenderTargetView, ClearColor );
 	this->direct3d.pImmediateContext->ClearDepthStencilView( this->direct3d.pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-	
+}
+void Application::DrawObjects()
+{
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 
 	pImmediateContext->PSSetSamplers( 0, 1, &(this->pSamplerLinear.second) );
@@ -54,9 +63,13 @@ void Application::Render()
 			if( dynamic_cast<Sniper*>(v1) != 0) return true;
 			if( dynamic_cast<Sniper*>(v2) != 0) return false;
 
-			// Make skybox last
-			if( dynamic_cast<SkyBox*>(v1) != 0) return false;
-			if( dynamic_cast<SkyBox*>(v2) != 0) return true;
+			// Make skybox first
+			if( dynamic_cast<SkyBox*>(v1) != 0) return true;
+			if( dynamic_cast<SkyBox*>(v2) != 0) return false;
+
+			// Make SphericalMirror first
+			if( dynamic_cast<SphericalMirror*>(v1) != 0) return true;
+			if( dynamic_cast<SphericalMirror*>(v2) != 0) return false;
 
 			// Otherwise order them by how far away they are
 			float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Eye());
@@ -211,19 +224,12 @@ HRESULT Application::InitDevices()
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
 	objects = ObjectLoader::getInstance()->SpawnAll();
-	
-	return true;
-}
-void Application::CleanupDevices()
-{
-	DX11App::InitDevices();
+ 
+	SphericalMirror* dsb = new SphericalMirror();
+	dsb->Init();
+	objects.push_back(dsb);
 
-	while(this->objects.size() >= 0)
-	{
-		(*this->objects.begin())->Clean();
-		delete (*this->objects.begin());
-		this->objects.erase(this->objects.begin());		
-	}
+	return true;
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
@@ -301,6 +307,17 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	return DX11App::CB_WndProc(hWnd, message, wParam, lParam);
 }	
+void Application::CleanupDevices()
+{
+	DX11App::InitDevices();
+
+	while(this->objects.size() >= 0)
+	{
+		(*this->objects.begin())->Clean();
+		delete (*this->objects.begin());
+		this->objects.erase(this->objects.begin());		
+	}
+}
 void Application::LoadD3DStuff()
 {
 	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pCBNeverChangesID.first, this->pCBNeverChangesID.second)){ throw std::exception("CB never Changes not found"); }

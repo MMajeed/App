@@ -57,6 +57,9 @@
     <ClCompile Include="CDrawableTex2D_DX11.cpp">
       <Filter>Tools\OffScreenTexture</Filter>
     </ClCompile>
+    <ClCompile Include="SphericalMirror.cpp">
+      <Filter>DX11ObjectDrawable\BasicObject\DynamicSkyBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -119,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="CDrawableTex2D_DX11.h">
       <Filter>Tools\OffScreenTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="SphericalMirror.h">
+      <Filter>DX11ObjectDrawable\BasicObject\DynamicSkyBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +196,9 @@
     </Filter>
     <Filter Include="Tools\OffScreenTexture">
       <UniqueIdentifier>{5cba1bf5-822a-41ef-b6d6-76bd0f4478f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\BasicObject\DynamicSkyBox">
+      <UniqueIdentifier>{517d0841-3de0-4907-91e9-171d8ea6849a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

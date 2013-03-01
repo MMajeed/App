@@ -1,3 +1,5 @@
+// The lighting functions are (modified) from Frank Luna's DirectX 10 book (chapter 6)
+
 #include "HLSL_4_BasicLightFunctions.fx"
 
 //--------------------------------------------------------------------------------------
@@ -23,10 +25,7 @@ cbuffer cbChangesEveryFrame : register( b2 )
 };
 //************************************************/
 
-Texture2D texture00 : register( t0 );
-Texture2D texture01 : register( t1 );
-// And the cube map
-TextureCube   myCubeMap : register( t2 );
+TextureCube   myCubeMap : register( t0 );
 
 
 SamplerState samLinear : register( s0 );
@@ -86,58 +85,13 @@ PS_INPUT VS( VS_INPUT input )
 float4 PS( PS_INPUT input ) : SV_Target
 {
 	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
-
-	for ( int index = 0; index < 10; index++ )
-	{
-		if ( light[index].lightPowerRangeType.z == 0.0f ) // Parallel light
-		{
-			finalLightColour += ParallelLight( objectMaterial, light[index], 
-										 input.VertexPosWorld, 
-										 input.VertexNormalWorld, eye );	
-		}
-		else if ( light[index].lightPowerRangeType.z == 1.0f ) // Point
-		{
-			finalLightColour += PointLight(objectMaterial, light[index], 
-									 input.VertexPosWorld, 
-									 input.VertexNormalWorld, eye );
-		}
-		else 
-		{
-			finalLightColour += Spotlight( objectMaterial, light[index], 
-									 input.VertexPosWorld, 
-									 input.VertexNormalWorld, eye );
-		}
-	}	// for (int index = 0;....
-
-	// Since we are adding all lights, they will be GT 1.0.
-	//finalLightColour = saturate( finalColour );
-	//finalLightColour = normalize( finalColour );	
-	//finalLightColour = normalize( finalLightColour );
-
-	float4 texColour0 = texture00.Sample( samLinear, input.tex0 );
-	float4 texColour1 = texture01.Sample( samAnisotropic, input.tex1 );
-
-	float4 finalTexColour = texColour0 + texColour1;
-
-	finalTexColour = normalize( finalTexColour );
-
-	// NOTE that these are multiplied (aka "modulate")
-	float4 finalColour =  finalLightColour * finalTexColour;
-	//float4 finalColour =  texColour1;
-
-	finalLightColour = saturate( finalColour );
-
-	// Show only texture 1
-	finalLightColour = texColour0;
-
-
+	
 	// And.... we're going to ignore that (in this case)
 	// and do a look up in the cube map...
 	float4 cubeColour 
 			= myCubeMap.Sample( samLinear, input.VertexNormalWorld );
 
 	finalLightColour = cubeColour;
-
 
 	// Use reflect to get the angle from the surface from the camera
 	float4 directionToCamera = input.VertexPosWorld - eye;
@@ -153,8 +107,6 @@ float4 PS( PS_INPUT input ) : SV_Target
 
 	finalLightColour = myCubeMap.Sample( samLinear, directionOfReflection.xyz );
 	//refract();
-
-	finalLightColour.w = objectMaterial.diffuse.w;
 
 	return finalLightColour;
 }

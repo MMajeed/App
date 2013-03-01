@@ -29,6 +29,7 @@ public:
 		ID3D11Texture2D*			pDepthStencilBuffer;
 		ID3D11DepthStencilState*	pDepthStencilState;
 		ID3D11DepthStencilView*		pDepthStencilView;
+		D3D11_VIEWPORT vp;
 	} direct3d;
 protected:
 	DX11App();
