@@ -60,8 +60,6 @@ PS_INPUT VS( VS_INPUT input )
 
 	output.VertexNormal = input.VertexNorm;
 
-	input.VertexPos.x += 100.f;
-
     return output;
 }
 

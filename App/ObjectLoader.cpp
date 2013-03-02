@@ -4,6 +4,7 @@
 #include "SkyBox.h"
 #include "Helper.h"
 #include "Transparent.h"
+#include "SphericalMirror.h"
 
 ObjectLoader* ObjectLoader::ObjectManager = 0;
 
@@ -94,6 +95,10 @@ bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object)
 	else if(objectIter->second["Class"] == "TransparentPly")
 	{
 		object = Transparent::Spawn(objectIter->second);
+	}
+	else if(objectIter->second["Class"] == "SphericalMirror")
+	{
+		object = SphericalMirror::Spawn(objectIter->second);
 	}
 
 	object->Init();

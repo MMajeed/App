@@ -117,8 +117,8 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 				bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
 				{			
 					// Make Sniper first
-					if( dynamic_cast<Sniper*>(v1) != 0) return true;
-					if( dynamic_cast<Sniper*>(v2) != 0) return false;
+					if( dynamic_cast<Sniper*>(v1) != 0) return false;
+					if( dynamic_cast<Sniper*>(v2) != 0) return true;
 
 					// Make skybox first
 					if( dynamic_cast<SkyBox*>(v1) != 0) return true;
@@ -219,10 +219,6 @@ void Application::InitDevices()
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
 	objects = ObjectLoader::getInstance()->SpawnAll();
- 
-	SphericalMirror* dsb = new SphericalMirror();
-	dsb->Init();
-	objects.push_back(dsb);
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {

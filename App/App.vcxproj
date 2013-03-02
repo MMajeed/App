@@ -145,7 +145,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BasicObject.cpp" />
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="CDrawableTex2D_DX11.cpp" />
     <ClCompile Include="DX11App.cpp" />
     <ClCompile Include="DX11Helper.cpp" />
     <ClCompile Include="Prespective.cpp" />
@@ -170,7 +169,6 @@
     <ClInclude Include="BasicObject.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cBuffer.h" />
-    <ClInclude Include="CDrawableTex2D_DX11.h" />
     <ClInclude Include="DX11App.h" />
     <ClInclude Include="DX11Helper.h" />
     <ClInclude Include="Prespective.h" />

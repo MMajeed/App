@@ -2,6 +2,7 @@
 #define __DynmaicSkyBox__
 
 #include "BasicObject.h"
+#include <map>
 
 class SphericalMirror : public BasicObject
 {
@@ -12,7 +13,6 @@ public:
 
 	virtual void GetNewDynamicTexture();
 	virtual void UpdateDrawing(float delta);
-	virtual void UpdateObject(float delta);
 
 	virtual void SetupTexture();
 
@@ -22,6 +22,11 @@ public:
 	D3D11_VIEWPORT				pCubeMapViewport;
 
 	static const unsigned int CubeMapSize = 256;
+	
+	float UpdateEvery;
+	float Timer;
+
+	static SphericalMirror* Spawn(std::map<std::string, std::string> info);
 };
 
 

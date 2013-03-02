@@ -40,7 +40,15 @@
     <ShaderVertex FileName="ShaderFiles/5_SkyMap.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="ShaderFiles/5_SkyMap.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="2000.0f" Y="2000.0f" Z="2000.0f"/>
-    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <CubeMap>Texture/Sky/Sky.dds</CubeMap>
+  </Object>
+  <Object>
+    <ID>SphericalMirror</ID>
+    <Class>SphericalMirror</Class>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <UpdateEvery>0.012</UpdateEvery>
   </Object>
 </Objects>

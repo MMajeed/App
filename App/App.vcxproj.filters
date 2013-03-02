@@ -16,7 +16,7 @@
       <Filter>Tools\DX11ObjectManager</Filter>
     </ClCompile>
     <ClCompile Include="DX11Helper.cpp">
-      <Filter>Tools\Helper\DX11Helper</Filter>
+      <Filter>Tools\DX11Objects\DX11Helper</Filter>
     </ClCompile>
     <ClCompile Include="Helper.cpp">
       <Filter>Tools\Helper\Helper</Filter>
@@ -25,7 +25,7 @@
       <Filter>DX11ObjectDrawable\BasicObject</Filter>
     </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Tools\Helper\VertexBuffer</Filter>
+      <Filter>Tools\DX11Objects\VertexBuffer</Filter>
     </ClCompile>
     <ClCompile Include="PlyLib\rply.c">
       <Filter>Tools\Helper\PlyFile</Filter>
@@ -43,7 +43,7 @@
       <Filter>Tools\Loader</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml2\tinyxml2.cpp">
-      <Filter>Tools\TinyXML</Filter>
+      <Filter>Tools\Helper\TinyXML</Filter>
     </ClCompile>
     <ClCompile Include="Transparent.cpp">
       <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
@@ -53,9 +53,6 @@
     </ClCompile>
     <ClCompile Include="Sniper.cpp">
       <Filter>DX11ObjectDrawable\BasicObject\Sniper</Filter>
-    </ClCompile>
-    <ClCompile Include="CDrawableTex2D_DX11.cpp">
-      <Filter>Tools\OffScreenTexture</Filter>
     </ClCompile>
     <ClCompile Include="SphericalMirror.cpp">
       <Filter>DX11ObjectDrawable\BasicObject\SphericalMirror</Filter>
@@ -88,7 +85,7 @@
       <Filter>DX11ObjectDrawable\BasicObject</Filter>
     </ClInclude>
     <ClInclude Include="cBuffer.h">
-      <Filter>Tools\Helper\cBuffer</Filter>
+      <Filter>Tools\DX11Objects\cBuffer</Filter>
     </ClInclude>
     <ClInclude Include="PlyLib\rply.h">
       <Filter>Tools\Helper\PlyFile</Filter>
@@ -106,25 +103,22 @@
       <Filter>Tools\Loader</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml2\tinyxml2.h">
-      <Filter>Tools\TinyXML</Filter>
+      <Filter>Tools\Helper\TinyXML</Filter>
     </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>Tools\Helper\VertexBuffer</Filter>
+      <Filter>Tools\DX11Objects\VertexBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Transparent.h">
       <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
     </ClInclude>
     <ClInclude Include="DX11Helper.h">
-      <Filter>Tools\Helper\DX11Helper</Filter>
+      <Filter>Tools\DX11Objects\DX11Helper</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h">
       <Filter>Tools\Helper\MathHelper</Filter>
     </ClInclude>
     <ClInclude Include="Sniper.h">
       <Filter>DX11ObjectDrawable\BasicObject\Sniper</Filter>
-    </ClInclude>
-    <ClInclude Include="CDrawableTex2D_DX11.h">
-      <Filter>Tools\OffScreenTexture</Filter>
     </ClInclude>
     <ClInclude Include="SphericalMirror.h">
       <Filter>DX11ObjectDrawable\BasicObject\SphericalMirror</Filter>
@@ -155,20 +149,8 @@
     <Filter Include="Tools\Helper">
       <UniqueIdentifier>{f6e0bd46-4e65-46cb-ab21-7d4999615382}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\Helper\DX11Helper">
-      <UniqueIdentifier>{7b277ef2-d875-4211-baf6-9a6d99b4e888}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Helper\Helper">
-      <UniqueIdentifier>{d2bedc80-0887-4280-b461-5e11d979fb52}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DX11ObjectDrawable\BasicObject">
       <UniqueIdentifier>{eaa3198d-0ed1-4ae7-a91a-2711d3e28ae8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Helper\cBuffer">
-      <UniqueIdentifier>{76a3dc53-1495-4086-8b60-56903e6c0a49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Helper\VertexBuffer">
-      <UniqueIdentifier>{9220a4ad-2ca7-41e7-b7d8-6a42166fda33}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools\Helper\PlyFile">
       <UniqueIdentifier>{6f790185-5944-457e-a17b-25c70b0935f8}</UniqueIdentifier>
@@ -182,9 +164,6 @@
     <Filter Include="DX11ObjectDrawable\BasicObject\SkyBox">
       <UniqueIdentifier>{b6e007ae-fb76-445b-a805-b744dee49213}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\TinyXML">
-      <UniqueIdentifier>{a12b96c1-20f9-48af-9d3b-da5e4104e7a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\Loader">
       <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
     </Filter>
@@ -197,9 +176,6 @@
     <Filter Include="DX11ObjectDrawable\BasicObject\Sniper">
       <UniqueIdentifier>{01de3689-034b-4538-84a3-9c21b4760d3f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\OffScreenTexture">
-      <UniqueIdentifier>{5cba1bf5-822a-41ef-b6d6-76bd0f4478f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DX11ObjectDrawable\BasicObject\SphericalMirror">
       <UniqueIdentifier>{517d0841-3de0-4907-91e9-171d8ea6849a}</UniqueIdentifier>
     </Filter>
@@ -211,6 +187,24 @@
     </Filter>
     <Filter Include="Tools\View\Camera">
       <UniqueIdentifier>{df0e2f90-efae-4fb3-a14a-cef66b937ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Helper\TinyXML">
+      <UniqueIdentifier>{a12b96c1-20f9-48af-9d3b-da5e4104e7a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Objects">
+      <UniqueIdentifier>{b8c58024-4b3b-4421-a9b4-951625fcd586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Objects\VertexBuffer">
+      <UniqueIdentifier>{9220a4ad-2ca7-41e7-b7d8-6a42166fda33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Objects\DX11Helper">
+      <UniqueIdentifier>{7b277ef2-d875-4211-baf6-9a6d99b4e888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Helper\Helper">
+      <UniqueIdentifier>{d2bedc80-0887-4280-b461-5e11d979fb52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Objects\cBuffer">
+      <UniqueIdentifier>{76a3dc53-1495-4086-8b60-56903e6c0a49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

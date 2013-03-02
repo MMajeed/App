@@ -6,6 +6,150 @@
 #include "Sniper.h"
 #include "Prespective.h"
 
+
+void SphericalMirror::GetNewDynamicTexture()
+{
+	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
+
+	// This call needs to be called six times, for each direction of the camera.
+	// You set the back buffer to be the particular direction in the cube map
+	// (note that each direction is pre-defined: 
+	//	0 ==> +X	//	1 ==> -X
+	//	2 ==> +Y	//	3 ==> -Y
+	//	4 ==> +Z	//	5 ==> -Y
+	enum enumCamDirection
+	{
+		X_POS = 0,
+		X_NEG,	// = 1
+		Y_POS,	// = 2
+		Y_NEG,	// = 3
+		Z_POS,	// = 4
+		Z_NEG	// = 5 
+	};
+	
+	Camera oldCamera = App::getInstance()->camera;
+	
+	Prespective oldProjection = ((Application*)App::getInstance())->Projection;
+
+	Prespective newProjection;
+	newProjection.SetFovAngle(0.5f*XM_PI);
+	newProjection.SetHeight(static_cast<float>(this->CubeMapSize));
+	newProjection.SetWidth(static_cast<float>(this->CubeMapSize));
+	((Application*)App::getInstance())->Projection = newProjection;	
+
+	ID3D11RenderTargetView* renderTargets[1];
+	// Generate the cube map.
+	d3dStuff.pImmediateContext->RSSetViewports(1, &pCubeMapViewport);
+	for(int curCamDir = 0; curCamDir < 6; curCamDir++)
+	{
+		// Clear cube map face and depth buffer.
+		float ColourBlack[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
+		d3dStuff.pImmediateContext->ClearRenderTargetView(pDynamicCubeMapRTV[curCamDir], ColourBlack);
+		d3dStuff.pImmediateContext->ClearDepthStencilView(pDynamicCubeMapDSV, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+		// Bind cube map face as render target.
+		renderTargets[0] = pDynamicCubeMapRTV[curCamDir];
+		d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, pDynamicCubeMapDSV);
+
+		Camera newCamera;
+		newCamera.SetPosition(this->object.Pos.x, this->object.Pos.y, this->object.Pos.z);
+
+		// Draw the scene with the exception of the center sphere to this cube map face.
+		switch (curCamDir)
+		{
+		case X_POS:		// 0
+			newCamera.SetUp(0.0f, 1.0f, 0.0f);
+			newCamera.SetLook(0.01f, 0.0f, 0.0f); // The look is relative to the camera position
+			break;
+		case X_NEG:		// 1			
+			newCamera.SetUp(0.0f, 1.0f, 0.0f);
+			newCamera.SetLook(-0.01f, 0.0f, 0.0f);
+			break;
+		case Y_POS:		// 2	
+			newCamera.SetUp(0.0f, 0.0f, 1.0f);
+			newCamera.SetLook(0.0f, 0.01f, 0.0f);
+			newCamera.Yaw(3.14f);
+			break;
+		case Y_NEG:		// 3					
+			newCamera.SetUp(0.0f, 0.0f, 1.0f);
+			newCamera.SetLook(0.0f, -0.01f, 0.0f);
+			break;
+		case Z_POS:		// 4				
+			newCamera.SetUp(0.0f, 1.0f, 0.0f);			
+			newCamera.SetLook(0.0f, 0.0f, 0.01f);
+			break;
+		case Z_NEG:		// 5
+			newCamera.SetUp(0.0f, 1.0f, 0.0f);						
+			newCamera.SetLook(0.0f, 0.0f, -0.01f);
+			break;
+		}
+		App::getInstance()->camera = newCamera;
+		((Application*)App::getInstance())->DrawObjects();
+	}
+
+	// Generate the mip maps for the cube...
+    // Have hardware generate lower mipmap levels of cube map.
+	d3dStuff.pImmediateContext->GenerateMips(this->pDynamicCubeMapSRV);
+
+	// Restore old viewport and render targets.
+	d3dStuff.pImmediateContext->RSSetViewports(1, &(d3dStuff.vp));
+	renderTargets[0] = d3dStuff.pRenderTargetView;
+	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
+
+	((Application*)App::getInstance())->Projection = oldProjection;	
+	App::getInstance()->camera = oldCamera;
+
+}
+void SphericalMirror::UpdateDrawing(float delta)
+{
+	this->Timer += delta;
+
+	if(this->Timer < this->UpdateEvery)
+	{
+		return; // Skip over it if it has recently been updated
+	}
+	
+	// If it is time to updated it than reset the timer
+	this->Timer = 0.0f; // Reset the timer
+	
+
+	// Remove this object from the list that we don't want to see	
+	std::size_t counter = 0;
+	std::vector<iObjectDrawable*> removed;
+	std::vector<iObjectDrawable*>& applciationList = ((Application*)App::getInstance())->objects;
+	for(counter = 0; counter < applciationList.size(); ++counter)
+	{
+		if( dynamic_cast<SphericalMirror*>(applciationList[counter]) != 0
+			|| dynamic_cast<Sniper*>(applciationList[counter]) != 0)
+		{
+			removed.push_back(applciationList[counter]);
+			applciationList.erase(applciationList.begin() + counter);
+			--counter;
+		}
+	}
+
+	// Get the new texture
+	this->GetNewDynamicTexture();
+
+	// Put back the ones we removed
+	for(auto removedIter = removed.begin();
+		removedIter != removed.end();
+		++removedIter)
+	{
+		applciationList.push_back(*removedIter);
+	}
+}
+
+void SphericalMirror::SetupTexture()
+{
+	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	
+	if(this->pDynamicCubeMapSRV != 0)
+	{
+		pImmediateContext->PSSetShaderResources( 0, 1, &pDynamicCubeMapSRV );
+	}
+}
+
 void SphericalMirror::Init()
 {
 	BasicObject::Init();
@@ -120,144 +264,11 @@ void SphericalMirror::Init()
     this->pCubeMapViewport.MaxDepth = 1.0f;
 }
 
-void SphericalMirror::GetNewDynamicTexture()
-{
-	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
-
-	// This call needs to be called six times, for each direction of the camera.
-	// You set the back buffer to be the particular direction in the cube map
-	// (note that each direction is pre-defined: 
-	//	0 ==> +X	//	1 ==> -X
-	//	2 ==> +Y	//	3 ==> -Y
-	//	4 ==> +Z	//	5 ==> -Y
-	enum enumCamDirection
-	{
-		X_POS = 0,
-		X_NEG,	// = 1
-		Y_POS,	// = 2
-		Y_NEG,	// = 3
-		Z_POS,	// = 4
-		Z_NEG	// = 5 
-	};
-	
-	Camera oldCamera = App::getInstance()->camera;
-	
-	Prespective oldProjection = ((Application*)App::getInstance())->Projection;
-
-	Prespective newProjection;
-	newProjection.SetFovAngle(0.5f*XM_PI);
-	newProjection.SetHeight(static_cast<float>(this->CubeMapSize));
-	newProjection.SetWidth(static_cast<float>(this->CubeMapSize));
-	((Application*)App::getInstance())->Projection = newProjection;	
-
-	ID3D11RenderTargetView* renderTargets[1];
-	// Generate the cube map.
-	d3dStuff.pImmediateContext->RSSetViewports(1, &pCubeMapViewport);
-	for(int curCamDir = 0; curCamDir < 6; curCamDir++)
-	{
-		// Clear cube map face and depth buffer.
-		float ColourBlack[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
-		d3dStuff.pImmediateContext->ClearRenderTargetView(pDynamicCubeMapRTV[curCamDir], ColourBlack);
-		d3dStuff.pImmediateContext->ClearDepthStencilView(pDynamicCubeMapDSV, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-		// Bind cube map face as render target.
-		renderTargets[0] = pDynamicCubeMapRTV[curCamDir];
-		d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, pDynamicCubeMapDSV);
-
-		Camera newCamera;
-		newCamera.SetPosition(this->object.Pos.x, this->object.Pos.y, this->object.Pos.z);
-
-		// Draw the scene with the exception of the center sphere to this cube map face.
-		switch (curCamDir)
-		{
-		case X_POS:		// 0
-			newCamera.SetUp(0.0f, 1.0f, 0.0f);
-			newCamera.SetLook(0.01f, 0.0f, 0.0f); // The look is relative to the camera position
-			break;
-		case X_NEG:		// 1			
-			newCamera.SetUp(0.0f, 1.0f, 0.0f);
-			newCamera.SetLook(-0.01f, 0.0f, 0.0f);
-			break;
-		case Y_POS:		// 2	
-			newCamera.SetUp(0.0f, 0.0f, 1.0f);
-			newCamera.SetLook(0.0f, 0.01f, 0.0f);
-			newCamera.Yaw(3.14f);
-			break;
-		case Y_NEG:		// 3					
-			newCamera.SetUp(0.0f, 0.0f, 1.0f);
-			newCamera.SetLook(0.0f, -0.01f, 0.0f);
-			break;
-		case Z_POS:		// 4				
-			newCamera.SetUp(0.0f, 1.0f, 0.0f);			
-			newCamera.SetLook(0.0f, 0.0f, 0.01f);
-			break;
-		case Z_NEG:		// 5
-			newCamera.SetUp(0.0f, 1.0f, 0.0f);						
-			newCamera.SetLook(0.0f, 0.0f, -0.01f);
-			break;
-		}
-		App::getInstance()->camera = newCamera;
-		((Application*)App::getInstance())->DrawObjects();
-	}
-
-	// Generate the mip maps for the cube...
-    // Have hardware generate lower mipmap levels of cube map.
-	d3dStuff.pImmediateContext->GenerateMips(this->pDynamicCubeMapSRV);
-
-	// Restore old viewport and render targets.
-	d3dStuff.pImmediateContext->RSSetViewports(1, &(d3dStuff.vp));
-	renderTargets[0] = d3dStuff.pRenderTargetView;
-	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
-
-	((Application*)App::getInstance())->Projection = oldProjection;	
-	App::getInstance()->camera = oldCamera;
-
-}
-void SphericalMirror::UpdateDrawing(float delta)
-{
-	// Remove this object from the list that we don't want to see	
-	std::size_t counter = 0;
-	std::vector<iObjectDrawable*> removed;
-	std::vector<iObjectDrawable*>& applciationList = ((Application*)App::getInstance())->objects;
-	for(counter = 0; counter < applciationList.size(); ++counter)
-	{
-		if( dynamic_cast<SphericalMirror*>(applciationList[counter]) != 0
-			|| dynamic_cast<Sniper*>(applciationList[counter]) != 0)
-		{
-			removed.push_back(applciationList[counter]);
-			applciationList.erase(applciationList.begin() + counter);
-			--counter;
-		}
-	}
-
-	// Get the new texture
-	this->GetNewDynamicTexture();
-
-	// Put back the ones we removed
-	for(auto removedIter = removed.begin();
-		removedIter != removed.end();
-		++removedIter)
-	{
-		applciationList.push_back(*removedIter);
-	}
-}
-void SphericalMirror::UpdateObject(float delta)
-{
-
-}
-
-void SphericalMirror::SetupTexture()
-{
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
-	
-	if(this->pDynamicCubeMapSRV != 0)
-	{
-		pImmediateContext->PSSetShaderResources( 0, 1, &pDynamicCubeMapSRV );
-	}
-}
-
 SphericalMirror::SphericalMirror()
 {
+	this->UpdateEvery = 0.012f;
+	this->Timer = this->UpdateEvery; // you want the timer to start with the same as the update so that it runs on the first render
+
 	this->pVertexBuffer.first        = "PlyFiles/Sphere_Smooth_3.ply";
 	this->pIndexBuffer.first         = "PlyFiles/Sphere_Smooth_3.ply";
 
@@ -292,4 +303,52 @@ SphericalMirror::SphericalMirror()
 
 	pDynamicCubeMapSRV = NULL;
 	pDynamicCubeMapDSV = NULL;
+}
+
+SphericalMirror* SphericalMirror::Spawn(std::map<std::string, std::string> info)
+{
+	SphericalMirror* newSpericalMirror = new SphericalMirror;
+	
+	std::wstring error;
+
+	// Scale XYZ
+	auto iter = info.find("XYZScaleX");
+	if(iter != info.end()) { newSpericalMirror->object.Scale.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZScaleY");
+	if(iter != info.end()) { newSpericalMirror->object.Scale.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZScaleZ");
+	if(iter != info.end()) { newSpericalMirror->object.Scale.z = Helper::StringToFloat(iter->second); } 
+	
+	// Location
+	iter = info.find("XYZLocationX");
+	if(iter != info.end()) { newSpericalMirror->object.Pos.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZLocationY");
+	if(iter != info.end()) { newSpericalMirror->object.Pos.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZLocationZ");
+	if(iter != info.end()) { newSpericalMirror->object.Pos.z = Helper::StringToFloat(iter->second); } 
+
+	// XYZRotation
+	iter = info.find("XYZRotationX");
+	if(iter != info.end()) { newSpericalMirror->object.Rot.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZRotationY");
+	if(iter != info.end()) { newSpericalMirror->object.Rot.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZRotationZ");
+	if(iter != info.end()) { newSpericalMirror->object.Rot.z = Helper::StringToFloat(iter->second); } 
+
+	// XYZOrbit
+	iter = info.find("XYZOrbitX");
+	if(iter != info.end()) { newSpericalMirror->object.Orbit.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZOrbitY");
+	if(iter != info.end()) { newSpericalMirror->object.Orbit.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZOrbitZ");
+	if(iter != info.end()) { newSpericalMirror->object.Orbit.z = Helper::StringToFloat(iter->second); } 
+
+	iter = info.find("UpdateEvery");
+	if(iter != info.end()) 
+	{
+		newSpericalMirror->UpdateEvery = Helper::StringToFloat(iter->second);  
+		newSpericalMirror->Timer = Helper::StringToFloat(iter->second);  
+	} 
+
+	return newSpericalMirror;
 }
