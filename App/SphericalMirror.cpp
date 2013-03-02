@@ -159,7 +159,6 @@ void SphericalMirror::GetNewDynamicTexture()
 		newCamera.SetPosition(this->object.Pos.x, this->object.Pos.y, this->object.Pos.z);
 
 		// Draw the scene with the exception of the center sphere to this cube map face.
-		//DrawScene(mCubeMapCamera[i], false);
 		switch (curCamDir)
 		{
 		case X_POS:		// 0

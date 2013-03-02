@@ -18,9 +18,9 @@ public:
 	float Roll() const;
 	float Yaw() const;
 
-	void SetPosition(float x, float y, float z, float w = 1.0f);
-	void SetUp(float x, float y, float z, float w = 1.0f);
-	void SetLook(float x, float y, float z, float w = 1.0f);	
+	void SetPosition(float x, float y, float z, float w = 0.0f);
+	void SetUp(float x, float y, float z, float w = 0.0f);
+	void SetLook(float x, float y, float z, float w = 0.0f);	
 
 	void MoveForward(float delta);
 
