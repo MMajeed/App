@@ -164,27 +164,27 @@ void SphericalMirror::GetNewDynamicTexture()
 		{
 		case X_POS:		// 0
 			newCamera.SetUp(0.0f, 1.0f, 0.0f);
-			newCamera.SetLook(100.0f, 0.0f, 0.0f); // The look is relative to the camera position
+			newCamera.SetLook(1.0f, 0.0f, 0.0f); // The look is relative to the camera position
 			break;
 		case X_NEG:		// 1			
 			newCamera.SetUp(0.0f, 1.0f, 0.0f);
-			newCamera.SetLook(-100.0f, 0.0f, 0.0f);
+			newCamera.SetLook(-1.0f, 0.0f, 0.0f);
 			break;
 		case Y_POS:		// 2	
 			newCamera.SetUp(0.0f, 0.0f, 1.0f);
-			newCamera.SetLook(0.0f, 100.0f, 0.0f);
+			newCamera.SetLook(0.0f, 1.0f, 0.0f);
 			break;
 		case Y_NEG:		// 3					
 			newCamera.SetUp(0.0f, 0.0f, 1.0f);
-			newCamera.SetLook(0.0f, -100.0f, 0.0f);
+			newCamera.SetLook(0.0f, -1.0f, 0.0f);
 			break;
 		case Z_POS:		// 4				
 			newCamera.SetUp(0.0f, 1.0f, 0.0f);			
-			newCamera.SetLook(0.0f, 0.0f, 100.0f);
+			newCamera.SetLook(0.0f, 0.0f, 1.0f);
 			break;
 		case Z_NEG:		// 5
 			newCamera.SetUp(0.0f, 1.0f, 0.0f);						
-			newCamera.SetLook(0.0f, 0.0f, -100.0f);
+			newCamera.SetLook(0.0f, 0.0f, -1.0f);
 			break;
 		}
 		App::getInstance()->camera = newCamera;

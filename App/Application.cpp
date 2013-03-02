@@ -55,32 +55,6 @@ void Application::DrawObjects()
 	pImmediateContext->PSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
 
 	
-	struct SortFromCamera
-	{
-		bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
-		{			
-			// Make Sniper first
-			if( dynamic_cast<Sniper*>(v1) != 0) return true;
-			if( dynamic_cast<Sniper*>(v2) != 0) return false;
-
-			// Make skybox first
-			if( dynamic_cast<SkyBox*>(v1) != 0) return true;
-			if( dynamic_cast<SkyBox*>(v2) != 0) return false;
-
-			// Make SphericalMirror first
-			if( dynamic_cast<SphericalMirror*>(v1) != 0) return true;
-			if( dynamic_cast<SphericalMirror*>(v2) != 0) return false;
-
-			// Otherwise order them by how far away they are
-			float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Eye());
-			float v2Distance = MathHelper::Length(v2->object.Pos, App::getInstance()->camera.Eye());
-
-			return v1Distance > v2Distance;
-		}
-	};
-
-	std::sort(this->objects.begin(), this->objects.end(), SortFromCamera());
-
 	for(std::size_t i = 0; i < this->objects.size(); ++i)
 	{
 		this->objects[i]->Draw();
@@ -142,6 +116,32 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			{
 				objects[i]->UpdateObject(static_cast<float>(timer._frameTime));
 			}
+			
+			struct SortFromCamera
+			{
+				bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
+				{			
+					// Make Sniper first
+					if( dynamic_cast<Sniper*>(v1) != 0) return true;
+					if( dynamic_cast<Sniper*>(v2) != 0) return false;
+
+					// Make skybox first
+					if( dynamic_cast<SkyBox*>(v1) != 0) return true;
+					if( dynamic_cast<SkyBox*>(v2) != 0) return false;
+
+					// Make SphericalMirror first
+					if( dynamic_cast<SphericalMirror*>(v1) != 0) return true;
+					if( dynamic_cast<SphericalMirror*>(v2) != 0) return false;
+
+					// Otherwise order them by how far away they are
+					float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Eye());
+					float v2Distance = MathHelper::Length(v2->object.Pos, App::getInstance()->camera.Eye());
+
+					return v1Distance > v2Distance;
+				}
+			};
+
+			std::sort(this->objects.begin(), this->objects.end(), SortFromCamera());
 
 			// render
 			this->Render();
@@ -256,22 +256,22 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 					return 0;
 				case 'A': case 'a':
 					{
-						this->objects.back()->object.Pos.x -= 1.0f;
+						this->objects[1]->object.Pos.x -= 1.0f;
 					}
 					return 0;
 				case 'D': case 'd':
 					{
-						this->objects.back()->object.Pos.x += 1.0f;
+						this->objects[1]->object.Pos.x += 1.0f;
 					}
 					return 0;
 				case 'W': case 'w':
 					{
-						this->objects.back()->object.Pos.z += 1.0f;
+						this->objects[1]->object.Pos.z += 1.0f;
 					}
 					return 0;
 				case 'S': case 's':
 					{
-						this->objects.back()->object.Pos.z -= 1.0f;
+						this->objects[1]->object.Pos.z -= 1.0f;
 					}
 					return 0;
 				case 'Z': case 'z':
