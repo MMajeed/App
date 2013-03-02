@@ -927,7 +927,7 @@ static int ply_read_word(p_ply ply) {
     size_t t = 0;
     assert(ply && ply->fp && ply->io_mode == PLY_READ);
     /* skip leading blanks */
-    while (1) {
+    for(;;) {
         t = strspn(BFIRST(ply), " \n\r\t");
         /* check if all buffer was made of blanks */
         if (t >= BSIZE(ply)) {

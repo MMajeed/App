@@ -7,6 +7,8 @@
 
 int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow )
 {
+	UNREFERENCED_PARAMETER(lpCmdLine);
+	UNREFERENCED_PARAMETER(hPrevInstance);
 	#if defined(_DEBUG)
 		int dbgFlags = _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG );
 		dbgFlags |= _CRTDBG_CHECK_ALWAYS_DF;	// check block integrity on every memory call

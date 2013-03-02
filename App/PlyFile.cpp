@@ -127,7 +127,7 @@ PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 	if(iter != info.end()) { newPlyFile->object.Colour.Spec.z = Helper::StringToFloat(iter->second); } 
 
 
-	for(int counter = 0; true; ++counter)
+	for(int counter = 0; ; ++counter)
 	{
 		std::stringstream ss;
 		ss << "Texture" << counter;

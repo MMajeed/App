@@ -258,6 +258,9 @@ LRESULT CALLBACK DX11App::WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARA
 }
 LRESULT DX11App::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 { 
+	UNREFERENCED_PARAMETER(hWnd);
+	UNREFERENCED_PARAMETER(lParam);
+
 	// Framework message handler if polymorph didn't handle it.
 	switch( message ) 
 	{

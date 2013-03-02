@@ -34,6 +34,7 @@ void BasicObject::Clean()
 }
 void BasicObject::UpdateDrawing(float delta)
 {
+	UNREFERENCED_PARAMETER(delta);
 }
 void BasicObject::UpdateObject(float delta)
 {

@@ -115,6 +115,13 @@ void Sniper::Init()
 	this->BuilDepthMap();
 	this->BuildColorMap();
 
+	this->pViewport.TopLeftX = 0.0f;
+    this->pViewport.TopLeftY = 0.0f;
+    this->pViewport.Width    = static_cast<float>(App::getInstance()->window.width);
+	this->pViewport.Height   = static_cast<float>(App::getInstance()->window.height);
+    this->pViewport.MinDepth = 0.0f;
+    this->pViewport.MaxDepth = 1.0f;
+
 	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
 
 	if(!DX11ObjectManager::getInstance()->Textexture.Exists(this->pTextureAlpha.first))
@@ -153,6 +160,8 @@ void Sniper::GetNewDynamicTexture()
 }
 void Sniper::UpdateDrawing(float delta)
 {
+	UNREFERENCED_PARAMETER(delta);
+
 	// Remove this object from the list that we don't want to see	
 	std::size_t counter = 0;
 	std::vector<iObjectDrawable*> removed;
@@ -180,6 +189,8 @@ void Sniper::UpdateDrawing(float delta)
 }
 void Sniper::UpdateObject(float delta)
 {
+	UNREFERENCED_PARAMETER(delta);
+
 	this->object.Pos = App::getInstance()->camera.Target();
 
 	this->object.Rot.x = App::getInstance()->camera.Pitch() + 1.57f;

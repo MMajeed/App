@@ -155,7 +155,6 @@ void SphericalMirror::Init()
 	BasicObject::Init();
 
 	ID3D11Device* pDevice = ((DX11App*)App::getInstance())->direct3d.pd3dDevice;
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 
 	// Cubemap is a special texture array with 6 elements.
 	D3D11_TEXTURE2D_DESC texDesc;
@@ -202,7 +201,7 @@ void SphericalMirror::Init()
     srvDesc.Format = texDesc.Format;
     srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
     srvDesc.TextureCube.MostDetailedMip = 0;
-	srvDesc.TextureCube.MipLevels = -1;
+	srvDesc.TextureCube.MipLevels = 1;
 
 	hr = pDevice->CreateShaderResourceView(cubeTex, &srvDesc, &this->pDynamicCubeMapSRV);
 	if(hr)

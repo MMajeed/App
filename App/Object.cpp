@@ -34,7 +34,7 @@ XMFLOAT4X4 Object::CalculateMatrix() const
 
 void Object::Update(float delta)
 {
-
+	UNREFERENCED_PARAMETER(delta);
 }
 
 Object::Object()

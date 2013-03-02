@@ -35,12 +35,14 @@ void Application::DrawObjects()
 	
 	cBuffer::cbNeverChanges cbCNV ;
 
-	cbCNV.mView = XMMatrixTranspose(XMLoadFloat4x4(&camera.GetViewMatrix()));
+	auto view = camera.GetViewMatrix();
+	cbCNV.mView = XMMatrixTranspose(XMLoadFloat4x4(&view));
 	cbCNV.eye = App::getInstance()->camera.Eye();
 	cbCNV.target = App::getInstance()->camera.Target();
 
+	auto projection = Projection.GetPrespective();
 	cBuffer::cbChangeOnResize cbCOR ;
-	cbCOR.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&Projection.GetPrespective()));
+	cbCOR.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&projection));
 
 	pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
