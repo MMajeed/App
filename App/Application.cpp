@@ -39,13 +39,8 @@ void Application::DrawObjects()
 	cbCNV.eye = App::getInstance()->camera.Eye();
 	cbCNV.target = App::getInstance()->camera.Target();
 
-	float minViewable = 0.01f;
-	float maxViewable = 100000.0f;
-
 	cBuffer::cbChangeOnResize cbCOR ;
-	cbCOR.mProjection = XMMatrixTranspose(XMMatrixPerspectiveFovLH( XM_PIDIV4, 
-											static_cast<float>(this->window.width) / static_cast<float>(this->window.height), 
-											minViewable, maxViewable ));
+	cbCOR.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&Projection.GetPrespective()));
 
 	pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );

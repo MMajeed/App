@@ -4,6 +4,8 @@
 #include "Application.h"
 #include "camera.h"
 #include "Sniper.h"
+#include "Prespective.h"
+
 void SphericalMirror::Init()
 {
 	BasicObject::Init();
@@ -139,6 +141,14 @@ void SphericalMirror::GetNewDynamicTexture()
 	};
 	
 	Camera oldCamera = App::getInstance()->camera;
+	
+	Prespective oldProjection = ((Application*)App::getInstance())->Projection;
+
+	Prespective newProjection;
+	newProjection.SetFovAngle(0.5f*XM_PI);
+	newProjection.SetHeight(static_cast<float>(this->CubeMapSize));
+	newProjection.SetWidth(static_cast<float>(this->CubeMapSize));
+	((Application*)App::getInstance())->Projection = newProjection;	
 
 	ID3D11RenderTargetView* renderTargets[1];
 	// Generate the cube map.
@@ -154,7 +164,6 @@ void SphericalMirror::GetNewDynamicTexture()
 		renderTargets[0] = pDynamicCubeMapRTV[curCamDir];
 		d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, pDynamicCubeMapDSV);
 
-		
 		Camera newCamera;
 		newCamera.SetPosition(this->object.Pos.x, this->object.Pos.y, this->object.Pos.z);
 
@@ -163,27 +172,28 @@ void SphericalMirror::GetNewDynamicTexture()
 		{
 		case X_POS:		// 0
 			newCamera.SetUp(0.0f, 1.0f, 0.0f);
-			newCamera.SetLook(1.0f, 0.0f, 0.0f); // The look is relative to the camera position
+			newCamera.SetLook(0.01f, 0.0f, 0.0f); // The look is relative to the camera position
 			break;
 		case X_NEG:		// 1			
 			newCamera.SetUp(0.0f, 1.0f, 0.0f);
-			newCamera.SetLook(-1.0f, 0.0f, 0.0f);
+			newCamera.SetLook(-0.01f, 0.0f, 0.0f);
 			break;
 		case Y_POS:		// 2	
 			newCamera.SetUp(0.0f, 0.0f, 1.0f);
-			newCamera.SetLook(0.0f, 1.0f, 0.0f);
+			newCamera.SetLook(0.0f, 0.01f, 0.0f);
+			newCamera.Yaw(3.14f);
 			break;
 		case Y_NEG:		// 3					
 			newCamera.SetUp(0.0f, 0.0f, 1.0f);
-			newCamera.SetLook(0.0f, -1.0f, 0.0f);
+			newCamera.SetLook(0.0f, -0.01f, 0.0f);
 			break;
 		case Z_POS:		// 4				
 			newCamera.SetUp(0.0f, 1.0f, 0.0f);			
-			newCamera.SetLook(0.0f, 0.0f, 1.0f);
+			newCamera.SetLook(0.0f, 0.0f, 0.01f);
 			break;
 		case Z_NEG:		// 5
 			newCamera.SetUp(0.0f, 1.0f, 0.0f);						
-			newCamera.SetLook(0.0f, 0.0f, -1.0f);
+			newCamera.SetLook(0.0f, 0.0f, -0.01f);
 			break;
 		}
 		App::getInstance()->camera = newCamera;
@@ -199,6 +209,7 @@ void SphericalMirror::GetNewDynamicTexture()
 	renderTargets[0] = d3dStuff.pRenderTargetView;
 	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
 
+	((Application*)App::getInstance())->Projection = oldProjection;	
 	App::getInstance()->camera = oldCamera;
 
 }

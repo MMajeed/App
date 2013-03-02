@@ -40,8 +40,7 @@ struct VS_INPUT
 struct PS_INPUT		// DX11
 {
     float4 VertexPosMVP : SV_POSITION;
-	float4 VertexPosWorld : POSITION;
-	float4 VertexNormalWorld : NORMAL;		
+	float4 VertexNormal : NORMAL;		
 };
 
 //--------------------------------------------------------------------------------------
@@ -59,11 +58,7 @@ PS_INPUT VS( VS_INPUT input )
 	// To place the vertex in the correct location on screen:
 	output.VertexPosMVP = mul( input.VertexPos, matFinalMVP );
 
-	// Passed to the pixel shader for correct lighting:
-	output.VertexPosWorld = mul( input.VertexPos, mWorld );
-	output.VertexNormalWorld = mul( input.VertexNorm, mWorld );
-
-	output.VertexNormalWorld = normalize( output.VertexNormalWorld );
+	output.VertexNormal = input.VertexNorm;
 
 
     return output;
@@ -78,7 +73,7 @@ float4 PS( PS_INPUT input ) : SV_Target
 	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
 	
 	float4 cubeColour 
-			= myCubeMap.Sample( samLinear, input.VertexNormalWorld );
+			= myCubeMap.Sample( samLinear, input.VertexNormal );
 
 
 	return cubeColour;

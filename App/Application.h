@@ -4,7 +4,7 @@
 #include "DX11App.h"
 #include <vector>
 #include "iObjectDrawable.h"
-
+#include "Prespective.h"
 class Application : public DX11App
 {
 public:
@@ -21,6 +21,8 @@ public:
 	virtual void Present();
 
 	std::vector<iObjectDrawable*> objects;	
+
+	Prespective Projection;
 protected:	
 	std::pair<std::string, ID3D11Buffer*>			pCBNeverChangesID;
 	std::pair<std::string, ID3D11Buffer*>			pCBChangesOnResizeID;
