@@ -2,24 +2,33 @@
 #define __Sniper__
 
 #include "BasicObject.h"
-#include "CDrawableTex2D_DX11.h"
 
 class Sniper : public BasicObject
 {
 public:	
 	Sniper();
 	
-	void UpdateDrawing(float delta);
-	void UpdateObject(float delta);
-
 	virtual void Init();
 
+	virtual void GetNewDynamicTexture();
+	virtual void UpdateDrawing(float delta);
+	virtual void UpdateObject(float delta);
 
 	virtual void SetupTexture();
 
-	CDrawableTex2D_DX11		OffScreen2DTexture;
+	virtual void BuilDepthMap();
+	virtual void BuildColorMap();
 
-	ID3D11ShaderResourceView* temp2DTexture;
+	ID3D11ShaderResourceView*	pColorMapSRV;
+	ID3D11RenderTargetView*		pColorMapRTV;
+	
+	ID3D11ShaderResourceView*	pDepthMapSRV;
+	ID3D11DepthStencilView*		pDepthMapDSV;
+
+	D3D11_VIEWPORT				pViewport;
+
+
+	
 	std::pair<std::string, ID3D11ShaderResourceView*>				pTextureAlpha;
 };
 

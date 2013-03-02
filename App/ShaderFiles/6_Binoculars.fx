@@ -97,6 +97,7 @@ float4 PS( PS_INPUT input ) : SV_Target
 		x.x *= -1;
 		x.y *= -1;
 		float4 texColour0 = texture00.Sample( samAnisotropic, x );
+		normalize(texColour0);
 		finalTexColour = texColour0 ;
 		finalTexColour.x = 0.0f;
 		finalTexColour.z = 0.0f;

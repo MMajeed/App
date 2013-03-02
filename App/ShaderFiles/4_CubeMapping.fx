@@ -60,6 +60,7 @@ PS_INPUT VS( VS_INPUT input )
 
 	output.VertexNormal = input.VertexNorm;
 
+	input.VertexPos.x += 100.f;
 
     return output;
 }
@@ -71,7 +72,7 @@ PS_INPUT VS( VS_INPUT input )
 float4 PS( PS_INPUT input ) : SV_Target
 {
 	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
-	
+	normalize( input.VertexNormal );
 	float4 cubeColour 
 			= myCubeMap.Sample( samLinear, input.VertexNormal );
 
