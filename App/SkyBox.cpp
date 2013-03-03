@@ -35,6 +35,11 @@ void SkyBox::UpdateObject(float delta)
 	this->object.Pos = App::getInstance()->camera.Eye();
 }
 
+float SkyBox::GetOrder()
+{
+	return 1000000.0f;
+}
+
 SkyBox* SkyBox::Spawn(std::map<std::string, std::string> info)
 {
 	SkyBox* newSkyBox = new SkyBox;

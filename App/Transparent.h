@@ -16,6 +16,8 @@ public:
 
 	virtual void LoadTransparency(ID3D11Device* device);
 
+	virtual float GetOrder();
+
 	virtual void Init();
 };
 

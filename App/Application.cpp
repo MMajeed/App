@@ -8,6 +8,7 @@
 #include "ObjectLoader.h"
 #include "MathHelper.h"
 #include "Sniper.h"
+#include "Verlet.h"
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
@@ -113,32 +114,8 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			{
 				objects[i]->UpdateObject(static_cast<float>(timer._frameTime));
 			}
-			
-			struct SortFromCamera
-			{
-				bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
-				{			
-					// Make Sniper first
-					if( dynamic_cast<Sniper*>(v1) != 0) return false;
-					if( dynamic_cast<Sniper*>(v2) != 0) return true;
 
-					// Make skybox first
-					if( dynamic_cast<SkyBox*>(v1) != 0) return true;
-					if( dynamic_cast<SkyBox*>(v2) != 0) return false;
-
-					// Make SphericalMirror first
-					if( dynamic_cast<SphericalMirror*>(v1) != 0) return true;
-					if( dynamic_cast<SphericalMirror*>(v2) != 0) return false;
-
-					// Otherwise order them by how far away they are
-					float v1Distance = MathHelper::Length(v1->object.Pos, App::getInstance()->camera.Eye());
-					float v2Distance = MathHelper::Length(v2->object.Pos, App::getInstance()->camera.Eye());
-
-					return v1Distance > v2Distance;
-				}
-			};
-
-			std::sort(this->objects.begin(), this->objects.end(), SortFromCamera());
+			this->SortObject();
 
 			// render
 			this->Render();
@@ -267,6 +244,19 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 						this->objects[1]->object.Pos.z -= 0.1f;
 					}
 					return 0;
+				case 'X': case 'x':
+					{
+						for(auto objectIter = this->objects.begin();
+							objectIter != this->objects.end();
+							++objectIter)
+						{
+							if( dynamic_cast<Verlet*>(*objectIter) != 0)
+							{
+								dynamic_cast<Verlet*>(*objectIter)->Randomize(0.1f);
+							}
+						}
+					}
+					return 0;
 				case 'Z': case 'z':
 					{
 						bool found = false;
@@ -330,6 +320,23 @@ void Application::LoadD3DStuff()
 	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pCBChangesOnResizeID.first, this->pCBChangesOnResizeID.second)){ throw std::exception("CB Changes on Resize not found"); }
 	if(!DX11ObjectManager::getInstance()->Sampler.Get(this->pSamplerLinear.first, this->pSamplerLinear.second)){ throw std::exception("Sampler Linear not found"); }
 	if(!DX11ObjectManager::getInstance()->Sampler.Get(this->pSamplerAnisotropic.first, this->pSamplerAnisotropic.second)){ throw std::exception("Sampler Anisotropic not found"); }
+}
+void Application::SortObject()
+{	
+	struct SortFromCamera
+	{
+		bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
+		{			
+			// Otherwise order them by how far away they are
+			float v1Distance = v1->GetOrder();
+			float v2Distance = v2->GetOrder();
+
+			return v1Distance > v2Distance;
+		}
+	};
+
+	std::sort(this->objects.begin(), this->objects.end(), SortFromCamera());
+
 }
 App* Application::getInstance()
 {

@@ -4,6 +4,80 @@
 #include "Helper.h"
 #include "DX11ObjectManager.h"
 
+void Sniper::GetNewDynamicTexture()
+{
+	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
+
+	ID3D11RenderTargetView* renderTargets[1] = {this->pColorMapRTV};
+	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, this->pDepthMapDSV);
+
+	d3dStuff.pImmediateContext->RSSetViewports(1, &(this->pViewport));
+	
+	float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	d3dStuff.pImmediateContext->ClearRenderTargetView(this->pColorMapRTV, black);
+
+	d3dStuff.pImmediateContext->ClearDepthStencilView(this->pDepthMapDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	((Application*)App::getInstance())->DrawObjects();
+
+	d3dStuff.pImmediateContext->GenerateMips(pColorMapSRV);
+
+	d3dStuff.pImmediateContext->OMSetRenderTargets(1, &(d3dStuff.pRenderTargetView), d3dStuff.pDepthStencilView);	
+}
+void Sniper::UpdateDrawing(float delta)
+{
+	UNREFERENCED_PARAMETER(delta);
+
+	// Remove this object from the list that we don't want to see	
+	std::size_t counter = 0;
+	std::vector<iObjectDrawable*> removed;
+	std::vector<iObjectDrawable*>& applciationList = ((Application*)App::getInstance())->objects;
+	for(counter = 0; counter < applciationList.size(); ++counter)
+	{
+		if( dynamic_cast<Sniper*>(applciationList[counter]) != 0)
+		{
+			removed.push_back(applciationList[counter]);
+			applciationList.erase(applciationList.begin() + counter);
+			--counter;
+		}
+	}
+
+	// Get the new texture
+	this->GetNewDynamicTexture();
+
+	// Put back the ones we removed
+	for(auto removedIter = removed.begin();
+		removedIter != removed.end();
+		++removedIter)
+	{
+		applciationList.push_back(*removedIter);
+	}
+}
+void Sniper::UpdateObject(float delta)
+{
+	UNREFERENCED_PARAMETER(delta);
+
+	this->object.Pos = App::getInstance()->camera.Target();
+
+	this->object.Rot.x = App::getInstance()->camera.Pitch() + 1.57f;
+	this->object.Rot.y = App::getInstance()->camera.Yaw() ;
+	this->object.Rot.z = App::getInstance()->camera.Roll() ;
+
+	this->object.Scale = XMFLOAT4(0.56f, 1.0f, 0.43f, 0.5f);
+}
+
+void Sniper::SetupTexture()
+{
+	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+
+	if(this->pColorMapSRV != 0)
+	{
+		pImmediateContext->PSSetShaderResources( 0, 1, &(this->pColorMapSRV) );
+	}
+	
+	pImmediateContext->PSSetShaderResources( 1, 1, &(this->pTextureAlpha.second) );
+}
+
 void Sniper::BuilDepthMap()
 {
 	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
@@ -137,79 +211,9 @@ void Sniper::Init()
 }
 
 
-void Sniper::GetNewDynamicTexture()
+float Sniper::GetOrder()
 {
-	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
-
-	ID3D11RenderTargetView* renderTargets[1] = {this->pColorMapRTV};
-	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, this->pDepthMapDSV);
-
-	d3dStuff.pImmediateContext->RSSetViewports(1, &(this->pViewport));
-	
-	float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	d3dStuff.pImmediateContext->ClearRenderTargetView(this->pColorMapRTV, black);
-
-	d3dStuff.pImmediateContext->ClearDepthStencilView(this->pDepthMapDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-	((Application*)App::getInstance())->ClearScreen();
-	((Application*)App::getInstance())->DrawObjects();
-
-	d3dStuff.pImmediateContext->GenerateMips(pColorMapSRV);
-
-	d3dStuff.pImmediateContext->OMSetRenderTargets(1, &(d3dStuff.pRenderTargetView), d3dStuff.pDepthStencilView);	
-}
-void Sniper::UpdateDrawing(float delta)
-{
-	UNREFERENCED_PARAMETER(delta);
-
-	// Remove this object from the list that we don't want to see	
-	std::size_t counter = 0;
-	std::vector<iObjectDrawable*> removed;
-	std::vector<iObjectDrawable*>& applciationList = ((Application*)App::getInstance())->objects;
-	for(counter = 0; counter < applciationList.size(); ++counter)
-	{
-		if( dynamic_cast<Sniper*>(applciationList[counter]) != 0)
-		{
-			removed.push_back(applciationList[counter]);
-			applciationList.erase(applciationList.begin() + counter);
-			--counter;
-		}
-	}
-
-	// Get the new texture
-	this->GetNewDynamicTexture();
-
-	// Put back the ones we removed
-	for(auto removedIter = removed.begin();
-		removedIter != removed.end();
-		++removedIter)
-	{
-		applciationList.push_back(*removedIter);
-	}
-}
-void Sniper::UpdateObject(float delta)
-{
-	UNREFERENCED_PARAMETER(delta);
-
-	this->object.Pos = App::getInstance()->camera.Target();
-
-	this->object.Rot.x = App::getInstance()->camera.Pitch() + 1.57f;
-	this->object.Rot.y = App::getInstance()->camera.Yaw() ;
-	this->object.Rot.z = App::getInstance()->camera.Roll() ;
-
-	this->object.Scale = XMFLOAT4(0.56f, 1.0f, 0.43f, 0.5f);
-}
-
-void Sniper::SetupTexture()
-{
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
-
-	if(this->pColorMapSRV != 0)
-	{
-		pImmediateContext->PSSetShaderResources( 0, 1, &(this->pColorMapSRV) );
-	}
-	
-	pImmediateContext->PSSetShaderResources( 1, 1, &(this->pTextureAlpha.second) );
+	return 100000.0f;
 }
 
 Sniper::Sniper()

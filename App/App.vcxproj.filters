@@ -13,10 +13,10 @@
       <Filter>App</Filter>
     </ClCompile>
     <ClCompile Include="DX11ObjectManager.cpp">
-      <Filter>Tools\DX11ObjectManager</Filter>
+      <Filter>Tools\DX11Stuff\DX11ObjectManager</Filter>
     </ClCompile>
     <ClCompile Include="DX11Helper.cpp">
-      <Filter>Tools\DX11Objects\DX11Helper</Filter>
+      <Filter>Tools\DX11Stuff\DX11Helper</Filter>
     </ClCompile>
     <ClCompile Include="Helper.cpp">
       <Filter>Tools\Helper\Helper</Filter>
@@ -25,7 +25,7 @@
       <Filter>DX11ObjectDrawable\BasicObject</Filter>
     </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Tools\DX11Objects\VertexBuffer</Filter>
+      <Filter>Tools\DX11Stuff\VertexBuffer</Filter>
     </ClCompile>
     <ClCompile Include="PlyLib\rply.c">
       <Filter>Tools\Helper\PlyFile</Filter>
@@ -60,6 +60,9 @@
     <ClCompile Include="Prespective.cpp">
       <Filter>Tools\View\Prespective</Filter>
     </ClCompile>
+    <ClCompile Include="Verlet.cpp">
+      <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Verlet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -76,7 +79,7 @@
     </ClInclude>
     <ClInclude Include="Application.h" />
     <ClInclude Include="DX11ObjectManager.h">
-      <Filter>Tools\DX11ObjectManager</Filter>
+      <Filter>Tools\DX11Stuff\DX11ObjectManager</Filter>
     </ClInclude>
     <ClInclude Include="Helper.h">
       <Filter>Tools\Helper\Helper</Filter>
@@ -85,7 +88,7 @@
       <Filter>DX11ObjectDrawable\BasicObject</Filter>
     </ClInclude>
     <ClInclude Include="cBuffer.h">
-      <Filter>Tools\DX11Objects\cBuffer</Filter>
+      <Filter>Tools\DX11Stuff\cBuffer</Filter>
     </ClInclude>
     <ClInclude Include="PlyLib\rply.h">
       <Filter>Tools\Helper\PlyFile</Filter>
@@ -106,13 +109,13 @@
       <Filter>Tools\Helper\TinyXML</Filter>
     </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>Tools\DX11Objects\VertexBuffer</Filter>
+      <Filter>Tools\DX11Stuff\VertexBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Transparent.h">
       <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
     </ClInclude>
     <ClInclude Include="DX11Helper.h">
-      <Filter>Tools\DX11Objects\DX11Helper</Filter>
+      <Filter>Tools\DX11Stuff\DX11Helper</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h">
       <Filter>Tools\Helper\MathHelper</Filter>
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="Prespective.h">
       <Filter>Tools\View\Prespective</Filter>
+    </ClInclude>
+    <ClInclude Include="Verlet.h">
+      <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Verlet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -139,9 +145,6 @@
     </Filter>
     <Filter Include="Tools">
       <UniqueIdentifier>{2bf44b2f-1837-4966-a582-7ac7ffdd25b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\DX11ObjectManager">
-      <UniqueIdentifier>{24ca17f6-50ba-496e-a326-b9b065ed777a}</UniqueIdentifier>
     </Filter>
     <Filter Include="DX11ObjectDrawable">
       <UniqueIdentifier>{6c2ea664-9701-42f5-956f-faaf49cc41e6}</UniqueIdentifier>
@@ -191,20 +194,26 @@
     <Filter Include="Tools\Helper\TinyXML">
       <UniqueIdentifier>{a12b96c1-20f9-48af-9d3b-da5e4104e7a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\DX11Objects">
-      <UniqueIdentifier>{b8c58024-4b3b-4421-a9b4-951625fcd586}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\DX11Objects\VertexBuffer">
-      <UniqueIdentifier>{9220a4ad-2ca7-41e7-b7d8-6a42166fda33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\DX11Objects\DX11Helper">
-      <UniqueIdentifier>{7b277ef2-d875-4211-baf6-9a6d99b4e888}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\Helper\Helper">
       <UniqueIdentifier>{d2bedc80-0887-4280-b461-5e11d979fb52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\DX11Objects\cBuffer">
+    <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile\Verlet">
+      <UniqueIdentifier>{062537e2-c62f-4f60-a920-fad9f048ec7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff">
+      <UniqueIdentifier>{b8c58024-4b3b-4421-a9b4-951625fcd586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\VertexBuffer">
+      <UniqueIdentifier>{9220a4ad-2ca7-41e7-b7d8-6a42166fda33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\DX11Helper">
+      <UniqueIdentifier>{7b277ef2-d875-4211-baf6-9a6d99b4e888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\cBuffer">
       <UniqueIdentifier>{76a3dc53-1495-4086-8b60-56903e6c0a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\DX11ObjectManager">
+      <UniqueIdentifier>{24ca17f6-50ba-496e-a326-b9b065ed777a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

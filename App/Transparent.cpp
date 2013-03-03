@@ -41,6 +41,12 @@ void Transparent::LoadTransparency(ID3D11Device* device)
 		DX11ObjectManager::getInstance()->BelnderState.Add(this->pTransparent.first , this->pTransparent.second);
 	}
 }
+
+float Transparent::GetOrder()
+{
+	return MathHelper::Length(this->object.Pos, App::getInstance()->camera.Eye());
+}
+
 Transparent::Transparent()
 {
 	this->pTransparent.first = "Transparent";

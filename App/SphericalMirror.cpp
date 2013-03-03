@@ -5,7 +5,7 @@
 #include "camera.h"
 #include "Sniper.h"
 #include "Prespective.h"
-
+#include <limits>
 
 void SphericalMirror::GetNewDynamicTexture()
 {
@@ -83,7 +83,9 @@ void SphericalMirror::GetNewDynamicTexture()
 			newCamera.SetLook(0.0f, 0.0f, -0.01f);
 			break;
 		}
+
 		App::getInstance()->camera = newCamera;
+		((Application*)App::getInstance())->SortObject();
 		((Application*)App::getInstance())->DrawObjects();
 	}
 
@@ -148,6 +150,11 @@ void SphericalMirror::SetupTexture()
 	{
 		pImmediateContext->PSSetShaderResources( 0, 1, &pDynamicCubeMapSRV );
 	}
+}
+
+float SphericalMirror::GetOrder()
+{
+	return 10000.0f;
 }
 
 void SphericalMirror::Init()

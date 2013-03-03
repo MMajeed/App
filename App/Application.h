@@ -20,6 +20,7 @@ public:
 	virtual void DrawObjects();
 	virtual void Present();
 
+	virtual void SortObject();
 	std::vector<iObjectDrawable*> objects;	
 
 	Prespective Projection;

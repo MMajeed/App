@@ -10,7 +10,16 @@ float MathHelper::Length(XMFLOAT4 v1, XMFLOAT4 v2)
     float distance = 0.0f;
     XMStoreFloat(&distance,length);
     return distance;
+}
 
+float MathHelper::Length(XMFLOAT4 v1)
+{
+	XMVECTOR vector1 = XMLoadFloat4(&v1);
+	XMVECTOR length = XMVector4Length(vector1);
+
+    float distance = 0.0f;
+    XMStoreFloat(&distance,length);
+    return distance;
 }
 
 XMFLOAT4 MathHelper::Normalize(XMFLOAT4 v1)
@@ -20,4 +29,51 @@ XMFLOAT4 MathHelper::Normalize(XMFLOAT4 v1)
 	XMFLOAT4 v1Nomrlized;
 	XMStoreFloat4(&v1Nomrlized, v1Vec);
 	return v1Nomrlized;
+}
+
+XMFLOAT4 MathHelper::Identity()
+{
+	return XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+}
+
+XMFLOAT4 operator-(const XMFLOAT4& rh, const XMFLOAT4& lh)
+{
+	XMFLOAT4 minus = XMFLOAT4(rh.x - lh.x, rh.y - lh.y, rh.z - lh.z, rh.w - lh.w);
+	return minus;
+}
+
+XMFLOAT4 operator+(const XMFLOAT4& rh, const XMFLOAT4& lh)
+{
+	XMFLOAT4 added = XMFLOAT4(rh.x + lh.x, rh.y + lh.y, rh.z + lh.z, rh.w + lh.w);
+	return added;
+}
+
+XMFLOAT4 operator*(const XMFLOAT4& rh, float lh)
+{
+	XMFLOAT4 returnValue;
+	returnValue.x = rh.x * lh;
+	returnValue.y = rh.y * lh;
+	returnValue.z = rh.z * lh;
+	returnValue.w = rh.w * lh;
+
+	return returnValue;
+}
+XMFLOAT4 operator*(float rh, const XMFLOAT4&lh)
+{
+	return lh * rh;
+}
+
+XMFLOAT4 operator/(const XMFLOAT4& rh, float lh)
+{
+	XMFLOAT4 returnValue;
+	returnValue.x = rh.x / lh;
+	returnValue.y = rh.y / lh;
+	returnValue.z = rh.z / lh;
+	returnValue.w = rh.w / lh;
+
+	return returnValue;
+}
+XMFLOAT4 operator/(float rh, const XMFLOAT4&lh)
+{
+	return lh/rh;
 }

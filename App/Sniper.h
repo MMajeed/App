@@ -13,6 +13,8 @@ public:
 	virtual void GetNewDynamicTexture();
 	virtual void UpdateDrawing(float delta);
 	virtual void UpdateObject(float delta);
+	
+	virtual float GetOrder();
 
 	virtual void SetupTexture();
 
