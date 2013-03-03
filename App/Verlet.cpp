@@ -3,9 +3,6 @@
 #include "Helper.h"
 #include "MathHelper.h"
 #include "Application.h"
-#include <sstream>
-#include <algorithm>
-#include <set>
 #include <process.h>
 
 template <class T>

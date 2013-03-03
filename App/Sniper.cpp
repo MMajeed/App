@@ -1,6 +1,5 @@
 #include "Sniper.h"
 #include "Application.h"
-#include "MathHelper.h"
 #include "Helper.h"
 #include "DX11ObjectManager.h"
 

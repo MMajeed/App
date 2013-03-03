@@ -1,11 +1,9 @@
 #include "SphericalMirror.h"
-#include "DX11ObjectManager.h"
 #include "Helper.h"
 #include "Application.h"
 #include "camera.h"
 #include "Sniper.h"
 #include "Prespective.h"
-#include <limits>
 
 void SphericalMirror::GetNewDynamicTexture()
 {

@@ -1,12 +1,9 @@
-#include "BasicObject.h"
+#include "SkyBox.h"
 #include "DX11ObjectManager.h"
-#include "App.h"
 #include "DX11App.h"
 #include "DX11Helper.h"
 #include "Helper.h"
-#include "cBuffer.h"
 #include "VertexBuffer.h"
-#include "SkyBox.h"
 #include <sstream>
 
 SkyBox::SkyBox()

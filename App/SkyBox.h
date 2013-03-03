@@ -1,10 +1,7 @@
 #ifndef __SkyBox__
 #define __SkyBox__
 
-#include "Object.h"
 #include "BasicObject.h"
-#include "DX11Helper.h"
-#include "VertexBuffer.h"
 #include <string>
 #include <map>
 

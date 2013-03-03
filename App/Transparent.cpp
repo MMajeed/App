@@ -1,12 +1,8 @@
+#include "Transparent.h"
 #include "DX11ObjectManager.h"
-#include "App.h"
 #include "DX11App.h"
 #include "DX11Helper.h"
 #include "Helper.h"
-#include "cBuffer.h"
-#include "VertexBuffer.h"
-#include "Transparent.h"
-#include <sstream>
 
 void Transparent::DrawObject()
 {

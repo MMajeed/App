@@ -1,12 +1,7 @@
-#include "BasicObject.h"
-#include "DX11ObjectManager.h"
-#include "App.h"
-#include "DX11App.h"
-#include "DX11Helper.h"
-#include "Helper.h"
-#include "cBuffer.h"
-#include "VertexBuffer.h"
 #include "PlyFile.h"
+#include "DX11App.h"
+#include "Helper.h"
+#include "VertexBuffer.h"
 #include <sstream>
 
 PlyFile::PlyFile()
