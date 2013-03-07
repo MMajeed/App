@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Objects>
   <Object>
-    <ID>VerletBunny</ID>
-    <Class>Verlet</Class>
-    <PlyFile>PlyFiles/bun_zipper_res3.ply</PlyFile>
-    <ShaderInput  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="5.0f" Y="5.0f" Z="5.0f"/>
-    <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
-  </Object>
-  <Object>
     <ID>Floor</ID>
     <Class>PlyFile</Class>
     <PlyFile>PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
@@ -24,38 +12,6 @@
     <XYZRotation X="0.0f" Y="3.14f" Z="3.14f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <Texture0>Texture/Tiles.png</Texture0>
-  </Object>
-  <Object>
-    <ID>TransparentPly</ID>
-    <Class>TransparentPly</Class>
-    <PlyFile>PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
-    <ShaderInput  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="2.0f" Y="0.0f" Z="2.0f"/>
-    <XYZRotation X="1.57f" Y="0.0f" Z="1.57f"/>
-    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZDiffuse  X="1.0f" Y="0.0f" Z="1.0f" W="0.5f"/>
-    <XYZAmbent   X="1.0f" Y="0.0f" Z="0.0f"/>
-    <XYZSpec     X="1.0f" Y="0.0f" Z="0.0f"/>
-    <Texture0>Texture/flat_wood_texture.jpg</Texture0>
-  </Object>
-  <Object>
-    <ID>Cube</ID>
-    <Class>TransparentPly</Class>
-    <PlyFile>PlyFiles/bun_zipper_res3.ply</PlyFile>
-    <ShaderInput  FileName="ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="ShaderFiles/0_Basic.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="5.0f" Y="5.0f" Z="5.0f"/>
-    <XYZLocation X="2.0f" Y="0.0f" Z="0.0f"/>
-    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZDiffuse  X="0.5f" Y="0.5f" Z="0.5f" W="0.7f"/>
-    <XYZAmbent   X="1.0f" Y="0.0f" Z="0.0f"/>
-    <XYZSpec     X="1.0f" Y="0.0f" Z="0.0f"/>
-    <Texture0>Texture/Sky/+Y.jpg</Texture0>
   </Object>
   <Object>
     <ID>SkyBox</ID>

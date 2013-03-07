@@ -60,9 +60,6 @@
     <ClCompile Include="Prespective.cpp">
       <Filter>Tools\View\Prespective</Filter>
     </ClCompile>
-    <ClCompile Include="Verlet.cpp">
-      <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Verlet</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -129,9 +126,6 @@
     <ClInclude Include="Prespective.h">
       <Filter>Tools\View\Prespective</Filter>
     </ClInclude>
-    <ClInclude Include="Verlet.h">
-      <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Verlet</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -196,9 +190,6 @@
     </Filter>
     <Filter Include="Tools\Helper\Helper">
       <UniqueIdentifier>{d2bedc80-0887-4280-b461-5e11d979fb52}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile\Verlet">
-      <UniqueIdentifier>{062537e2-c62f-4f60-a920-fad9f048ec7c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools\DX11Stuff">
       <UniqueIdentifier>{b8c58024-4b3b-4421-a9b4-951625fcd586}</UniqueIdentifier>

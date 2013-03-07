@@ -28,6 +28,17 @@ void BasicObject::Init()
 	this->InitTextureAndCube(device);
 
 	this->LoadD3DStuff();
+
+	for(std::size_t i = 0; i < this->vertexBuffer.vertices.size(); ++i)
+	{
+		if(this->vertexBuffer.vertices[i].Pos.x > this->object.Max.x) this->object.Max.x = this->vertexBuffer.vertices[i].Pos.x;
+		if(this->vertexBuffer.vertices[i].Pos.y > this->object.Max.y) this->object.Max.y = this->vertexBuffer.vertices[i].Pos.y;
+		if(this->vertexBuffer.vertices[i].Pos.z > this->object.Max.z) this->object.Max.z = this->vertexBuffer.vertices[i].Pos.z;
+
+		if(this->vertexBuffer.vertices[i].Pos.x < this->object.Min.x) this->object.Min.x = this->vertexBuffer.vertices[i].Pos.x;
+		if(this->vertexBuffer.vertices[i].Pos.y < this->object.Min.y) this->object.Min.y = this->vertexBuffer.vertices[i].Pos.y;
+		if(this->vertexBuffer.vertices[i].Pos.z < this->object.Min.z) this->object.Min.z = this->vertexBuffer.vertices[i].Pos.z;
+	}
 }
 void BasicObject::Clean()
 {

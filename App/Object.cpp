@@ -46,4 +46,6 @@ Object::Object()
 	this->Colour.Ambient	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	this->Colour.Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	this->Colour.Spec		= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	this->Min				= XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	this->Max				= XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 }

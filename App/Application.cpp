@@ -8,7 +8,6 @@
 #include "ObjectLoader.h"
 #include "MathHelper.h"
 #include "Sniper.h"
-#include "Verlet.h"
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
@@ -226,35 +225,27 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 					return 0;
 				case 'A': case 'a':
 					{
-						this->objects[1]->object.Pos.x -= 0.1f;
+						
 					}
 					return 0;
 				case 'D': case 'd':
 					{
-						this->objects[1]->object.Pos.x += 0.1f;
+						
 					}
 					return 0;
 				case 'W': case 'w':
 					{
-						this->objects[1]->object.Pos.z += 0.1f;
+						
 					}
 					return 0;
 				case 'S': case 's':
 					{
-						this->objects[1]->object.Pos.z -= 0.1f;
+						
 					}
 					return 0;
 				case 'X': case 'x':
 					{
-						for(auto objectIter = this->objects.begin();
-							objectIter != this->objects.end();
-							++objectIter)
-						{
-							if( dynamic_cast<Verlet*>(*objectIter) != 0)
-							{
-								dynamic_cast<Verlet*>(*objectIter)->Randomize(0.1f);
-							}
-						}
+						
 					}
 					return 0;
 				case 'Z': case 'z':
