@@ -53,44 +53,44 @@ SkyBox* SkyBox::Spawn(std::map<std::string, std::string> info)
 	// Shader Input
 	iter = info.find("ShaderInputFileName");
 	if(iter == info.end()){throw std::exception("No Shader Input File Name was included in the object");}
-	newSkyBox->ShaderInput.FileName = iter->second;
+	newSkyBox->Shader.ShaderInput.FileName = iter->second;
 	newSkyBox->pInputLayout.first = iter->second;
 
 	iter = info.find("ShaderInputEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Input Entry point Name was included in the object");}
-	newSkyBox->ShaderInput.EntryPoint = iter->second;
+	newSkyBox->Shader.ShaderInput.EntryPoint = iter->second;
 
 	iter = info.find("ShaderInputModel");
 	if(iter == info.end()){throw std::exception("No Shader Input Model point Name was included in the object");}
-	newSkyBox->ShaderInput.Mode = iter->second;
+	newSkyBox->Shader.ShaderInput.Mode = iter->second;
 
 	// Shader Vertex
 	iter = info.find("ShaderVertexFileName");
 	if(iter == info.end()){throw std::exception("No Shader Vertex File Name was included in the object");}
-	newSkyBox->ShaderVertex.FileName = iter->second;	
+	newSkyBox->Shader.ShaderVertex.FileName = iter->second;	
 	newSkyBox->pVertexShader.first = iter->second;
 
 	iter = info.find("ShaderVertexEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Vertex Entry point Name was included in the object");}
-	newSkyBox->ShaderVertex.EntryPoint = iter->second;
+	newSkyBox->Shader.ShaderVertex.EntryPoint = iter->second;
 
 	iter = info.find("ShaderVertexModel");
 	if(iter == info.end()){throw std::exception("No Shader Vertex Model point Name was included in the object");}
-	newSkyBox->ShaderVertex.Mode = iter->second;
+	newSkyBox->Shader.ShaderVertex.Mode = iter->second;
 
 	// Shader Pixel
 	iter = info.find("ShaderPixelFileName");
 	if(iter == info.end()){throw std::exception("No Shader Pixel File Name was included in the object");}
-	newSkyBox->ShaderPixel.FileName = iter->second;
+	newSkyBox->Shader.ShaderPixel.FileName = iter->second;
 	newSkyBox->pPixelShader.first = iter->second;
 
 	iter = info.find("ShaderPixelEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Pixel Entry point Name was included in the object");}
-	newSkyBox->ShaderPixel.EntryPoint = iter->second;
+	newSkyBox->Shader.ShaderPixel.EntryPoint = iter->second;
 
 	iter = info.find("ShaderPixelModel");
 	if(iter == info.end()){throw std::exception("No Shader Pixel Model point Name was included in the object");}
-	newSkyBox->ShaderPixel.Mode = iter->second;
+	newSkyBox->Shader.ShaderPixel.Mode = iter->second;
 
 	// Scale XYZ
 	iter = info.find("XYZScaleX");

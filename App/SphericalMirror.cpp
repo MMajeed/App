@@ -283,17 +283,17 @@ SphericalMirror::SphericalMirror()
 	this->pVertexShader.first        = "ShaderFiles/4_CubeMapping.fx";
 	this->pPixelShader.first         = "ShaderFiles/4_CubeMapping.fx";
 
-	this->ShaderInput.FileName		 = "ShaderFiles/4_CubeMapping.fx";
-	this->ShaderInput.EntryPoint	 = "VS";	
-	this->ShaderInput.Mode			 = "vs_4_0";
+	this->Shader.ShaderInput.FileName		 = "ShaderFiles/4_CubeMapping.fx";
+	this->Shader.ShaderInput.EntryPoint	 = "VS";	
+	this->Shader.ShaderInput.Mode			 = "vs_4_0";
 
-	this->ShaderVertex.FileName		 = "ShaderFiles/4_CubeMapping.fx";
-	this->ShaderVertex.EntryPoint	 = "VS";	
-	this->ShaderVertex.Mode			 = "vs_4_0";
+	this->Shader.ShaderVertex.FileName		 = "ShaderFiles/4_CubeMapping.fx";
+	this->Shader.ShaderVertex.EntryPoint	 = "VS";	
+	this->Shader.ShaderVertex.Mode			 = "vs_4_0";
 
-	this->ShaderPixel.FileName		 = "ShaderFiles/4_CubeMapping.fx";
-	this->ShaderPixel.EntryPoint	 = "PS";	
-	this->ShaderPixel.Mode			 = "ps_4_0";
+	this->Shader.ShaderPixel.FileName		 = "ShaderFiles/4_CubeMapping.fx";
+	this->Shader.ShaderPixel.EntryPoint	 = "PS";	
+	this->Shader.ShaderPixel.Mode			 = "ps_4_0";
 
 	this->pRastersizerState.first	 = "InsideOut4";
 

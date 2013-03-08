@@ -233,17 +233,17 @@ Sniper::Sniper()
 	this->pVertexShader.first        = "ShaderFiles/6_Binoculars.fx";
 	this->pPixelShader.first         = "ShaderFiles/6_Binoculars.fx";
 
-	this->ShaderInput.FileName		 = "ShaderFiles/6_Binoculars.fx";
-	this->ShaderInput.EntryPoint	 = "VS";	
-	this->ShaderInput.Mode			 = "vs_4_0";
+	this->Shader.ShaderInput.FileName		 = "ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderInput.EntryPoint	 = "VS";	
+	this->Shader.ShaderInput.Mode			 = "vs_4_0";
 
-	this->ShaderVertex.FileName		 = "ShaderFiles/6_Binoculars.fx";
-	this->ShaderVertex.EntryPoint	 = "VS";	
-	this->ShaderVertex.Mode			 = "vs_4_0";
+	this->Shader.ShaderVertex.FileName		 = "ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderVertex.EntryPoint	 = "VS";	
+	this->Shader.ShaderVertex.Mode			 = "vs_4_0";
 
-	this->ShaderPixel.FileName		 = "ShaderFiles/6_Binoculars.fx";
-	this->ShaderPixel.EntryPoint	 = "PS";	
-	this->ShaderPixel.Mode			 = "ps_4_0";
+	this->Shader.ShaderPixel.FileName		 = "ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderPixel.EntryPoint	 = "PS";	
+	this->Shader.ShaderPixel.Mode			 = "ps_4_0";
 
 
 	std::wstring error;

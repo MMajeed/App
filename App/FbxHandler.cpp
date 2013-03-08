@@ -807,33 +807,6 @@ Mesh* LoadMeshFromFbx(const char* szFileName)
 	return(pMesh);
 }
 
-
-/*
-_snprintf_s(buffer, 499, "********************\nAnimStacks %d\n", lImporter->GetAnimStackCount());
-        OutputDebugStringA(buffer);
-        for(int i = 0; i < lImporter->GetAnimStackCount(); ++i)
-        {
-            FbxTakeInfo* take = lImporter->GetTakeInfo(i);
-            int numFrames = static_cast<int>(take->mLocalTimeSpan.GetDuration().GetFrameCount() + 1);
-            _snprintf_s(buffer, 499, "  Take[%d][%s] [%d frames]\n", i, take->mName.Buffer(), numFrames);
-            OutputDebugStringA(buffer);
-
-            FbxAnimStack* animStack = static_cast<FbxAnimStack*>(lScene->RootProperty.FindSrcObject(FbxCriteria::ObjectType(g_FbxSdkManager->FindClass("FbxAnimStack")), take->mName, 0));
-            if(animStack)
-            {
-                _snprintf_s(buffer, 499, "   animStack[%s]\n", animStack->GetName());
-                OutputDebugStringA(buffer);
-
-                FbxAnimLayer* animLayer = static_cast<FbxAnimLayer*>(animStack->RootProperty.GetSrcObject(FbxCriteria::ObjectType(g_FbxSdkManager->FindClass("FbxAnimLayer")), 0));
-                if(animLayer)
-                {
-                    _snprintf_s(buffer, 499, "   animLayer[%s]\n", animLayer->GetName());
-                    OutputDebugStringA(buffer);
-
-                    if(take->mName.Compare(FBXSDK_TAKENODE_DEFAULT_NAME) != 0)
-                    {
-                    */
-
 void FlattenHeirarchyRecursive(FbxNode* pNode, FbxNode** pFlattenedNodes, int* numBones, int parent)
 {
     FbxNodeAttribute* lNodeAttribute = pNode->GetNodeAttribute();

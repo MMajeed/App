@@ -28,17 +28,6 @@ void BasicObject::Init()
 	this->InitTextureAndCube(device);
 
 	this->LoadD3DStuff();
-
-	for(std::size_t i = 0; i < this->vertexBuffer.vertices.size(); ++i)
-	{
-		if(this->vertexBuffer.vertices[i].Pos.x > this->object.Max.x) this->object.Max.x = this->vertexBuffer.vertices[i].Pos.x;
-		if(this->vertexBuffer.vertices[i].Pos.y > this->object.Max.y) this->object.Max.y = this->vertexBuffer.vertices[i].Pos.y;
-		if(this->vertexBuffer.vertices[i].Pos.z > this->object.Max.z) this->object.Max.z = this->vertexBuffer.vertices[i].Pos.z;
-
-		if(this->vertexBuffer.vertices[i].Pos.x < this->object.Min.x) this->object.Min.x = this->vertexBuffer.vertices[i].Pos.x;
-		if(this->vertexBuffer.vertices[i].Pos.y < this->object.Min.y) this->object.Min.y = this->vertexBuffer.vertices[i].Pos.y;
-		if(this->vertexBuffer.vertices[i].Pos.z < this->object.Min.z) this->object.Min.z = this->vertexBuffer.vertices[i].Pos.z;
-	}
 }
 void BasicObject::Clean()
 {
@@ -153,10 +142,11 @@ void BasicObject::InitVertexBuffer(ID3D11Device* device)
 
 	if(!DX11ObjectManager::getInstance()->VertexBuffer.Exists(this->pVertexBuffer.first))
 	{
-		if(!this->vertexBuffer.CreateVertexBuffer(device, &(this->pVertexBuffer.second), error))
+		std::wstring error;
+		if(!DX11Helper::LoadVertexBuffer<VertexBuffer::SimpleVertex>(device, &(this->vertexBuffer.vertices.front()), this->vertexBuffer.vertices.size(), &(this->pVertexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
-		}	
+		}
 		DX11ObjectManager::getInstance()->VertexBuffer.Add(this->pVertexBuffer.first, pVertexBuffer.second);
 	}
 }
@@ -165,7 +155,7 @@ void BasicObject::InitIndexBuffer(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->pIndexBuffer.first))
 	{
 		std::wstring error;
-		if(!this->vertexBuffer.CreateIndexBuffer(device, &(this->pIndexBuffer.second), error))
+		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(this->vertexBuffer.indices.front()), this->vertexBuffer.indices.size(), &(this->pIndexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -177,7 +167,7 @@ void BasicObject::InitInputLayout(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->InputLayout.Exists(this->pInputLayout.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadInputLayoutFile(ShaderInput.FileName, ShaderInput.EntryPoint, ShaderInput.Mode, device, &(this->pInputLayout.second), error))
+		if(!DX11Helper::LoadInputLayoutFile(Shader.ShaderInput.FileName, Shader.ShaderInput.EntryPoint, Shader.ShaderInput.Mode, device, &(this->pInputLayout.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -189,7 +179,7 @@ void BasicObject::InitVertexShader(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->VertexShader.Exists(this->pVertexShader.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadVertexShaderFile(ShaderVertex.FileName, ShaderVertex.EntryPoint, ShaderVertex.Mode, device, &(this->pVertexShader.second), error))
+		if(!DX11Helper::LoadVertexShaderFile(Shader.ShaderVertex.FileName, Shader.ShaderVertex.EntryPoint, Shader.ShaderVertex.Mode, device, &(this->pVertexShader.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -201,7 +191,7 @@ void BasicObject::InitPixelShader(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->PixelShader.Exists(this->pPixelShader.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadPixelShaderFile(ShaderPixel.FileName, ShaderPixel.EntryPoint, ShaderPixel.Mode, device, &(this->pPixelShader.second), error))
+		if(!DX11Helper::LoadPixelShaderFile(Shader.ShaderPixel.FileName, Shader.ShaderPixel.EntryPoint, Shader.ShaderPixel.Mode, device, &(this->pPixelShader.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}

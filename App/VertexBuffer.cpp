@@ -2,52 +2,6 @@
 #include "PlyLib\rply.h"
 #include "Helper.h"
 
-HRESULT VertexBuffer::CreateVertexBuffer(ID3D11Device* device, ID3D11Buffer** bOut,  std::wstring& error)
-{
-	HRESULT hr = S_OK ;
-
-	// Create vertex buffer
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory( &bd, sizeof(bd) );
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof( SimpleVertex ) * this->vertices.size();
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-	D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory( &InitData, sizeof(InitData) );
-	InitData.pSysMem = &this->vertices.front();
-	hr = device->CreateBuffer( &bd, &InitData, bOut );
-	if( FAILED( hr ) )
-	{
-		error = L"Failed at creating vertex buffer";
-		return false;
-	}
-	return true;
-}
-HRESULT VertexBuffer::CreateIndexBuffer(ID3D11Device* device, ID3D11Buffer** bOut,  std::wstring& error)
-{	
-	HRESULT hr = S_OK ;
-
-	// Create index buffer
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory( &bd, sizeof(bd) );
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof( WORD ) * this->indices.size();
-	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-	D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory( &InitData, sizeof(InitData) );
-	InitData.pSysMem = &(*this->indices.begin());
-	hr = device->CreateBuffer( &bd, &InitData, bOut );
-	if( FAILED( hr ) )
-	{
-		error = L"Failed at creating vertex buffer";
-		return false;
-	}
-
-	return true;
-}
-
 VertexBuffer buffer;
 
 static int vertexX(p_ply_argument argument) {

@@ -24,44 +24,44 @@ PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 	// Shader Input
 	iter = info.find("ShaderInputFileName");
 	if(iter == info.end()){throw std::exception("No Shader Input File Name was included in the object");}
-	newPlyFile->ShaderInput.FileName = iter->second;
+	newPlyFile->Shader.ShaderInput.FileName = iter->second;
 	newPlyFile->pInputLayout.first = iter->second;
 
 	iter = info.find("ShaderInputEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Input Entry point Name was included in the object");}
-	newPlyFile->ShaderInput.EntryPoint = iter->second;
+	newPlyFile->Shader.ShaderInput.EntryPoint = iter->second;
 
 	iter = info.find("ShaderInputModel");
 	if(iter == info.end()){throw std::exception("No Shader Input Model point Name was included in the object");}
-	newPlyFile->ShaderInput.Mode = iter->second;
+	newPlyFile->Shader.ShaderInput.Mode = iter->second;
 
 	// Shader Vertex
 	iter = info.find("ShaderVertexFileName");
 	if(iter == info.end()){throw std::exception("No Shader Vertex File Name was included in the object");}
-	newPlyFile->ShaderVertex.FileName = iter->second;	
+	newPlyFile->Shader.ShaderVertex.FileName = iter->second;	
 	newPlyFile->pVertexShader.first = iter->second;
 
 	iter = info.find("ShaderVertexEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Vertex Entry point Name was included in the object");}
-	newPlyFile->ShaderVertex.EntryPoint = iter->second;
+	newPlyFile->Shader.ShaderVertex.EntryPoint = iter->second;
 
 	iter = info.find("ShaderVertexModel");
 	if(iter == info.end()){throw std::exception("No Shader Vertex Model point Name was included in the object");}
-	newPlyFile->ShaderVertex.Mode = iter->second;
+	newPlyFile->Shader.ShaderVertex.Mode = iter->second;
 
 	// Shader Pixel
 	iter = info.find("ShaderPixelFileName");
 	if(iter == info.end()){throw std::exception("No Shader Pixel File Name was included in the object");}
-	newPlyFile->ShaderPixel.FileName = iter->second;
+	newPlyFile->Shader.ShaderPixel.FileName = iter->second;
 	newPlyFile->pPixelShader.first = iter->second;
 
 	iter = info.find("ShaderPixelEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Pixel Entry point Name was included in the object");}
-	newPlyFile->ShaderPixel.EntryPoint = iter->second;
+	newPlyFile->Shader.ShaderPixel.EntryPoint = iter->second;
 
 	iter = info.find("ShaderPixelModel");
 	if(iter == info.end()){throw std::exception("No Shader Pixel Model point Name was included in the object");}
-	newPlyFile->ShaderPixel.Mode = iter->second;
+	newPlyFile->Shader.ShaderPixel.Mode = iter->second;
 
 	// Scale XYZ
 	iter = info.find("XYZScaleX");

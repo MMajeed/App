@@ -5,6 +5,7 @@
 #include "iObjectDrawable.h"
 #include "DX11Helper.h"
 #include "VertexBuffer.h"
+#include "ShaderFiles.h"
 #include <string>
 
 class BasicObject : public iObjectDrawable
@@ -33,16 +34,7 @@ public:
 	std::vector<std::pair<std::string, ID3D11ShaderResourceView*>>	pVecTexture;
 	std::pair<std::string, ID3D11ShaderResourceView*>				pCubeMap;
 	
-	struct ShaderFile
-	{
-		std::string FileName;
-		std::string EntryPoint;
-		std::string Mode;
-	};
-
-	ShaderFile ShaderInput;
-	ShaderFile ShaderVertex;
-	ShaderFile ShaderPixel;
+	ShaderFiles Shader;
 
 	virtual void InitVertexBuffer(ID3D11Device* device);
 	virtual void InitIndexBuffer(ID3D11Device* device);

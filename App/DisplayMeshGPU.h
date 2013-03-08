@@ -1,31 +1,36 @@
 #ifndef DISPLAY_MESH_GPU_H
 #define DISPLAY_MESH_GPU_H
 
-#include "Entity.h"
 #include "HelperFuncs.h"
+#include "iObjectDrawable.h"
+#include "ShaderFiles.h"
 
 class Mesh;
 class SkeletalAnimation;
 
-class DisplayMeshGPU : public Entity
+class DisplayMeshGPU : public iObjectDrawable
 {
 public:
+	virtual void Init();
+	virtual void Clean();
+	virtual void UpdateDrawing(float delta);
+	virtual void UpdateObject(float delta);
+	virtual void Draw();
+	virtual float GetOrder(){ return 1000.0f; }
+
+	virtual void InitVertexBuffer(ID3D11Device* device);
+	virtual void InitIndexBuffer(ID3D11Device* device);
+	virtual void InitInputLayout(ID3D11Device* device);
+	virtual void InitVertexShader(ID3D11Device* device);
+	virtual void InitPixelShader(ID3D11Device* device);
+	virtual void InitRastersizerState(ID3D11Device* device);
+	virtual void InitCBChangesEveryFrameBuffer(ID3D11Device* device);
+	virtual void InitAnimBuffer(ID3D11Device* device);
+
     DisplayMeshGPU();
     virtual ~DisplayMeshGPU();
 
 	void SetMesh(Mesh* pMesh);
-    virtual HRESULT Initialize();
-    virtual void Update(float delta);
-    virtual void Draw();
-
-    void SetDrawBindPose(bool bindPose) { mDrawBindPose = bindPose; }
-    bool GetDrawBindPose() const { return(mDrawBindPose); }
-
-    void SetFrameInterpolate(bool interpolate) { mFrameInterpolate = interpolate; }
-    bool GetFrameInterpolate() const { return(mFrameInterpolate); }
-
-    void SetDebugRotation(float rot) { mDebugRotation = rot; }
-    float GetDebugRotation() const { return(mDebugRotation); }
 
     void PlayAnimation(SkeletalAnimation* anim);
     
@@ -36,9 +41,8 @@ public:
     void SetAnimRate(float rate) { mAnimRate = rate; }
     float GetAnimRate() const { return(mAnimRate); }
 
-protected:
-	Mesh*                   mMesh; //not owned by this class
-    SkeletalAnimation*      mAnimation; //not owned by this class
+	Mesh*                   mMesh;				//not owned by this class
+    SkeletalAnimation*      mAnimation;			//not owned by this class
     unsigned char*          mChannelMap;
 
     JointPose*              mCurrentBones;
@@ -46,23 +50,21 @@ protected:
 
 	_XMFLOAT4X4*            mBoneTransforms;
 
-    bool                    mDrawBindPose;
-    bool                    mFrameInterpolate;
-    float                   mDebugRotation;
 
     float                   mAnimTime;
     float                   mAnimRate;
     float                   mCurrentFrame;
 
-    //DX stuff
-    ID3D11VertexShader*     mVertexShader;
-    ID3D11PixelShader*      mPixelShader;
-    ID3D11InputLayout*      mVertexLayout;
-    ID3D11Buffer*           mVertexBuffer;
-    ID3D11Buffer*           mIndexBuffer;
-    ID3D11Buffer*           mConstantBuffer;
-	ID3D11Buffer*           mAnimBonesBuffer;
-	ID3D11RasterizerState*   g_pRasterState;
+	std::pair<std::string, ID3D11Buffer*> 			pVertexBuffer;
+	std::pair<std::string, ID3D11Buffer*>			pIndexBuffer;
+	std::pair<std::string, ID3D11InputLayout*>		pInputLayout;
+	std::pair<std::string, ID3D11VertexShader*>		pVertexShader;
+	std::pair<std::string, ID3D11PixelShader*>		pPixelShader;
+	std::pair<std::string, ID3D11RasterizerState*>	pRastersizerState;
+	std::pair<std::string, ID3D11Buffer*>			pCBChangesEveryFrame;
+	std::pair<std::string, ID3D11Buffer*>			pAnimBonesBuffer;
+
+	ShaderFiles Shader;
 };
 
 #endif

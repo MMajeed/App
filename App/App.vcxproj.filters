@@ -61,22 +61,19 @@
       <Filter>Tools\View\Prespective</Filter>
     </ClCompile>
     <ClCompile Include="DisplayMeshGPU.cpp">
-      <Filter>DX11ObjectDrawable\FBX FIles\DisplayMeshGPU</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>DX11ObjectDrawable\FBX FIles\Entity</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\DisplayMeshGPU</Filter>
     </ClCompile>
     <ClCompile Include="FbxHandler.cpp">
-      <Filter>DX11ObjectDrawable\FBX FIles\FbxHandler</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
     </ClCompile>
     <ClCompile Include="HeperFunc.cpp">
-      <Filter>DX11ObjectDrawable\FBX FIles\HeperFunc</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\HeperFunc</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>DX11ObjectDrawable\FBX FIles\Mesh</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="SkeletalAnimation.cpp">
-      <Filter>DX11ObjectDrawable\FBX FIles\SkeletalAnimation</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\SkeletalAnimation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,22 +142,22 @@
       <Filter>Tools\View\Prespective</Filter>
     </ClInclude>
     <ClInclude Include="DisplayMeshGPU.h">
-      <Filter>DX11ObjectDrawable\FBX FIles\DisplayMeshGPU</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>DX11ObjectDrawable\FBX FIles\Entity</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\DisplayMeshGPU</Filter>
     </ClInclude>
     <ClInclude Include="FbxHandler.h">
-      <Filter>DX11ObjectDrawable\FBX FIles\FbxHandler</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>DX11ObjectDrawable\FBX FIles\Mesh</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="HelperFuncs.h">
-      <Filter>DX11ObjectDrawable\FBX FIles\HeperFunc</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\HeperFunc</Filter>
     </ClInclude>
     <ClInclude Include="SkeletalAnimation.h">
-      <Filter>DX11ObjectDrawable\FBX FIles\SkeletalAnimation</Filter>
+      <Filter>DX11ObjectDrawable\FBX Files\SkeletalAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderFiles.h">
+      <Filter>Tools\DX11Stuff\ShaderFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,26 +239,26 @@
     <Filter Include="Tools\DX11Stuff\DX11ObjectManager">
       <UniqueIdentifier>{24ca17f6-50ba-496e-a326-b9b065ed777a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX FIles">
+    <Filter Include="DX11ObjectDrawable\FBX Files">
       <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX FIles\DisplayMeshGPU">
+    <Filter Include="DX11ObjectDrawable\FBX Files\DisplayMeshGPU">
       <UniqueIdentifier>{37004407-b752-43af-af31-6c59674dcb8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX FIles\Entity">
-      <UniqueIdentifier>{fe9058fc-1f1f-40fc-939c-bbbd5cecbdf4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX FIles\FbxHandler">
+    <Filter Include="DX11ObjectDrawable\FBX Files\FbxHandler">
       <UniqueIdentifier>{5371c2cc-c3b8-4e0b-8d17-2bdde197f181}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX FIles\HeperFunc">
+    <Filter Include="DX11ObjectDrawable\FBX Files\HeperFunc">
       <UniqueIdentifier>{2ca2498d-efcc-4a9a-a294-0f511d1e0b5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX FIles\Mesh">
+    <Filter Include="DX11ObjectDrawable\FBX Files\Mesh">
       <UniqueIdentifier>{40ce2031-0f29-4535-aab0-e91c692bbca6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX FIles\SkeletalAnimation">
+    <Filter Include="DX11ObjectDrawable\FBX Files\SkeletalAnimation">
       <UniqueIdentifier>{b966fe15-2773-4a25-aedb-7406470720f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\ShaderFiles">
+      <UniqueIdentifier>{d4fc4a8d-2ffd-4ce5-8a72-76471f42e366}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

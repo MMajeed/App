@@ -19,10 +19,6 @@ public:
 
 	std::vector<SimpleVertex> vertices;
 	std::vector<WORD> indices;
-	std::string name;
-
-	HRESULT CreateVertexBuffer(ID3D11Device* device, ID3D11Buffer** bOut,  std::wstring& error);
-	HRESULT CreateIndexBuffer(ID3D11Device* device, ID3D11Buffer** bOut,  std::wstring& error);
 
 	static bool LoadFromPlyFile(std::wstring fileName, VertexBuffer& vbOut, std::wstring error);
 };

@@ -9,18 +9,17 @@ public:
 	Mesh();
 	virtual ~Mesh();
 
-//protected:
 	SimpleSkinnedVertex*    mVerts;
-	WORD*            mIndices;
-    int              mNumVerts;
-	int              mNumIndices;
+	WORD*					mIndices;
+    int						mNumVerts;
+	int						mNumIndices;
 
-    Joint*                mSkeleton;
-    JointPose*            mOrigBones;
-    _XMFLOAT4X4*          mOrigGlobalPose;
-    int                   mNumBones;
+    Joint*					mSkeleton;
+    JointPose*				mOrigBones;
+    _XMFLOAT4X4*			mOrigGlobalPose;
+    int						mNumBones;
 
-    SimpleSkinnedVertex*  mOrigVerts;
+    SimpleSkinnedVertex*	mOrigVerts;
 };
 
 #endif

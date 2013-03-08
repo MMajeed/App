@@ -13,8 +13,8 @@ public:
 	virtual void Clean()				    = 0;
 	virtual void UpdateDrawing(float delta)	= 0;
 	virtual void UpdateObject(float delta)	= 0;
-	virtual void Draw()					    = 0;	// Calls the three below
-	virtual float GetOrder()					= 0;
+	virtual void Draw()					    = 0;
+	virtual float GetOrder()				= 0;
 	Object object;
 
 	virtual ~iObjectDrawable(){}
