@@ -5,6 +5,10 @@
 #include <vector>
 #include "iObjectDrawable.h"
 #include "Prespective.h"
+#include "Mesh.h"
+#include "DisplayMeshGPU.h"
+#include "SkeletalAnimation.h"
+
 class Application : public DX11App
 {
 public:
@@ -30,6 +34,12 @@ protected:
 	std::pair<std::string, ID3D11SamplerState*>		pSamplerLinear;			
 	std::pair<std::string, ID3D11SamplerState*>		pSamplerAnisotropic;
 	
+	Mesh*                   g_pMyMesh;
+	DisplayMeshGPU*         g_pMyDisplayMeshGPU;
+	SkeletalAnimation*      g_pIdleAnim;
+	SkeletalAnimation*      g_pWalkAnim;
+	SkeletalAnimation*      g_pRunAnim;
+
 	void LoadD3DStuff();
 };
 

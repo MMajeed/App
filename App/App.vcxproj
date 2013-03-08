@@ -84,11 +84,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4127</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FBX\FBX SDK\2013.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;d3dx11d.lib;d3dx9d.lib;dxerr.lib;dxguid.lib;winmm.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>fbxsdk-2013.3.lib;d3d11.lib;d3dcompiler.lib;d3dx11d.lib;d3dx9d.lib;dxerr.lib;dxguid.lib;winmm.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\FBX\FBX SDK\2013.3\lib\vs2010\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -148,9 +150,15 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BasicObject.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="DisplayMeshGPU.cpp" />
     <ClCompile Include="DX11App.cpp" />
     <ClCompile Include="DX11Helper.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="FbxHandler.cpp" />
+    <ClCompile Include="HeperFunc.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Prespective.cpp" />
+    <ClCompile Include="SkeletalAnimation.cpp" />
     <ClCompile Include="SphericalMirror.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -172,9 +180,15 @@
     <ClInclude Include="BasicObject.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cBuffer.h" />
+    <ClInclude Include="DisplayMeshGPU.h" />
     <ClInclude Include="DX11App.h" />
     <ClInclude Include="DX11Helper.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="FbxHandler.h" />
+    <ClInclude Include="HelperFuncs.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Prespective.h" />
+    <ClInclude Include="SkeletalAnimation.h" />
     <ClInclude Include="SphericalMirror.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="iObjectDrawable.h" />
@@ -201,6 +215,7 @@
     <None Include="ShaderFiles\4_CubeMapping.fx" />
     <None Include="ShaderFiles\5_SkyMap.fx" />
     <None Include="ShaderFiles\6_Binoculars.fx" />
+    <None Include="ShaderFiles\7_GpuSkinShader.fx" />
     <None Include="ShaderFiles\HLSL_4_BasicLightFunctions.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

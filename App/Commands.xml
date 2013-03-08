@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Objects>
   <Object>
-    <ID>VerletBunny</ID>
-    <Class>Verlet</Class>
-    <PlyFile>PlyFiles/bun_zipper_res3.ply</PlyFile>
-    <ShaderInput  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="5.0f" Y="5.0f" Z="5.0f"/>
-    <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
-  </Object>
-  <Object>
     <ID>Floor</ID>
     <Class>PlyFile</Class>
     <PlyFile>PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>

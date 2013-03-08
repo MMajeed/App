@@ -12,6 +12,7 @@
 #include <sstream>
 #include <iomanip>
 #include "SphericalMirror.h"
+#include "FbxHandler.h"
 
 void Application::Render()
 {
@@ -56,6 +57,8 @@ void Application::DrawObjects()
 	{
 		this->objects[i]->Draw();
 	}
+
+	g_pMyDisplayMeshGPU->Draw();
 }
 void  Application::Present()
 {
@@ -114,6 +117,8 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 				objects[i]->UpdateObject(static_cast<float>(timer._frameTime));
 			}
 
+			g_pMyDisplayMeshGPU->Update(timer._frameTime);
+	
 			this->SortObject();
 
 			// render
@@ -197,6 +202,37 @@ void Application::InitDevices()
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
 	objects = ObjectLoader::getInstance()->SpawnAll();
+
+	//-------------------------------------------------------------------------
+    // Initialize our entities
+    InitializeFbxSdk();
+
+	PrintFbxFile("DefaultCharacter/DefaultAvatar.fbx");
+	g_pMyMesh = LoadMeshFromFbx("DefaultCharacter/DefaultAvatar.fbx");
+	if(!g_pMyMesh)
+	{
+		throw std::exception("Error loading fbx file");
+	}
+
+	g_pMyDisplayMeshGPU = new (std::nothrow) DisplayMeshGPU();
+	if(!g_pMyDisplayMeshGPU)
+	{
+		throw std::exception("Failed at creating memory for display mesh gpu");
+	}
+	g_pMyDisplayMeshGPU->SetMesh(g_pMyMesh);
+	auto hr = g_pMyDisplayMeshGPU->Initialize();
+	if(FAILED(hr))
+	{
+		throw std::exception("Failed to initlize g_pMyDisplayMeshGPU");
+	}
+
+	g_pIdleAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx");
+    g_pWalkAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx");
+    g_pRunAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx");
+    if(!g_pIdleAnim || !g_pWalkAnim || !g_pRunAnim)
+	{
+		throw std::exception("Failed to initlize g_pMyDisplayMeshGPU");
+	}
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
@@ -271,6 +307,21 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 						}
 					}
 					return 0;
+				case '1':
+					{
+						g_pMyDisplayMeshGPU->PlayAnimation(g_pIdleAnim);
+					}
+					break;
+				case '2':
+					{
+						g_pMyDisplayMeshGPU->PlayAnimation(g_pWalkAnim);
+					}
+					break;
+				case '3':
+					{
+						g_pMyDisplayMeshGPU->PlayAnimation(g_pRunAnim);
+					}
+					break;
 			}
 		case WM_TIMER:
 		{
