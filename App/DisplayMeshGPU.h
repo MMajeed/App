@@ -64,6 +64,8 @@ public:
 	std::pair<std::string, ID3D11Buffer*>			pCBChangesEveryFrame;
 	std::pair<std::string, ID3D11Buffer*>			pAnimBonesBuffer;
 
+	void LoadD3DStuff();
+
 	ShaderFiles Shader;
 };
 

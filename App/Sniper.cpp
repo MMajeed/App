@@ -248,7 +248,7 @@ Sniper::Sniper()
 
 	std::wstring error;
 	
-	bool hr = VertexBuffer::LoadFromPlyFile(L"PlyFiles/1x1_2Tri_Quad_2_Sided.ply", this->vertexBuffer,error); 
+	bool hr = PlyBuffer::LoadFromPlyFile(L"PlyFiles/1x1_2Tri_Quad_2_Sided.ply", this->PlyBuffer,error); 
 	if(!hr)
 	{
 		throw std::exception("Error loading ply file");

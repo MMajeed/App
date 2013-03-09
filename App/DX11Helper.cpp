@@ -40,15 +40,15 @@ HRESULT DX11Helper::CompileShaderFromFile( std::wstring shaderFileName, std::wst
 
 	return true;
 }
-HRESULT DX11Helper::LoadInputLayoutFile( std::string vsFileName, std::string vsEntryPoint, std::string vsModel, ID3D11Device* device, ID3D11InputLayout** ilOut, std::wstring &error )
+HRESULT DX11Helper::LoadInputLayoutFile( std::string vsFileName, std::string vsEntryPoint, std::string vsModel, ID3D11Device* device, D3D11_INPUT_ELEMENT_DESC layout[], UINT numElements, ID3D11InputLayout** ilOut, std::wstring &error )
 {
 	std::wstring wVSFileName = std::wstring(vsFileName.begin(), vsFileName.end());
 	std::wstring wVSEntryPoint = std::wstring(vsEntryPoint.begin(), vsEntryPoint.end());
 	std::wstring wVSModel = std::wstring(vsModel.begin(), vsModel.end());
 
-	return DX11Helper::LoadInputLayoutFile(wVSFileName, wVSEntryPoint, wVSModel, device, ilOut, error);
+	return DX11Helper::LoadInputLayoutFile(wVSFileName, wVSEntryPoint, wVSModel, device, layout, numElements, ilOut, error);
 }
-HRESULT DX11Helper::LoadInputLayoutFile( std::wstring vsFileName, std::wstring vsEntryPoint, std::wstring vsModel, ID3D11Device* device, ID3D11InputLayout** ilOut, std::wstring &error )
+HRESULT DX11Helper::LoadInputLayoutFile( std::wstring vsFileName, std::wstring vsEntryPoint, std::wstring vsModel, ID3D11Device* device, D3D11_INPUT_ELEMENT_DESC layout[], UINT numElements, ID3D11InputLayout** ilOut, std::wstring &error )
 {
 	HRESULT hr = S_OK;
 
@@ -64,15 +64,6 @@ HRESULT DX11Helper::LoadInputLayoutFile( std::wstring vsFileName, std::wstring v
 		error = ssError.str();
         return false;
     }
-
-	D3D11_INPUT_ELEMENT_DESC layout[] =
-    {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 1, DXGI_FORMAT_R32G32_FLOAT, 0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-    };
-	UINT numElements = ARRAYSIZE( layout );
 
 	hr = device->CreateInputLayout( layout, numElements, pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), ilOut );
 	pVSBlob->Release();	// Don't need this any more

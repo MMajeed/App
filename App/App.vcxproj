@@ -171,7 +171,7 @@
     <ClCompile Include="Sniper.cpp" />
     <ClCompile Include="tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="Transparent.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="PlyBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -201,7 +201,7 @@
     <ClInclude Include="Sniper.h" />
     <ClInclude Include="tinyxml2\tinyxml2.h" />
     <ClInclude Include="Transparent.h" />
-    <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="PlyBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Commands.xml">

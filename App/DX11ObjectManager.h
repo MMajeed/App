@@ -32,9 +32,9 @@ public:
 		bool Get(std::string name, T& out)
 		{
 			auto iter = this->mapObject.find(name);
-
+			if(iter == this->mapObject.end()) return false;
 			out = iter->second;
-			return iter != this->mapObject.end();
+			return true;
 		}
 		bool Exists(std::string name)
 		{
@@ -43,7 +43,7 @@ public:
 		std::map<std::string, T> mapObject;
 	};
 
-	D3DMapContainer<ID3D11Buffer*> 					VertexBuffer;
+	D3DMapContainer<ID3D11Buffer*> 					PlyBuffer;
 	D3DMapContainer<ID3D11Buffer*> 					IndexBuffer;
 	D3DMapContainer<ID3D11Buffer*> 					CBuffer;
 	D3DMapContainer<ID3D11InputLayout*>				InputLayout;

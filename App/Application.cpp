@@ -58,7 +58,7 @@ void Application::DrawObjects()
 		this->objects[i]->Draw();
 	}
 
-	//g_pMyDisplayMeshGPU->Draw();
+	g_pMyDisplayMeshGPU->Draw();
 }
 void  Application::Present()
 {
@@ -117,7 +117,7 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 				objects[i]->UpdateObject(static_cast<float>(timer._frameTime));
 			}
 
-			//g_pMyDisplayMeshGPU->UpdateDrawing(timer._frameTime);
+			g_pMyDisplayMeshGPU->UpdateDrawing(timer._frameTime);
 	
 			this->SortObject();
 
@@ -204,35 +204,31 @@ void Application::InitDevices()
 	objects = ObjectLoader::getInstance()->SpawnAll();
 
 	////-------------------------------------------------------------------------
- //   // Initialize our entities
- //   InitializeFbxSdk();
+    // Initialize our entities
+    InitializeFbxSdk();
 
-	//PrintFbxFile("DefaultCharacter/DefaultAvatar.fbx");
-	//g_pMyMesh = LoadMeshFromFbx("DefaultCharacter/DefaultAvatar.fbx");
-	//if(!g_pMyMesh)
-	//{
-	//	throw std::exception("Error loading fbx file");
-	//}
+	PrintFbxFile("DefaultCharacter/DefaultAvatar.fbx");
+	g_pMyMesh = LoadMeshFromFbx("DefaultCharacter/DefaultAvatar.fbx");
+	if(!g_pMyMesh)
+	{
+		throw std::exception("Error loading fbx file");
+	}
 
-	//g_pMyDisplayMeshGPU = new DisplayMeshGPU();
-	//if(!g_pMyDisplayMeshGPU)
-	//{
-	//	throw std::exception("Failed at creating memory for display mesh gpu");
-	//}
-	//g_pMyDisplayMeshGPU->SetMesh(g_pMyMesh);
-	// g_pMyDisplayMeshGPU->Init();
-	///*if(FAILED(hr))
-	//{
-	//	throw std::exception("Failed to initlize g_pMyDisplayMeshGPU");
-	//}*/
+	g_pMyDisplayMeshGPU = new DisplayMeshGPU();
+	if(!g_pMyDisplayMeshGPU)
+	{
+		throw std::exception("Failed at creating memory for display mesh gpu");
+	}
+	g_pMyDisplayMeshGPU->SetMesh(g_pMyMesh);
+	g_pMyDisplayMeshGPU->Init();
 
-	//g_pIdleAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx");
- //   g_pWalkAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx");
- //   g_pRunAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx");
- //   if(!g_pIdleAnim || !g_pWalkAnim || !g_pRunAnim)
-	//{
-	//	throw std::exception("Failed to initlize g_pMyDisplayMeshGPU");
-	//}
+	g_pIdleAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx");
+    g_pWalkAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx");
+    g_pRunAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx");
+    if(!g_pIdleAnim || !g_pWalkAnim || !g_pRunAnim)
+	{
+		throw std::exception("Failed to initlize g_pMyDisplayMeshGPU");
+	}
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {

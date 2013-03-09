@@ -5,7 +5,7 @@
 #include "DX11Helper.h"
 #include "Helper.h"
 #include "cBuffer.h"
-#include "VertexBuffer.h"
+#include "PlyBuffer.h"
 #include "Helper.h"
 #include <sstream>
 
@@ -63,7 +63,7 @@ void BasicObject::SetupDraw()
 	pImmediateContext->PSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 		
 	// Set vertex buffer 
-	UINT stride = sizeof( VertexBuffer::SimpleVertex );
+	UINT stride = sizeof( PlyBuffer::Vertex );
 	UINT offset = 0;
 	pImmediateContext->IASetVertexBuffers( 0, 1, &this->pVertexBuffer.second, &stride, &offset );
 	pImmediateContext->IASetIndexBuffer( this->pIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
@@ -98,7 +98,7 @@ void BasicObject::DrawObject()
 {
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 	
-	pImmediateContext->DrawIndexed( this->vertexBuffer.indices.size(), 0, 0 );
+	pImmediateContext->DrawIndexed( this->PlyBuffer.indices.size(), 0, 0 );
 }
 void BasicObject::CleanupAfterDraw()
 {
@@ -111,7 +111,7 @@ void BasicObject::CleanupAfterDraw()
 }
 void BasicObject::LoadD3DStuff()
 {
-	if(!DX11ObjectManager::getInstance()->VertexBuffer.Get(this->pVertexBuffer.first, this->pVertexBuffer.second)){ throw std::exception("Vertex Buffer not found"); }
+	if(!DX11ObjectManager::getInstance()->PlyBuffer.Get(this->pVertexBuffer.first, this->pVertexBuffer.second)){ throw std::exception("Vertex Buffer not found"); }
 	if(!DX11ObjectManager::getInstance()->IndexBuffer.Get(this->pIndexBuffer.first, this->pIndexBuffer.second)){ throw std::exception("Index Buffer not found"); }
 	if(!DX11ObjectManager::getInstance()->InputLayout.Get(this->pInputLayout.first, this->pInputLayout.second)){ throw std::exception("Input Layout not found"); }
 	if(!DX11ObjectManager::getInstance()->VertexShader.Get(this->pVertexShader.first, this->pVertexShader.second)){ throw std::exception("Vertex Shader not found"); }
@@ -140,14 +140,14 @@ void BasicObject::InitVertexBuffer(ID3D11Device* device)
 {
 	std::wstring error;
 
-	if(!DX11ObjectManager::getInstance()->VertexBuffer.Exists(this->pVertexBuffer.first))
+	if(!DX11ObjectManager::getInstance()->PlyBuffer.Exists(this->pVertexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadVertexBuffer<VertexBuffer::SimpleVertex>(device, &(this->vertexBuffer.vertices.front()), this->vertexBuffer.vertices.size(), &(this->pVertexBuffer.second), error ))
+		if(!DX11Helper::LoadVertexBuffer<PlyBuffer::Vertex>(device, &(this->PlyBuffer.vertices.front()), this->PlyBuffer.vertices.size(), &(this->pVertexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->VertexBuffer.Add(this->pVertexBuffer.first, pVertexBuffer.second);
+		DX11ObjectManager::getInstance()->PlyBuffer.Add(this->pVertexBuffer.first, pVertexBuffer.second);
 	}
 }
 void BasicObject::InitIndexBuffer(ID3D11Device* device)
@@ -155,7 +155,7 @@ void BasicObject::InitIndexBuffer(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->pIndexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(this->vertexBuffer.indices.front()), this->vertexBuffer.indices.size(), &(this->pIndexBuffer.second), error ))
+		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(this->PlyBuffer.indices.front()), this->PlyBuffer.indices.size(), &(this->pIndexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -167,7 +167,16 @@ void BasicObject::InitInputLayout(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->InputLayout.Exists(this->pInputLayout.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadInputLayoutFile(Shader.ShaderInput.FileName, Shader.ShaderInput.EntryPoint, Shader.ShaderInput.Mode, device, &(this->pInputLayout.second), error))
+		D3D11_INPUT_ELEMENT_DESC layout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 1, DXGI_FORMAT_R32G32_FLOAT, 0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		};
+		UINT numElements = ARRAYSIZE( layout );
+
+		if(!DX11Helper::LoadInputLayoutFile(Shader.ShaderInput.FileName, Shader.ShaderInput.EntryPoint, Shader.ShaderInput.Mode, device, layout, numElements, &(this->pInputLayout.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}

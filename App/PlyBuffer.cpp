@@ -1,12 +1,12 @@
-#include "VertexBuffer.h"
+#include "PlyBuffer.h"
 #include "PlyLib\rply.h"
 #include "Helper.h"
 
-VertexBuffer buffer;
+PlyBuffer buffer;
 
 static int vertexX(p_ply_argument argument) {
-	VertexBuffer::SimpleVertex vertex;
-	memset(&vertex, 0, sizeof(VertexBuffer::SimpleVertex));
+	PlyBuffer::Vertex vertex;
+	memset(&vertex, 0, sizeof(PlyBuffer::Vertex));
 
 	buffer.vertices.push_back(  vertex );
 	float value = static_cast<float>(ply_get_argument_value(argument));
@@ -69,7 +69,7 @@ static int face_cb(p_ply_argument argument) {
 }
 
 
-bool VertexBuffer::LoadFromPlyFile(std::wstring fileName, VertexBuffer& vbOut, std::wstring error)
+bool PlyBuffer::LoadFromPlyFile(std::wstring fileName, PlyBuffer& vbOut, std::wstring error)
 {
 	long nvertices, ntriangles;
 	// Open the file
@@ -111,7 +111,7 @@ bool VertexBuffer::LoadFromPlyFile(std::wstring fileName, VertexBuffer& vbOut, s
 	vbOut = buffer;
 	
 	// Empty the vertex so that don't take up space
-	buffer.vertices = std::vector<SimpleVertex>();
+	buffer.vertices = std::vector<PlyBuffer::Vertex>();
 	buffer.indices = std::vector<WORD>();
 
 	return true;

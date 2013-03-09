@@ -24,9 +24,6 @@
     <ClCompile Include="BasicObject.cpp">
       <Filter>DX11ObjectDrawable\BasicObject</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Tools\DX11Stuff\VertexBuffer</Filter>
-    </ClCompile>
     <ClCompile Include="PlyLib\rply.c">
       <Filter>Tools\Helper\PlyFile</Filter>
     </ClCompile>
@@ -75,6 +72,9 @@
     <ClCompile Include="SkeletalAnimation.cpp">
       <Filter>DX11ObjectDrawable\FBX Files\SkeletalAnimation</Filter>
     </ClCompile>
+    <ClCompile Include="PlyBuffer.cpp">
+      <Filter>Tools\DX11Stuff\PlyBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -120,9 +120,6 @@
     <ClInclude Include="tinyxml2\tinyxml2.h">
       <Filter>Tools\Helper\TinyXML</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Tools\DX11Stuff\VertexBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="Transparent.h">
       <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
     </ClInclude>
@@ -158,6 +155,9 @@
     </ClInclude>
     <ClInclude Include="ShaderFiles.h">
       <Filter>Tools\DX11Stuff\ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="PlyBuffer.h">
+      <Filter>Tools\DX11Stuff\PlyBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -227,9 +227,6 @@
     <Filter Include="Tools\DX11Stuff">
       <UniqueIdentifier>{b8c58024-4b3b-4421-a9b4-951625fcd586}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\DX11Stuff\VertexBuffer">
-      <UniqueIdentifier>{9220a4ad-2ca7-41e7-b7d8-6a42166fda33}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\DX11Stuff\DX11Helper">
       <UniqueIdentifier>{7b277ef2-d875-4211-baf6-9a6d99b4e888}</UniqueIdentifier>
     </Filter>
@@ -259,6 +256,9 @@
     </Filter>
     <Filter Include="Tools\DX11Stuff\ShaderFiles">
       <UniqueIdentifier>{d4fc4a8d-2ffd-4ce5-8a72-76471f42e366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\PlyBuffer">
+      <UniqueIdentifier>{9220a4ad-2ca7-41e7-b7d8-6a42166fda33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 #include "DX11App.h"
 #include "DX11Helper.h"
 #include "Helper.h"
-#include "VertexBuffer.h"
+#include "PlyBuffer.h"
 #include <sstream>
 
 SkyBox::SkyBox()
@@ -45,7 +45,7 @@ SkyBox* SkyBox::Spawn(std::map<std::string, std::string> info)
 
 	auto iter = info.find("PlyFile");
 	if(iter == info.end()){throw std::exception("No ply file was included in the object");}
-	bool hr = VertexBuffer::LoadFromPlyFile(Helper::stringToWstring(iter->second), newSkyBox->vertexBuffer, error); 
+	bool hr = PlyBuffer::LoadFromPlyFile(Helper::stringToWstring(iter->second), newSkyBox->PlyBuffer, error); 
 	if(!hr){ throw std::exception("Error loading ply file"); }	
 	newSkyBox->pVertexBuffer.first = iter->second;
 	newSkyBox->pIndexBuffer.first = iter->second;

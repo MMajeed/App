@@ -4,7 +4,7 @@
 #include "Object.h"
 #include "iObjectDrawable.h"
 #include "DX11Helper.h"
-#include "VertexBuffer.h"
+#include "PlyBuffer.h"
 #include "ShaderFiles.h"
 #include <string>
 
@@ -22,7 +22,7 @@ public:
 	virtual void CleanupAfterDraw();
 	virtual float GetOrder();
 
-	VertexBuffer vertexBuffer;	
+	PlyBuffer PlyBuffer;	
 
 	std::pair<std::string, ID3D11Buffer*> 							pVertexBuffer;
 	std::pair<std::string, ID3D11Buffer*>							pIndexBuffer;

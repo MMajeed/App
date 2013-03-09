@@ -1,7 +1,7 @@
 #include "PlyFile.h"
 #include "DX11App.h"
 #include "Helper.h"
-#include "VertexBuffer.h"
+#include "PlyBuffer.h"
 #include <sstream>
 
 PlyFile::PlyFile()
@@ -16,7 +16,7 @@ PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 
 	auto iter = info.find("PlyFile");
 	if(iter == info.end()){throw std::exception("No ply file was included in the object");}
-	bool hr = VertexBuffer::LoadFromPlyFile(Helper::stringToWstring(iter->second), newPlyFile->vertexBuffer, error); 
+	bool hr = PlyBuffer::LoadFromPlyFile(Helper::stringToWstring(iter->second), newPlyFile->PlyBuffer, error); 
 	if(!hr){ throw std::exception("Error loading ply file"); }	
 	newPlyFile->pVertexBuffer.first = iter->second;
 	newPlyFile->pIndexBuffer.first = iter->second;

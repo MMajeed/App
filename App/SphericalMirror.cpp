@@ -299,7 +299,7 @@ SphericalMirror::SphericalMirror()
 
 	std::wstring error;
 	
-	bool hr = VertexBuffer::LoadFromPlyFile(L"PlyFiles/Sphere_Smooth_3.ply", this->vertexBuffer,error); 
+	bool hr = PlyBuffer::LoadFromPlyFile(L"PlyFiles/Sphere_Smooth_3.ply", this->PlyBuffer,error); 
 	if(!hr)
 	{
 		throw std::exception("Error loading ply file");
