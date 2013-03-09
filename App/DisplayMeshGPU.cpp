@@ -51,11 +51,6 @@ DisplayMeshGPU::DisplayMeshGPU() :
 DisplayMeshGPU::~DisplayMeshGPU()
 {
 	mMesh = NULL;
-
-    if(mChannelMap) delete [] mChannelMap;
-    if(mCurrentBones) delete [] mCurrentBones;
-    if(mCurrentGlobalPose) delete [] mCurrentGlobalPose;
-	if(mBoneTransforms) delete [] mBoneTransforms;
 }
 
 void DisplayMeshGPU::SetMesh(Mesh* pMesh)
@@ -67,15 +62,11 @@ void DisplayMeshGPU::Init()
 {
     HRESULT hr = S_OK;
 	
-    mCurrentGlobalPose = new (std::nothrow) _XMFLOAT4X4[mMesh->mNumBones];
-	mBoneTransforms = new (std::nothrow) _XMFLOAT4X4[128];
-    mCurrentBones = new (std::nothrow) JointPose[mMesh->mNumBones];
-    
-    if(!mCurrentGlobalPose || !mCurrentBones || !mBoneTransforms)
-    {
-        return;
-    }
-    
+	mCurrentGlobalPose.resize(mMesh->mNumBones);
+	mBoneTransforms.resize(128);
+	mCurrentBones.resize(mMesh->mNumBones);
+	mChannelMap.resize(mMesh->mNumBones);
+
 	int b = 0;
 	for(int i = 0; i < mMesh->mNumBones; ++i)
 	{
@@ -206,7 +197,7 @@ void DisplayMeshGPU::Draw()
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 
 	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cb, 0, 0 );
-	pImmediateContext->UpdateSubresource( this->pAnimBonesBuffer.second, 0, NULL, mBoneTransforms, 0, 0 );
+	pImmediateContext->UpdateSubresource( this->pAnimBonesBuffer.second, 0, NULL, &(mBoneTransforms.front()), 0, 0 );
     	
     pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 	pImmediateContext->VSSetConstantBuffers( 3, 1, &(this->pAnimBonesBuffer.second) );
@@ -238,34 +229,19 @@ void DisplayMeshGPU::PlayAnimation(SkeletalAnimation* anim)
     mAnimTime = 0.0f;
     if(anim && mMesh)
     {
-        //init channel-map
-        if(!mChannelMap)
+        for(int i = 0; i < mMesh->mNumBones; ++i)
         {
-            mChannelMap = new (std::nothrow) unsigned char[mMesh->mNumBones];
-        }
-        if(mChannelMap)
-        {
-
-            for(int i = 0; i < mMesh->mNumBones; ++i)
+            mChannelMap[i] = -1;
+            for(int j = 0; j < anim->mNumBones; ++j)
             {
-                mChannelMap[i] = -1;
-                for(int j = 0; j < anim->mNumBones; ++j)
+                if(strcmp(mMesh->mSkeleton[i].name, anim->mSkeleton[j].name) == 0)
                 {
-                    if(strcmp(mMesh->mSkeleton[i].name, anim->mSkeleton[j].name) == 0)
-                    {
-                        mChannelMap[i] = j;
-                        break;
-                    }
+                    mChannelMap[i] = j;
+                    break;
                 }
             }
         }
-    }
-    else
-    {
-        if(mChannelMap) delete [] mChannelMap;
-        mChannelMap = NULL;
-    }
-    
+    }    
 }
 
 char* DisplayMeshGPU::GetPlayingAnimation() const

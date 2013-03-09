@@ -43,12 +43,11 @@ public:
 
 	Mesh*                   mMesh;				//not owned by this class
     SkeletalAnimation*      mAnimation;			//not owned by this class
-    unsigned char*          mChannelMap;
+    std::vector<unsigned char>		mChannelMap;
 
-    JointPose*              mCurrentBones;
-    _XMFLOAT4X4*            mCurrentGlobalPose;
-
-	_XMFLOAT4X4*            mBoneTransforms;
+    std::vector<JointPose>			 mCurrentBones;
+    std::vector<XMFLOAT4X4>          mCurrentGlobalPose;
+	std::vector<XMFLOAT4X4>          mBoneTransforms;
 
 
     float                   mAnimTime;
