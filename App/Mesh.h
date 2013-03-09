@@ -9,17 +9,17 @@ public:
 	Mesh();
 	virtual ~Mesh();
 
-	SimpleSkinnedVertex*    mVerts;
-	WORD*					mIndices;
-    int						mNumVerts;
-	int						mNumIndices;
+	SimpleSkinnedVertex*				mVerts;
+	WORD*								mIndices;
+    int									mNumVerts;
+	int									mNumIndices;
 
-    Joint*					mSkeleton;
-    JointPose*				mOrigBones;
-    _XMFLOAT4X4*			mOrigGlobalPose;
-    int						mNumBones;
+    std::vector<Joint>					mSkeleton;
+    std::vector<JointPose>				mOrigBones;
+    std::vector<XMFLOAT4X4>				mOrigGlobalPose;
+    int									mNumBones;
 
-    SimpleSkinnedVertex*	mOrigVerts;
+    std::vector<SimpleSkinnedVertex>	mOrigVerts;
 };
 
 #endif

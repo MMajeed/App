@@ -716,25 +716,22 @@ void LoadMeshFromScene(FbxScene* pScene, Mesh* pMesh)
     int numBones = CountSkeletonRecursive(lRootNode);//, pMesh);
     if(numBones > 0)
     {
-        pMesh->mSkeleton = new (std::nothrow) Joint[numBones];
-        pMesh->mOrigBones = new (std::nothrow) JointPose[numBones];
-        pMesh->mOrigGlobalPose = new (std::nothrow) _XMFLOAT4X4[numBones];
+		pMesh->mSkeleton.resize(numBones);
+		pMesh->mOrigBones.resize(numBones);
+		pMesh->mOrigGlobalPose.resize(numBones);
 
-        if(pMesh->mSkeleton && pMesh->mOrigBones)
+        pMesh->mNumBones = 0;
+        LoadSkeletonRecursive(lRootNode, pMesh, -1);
+
+        LoadBindPose(pScene, pMesh);
+
+        // Note we calculate and store the inverse bind-pose transform for skinning later
+        for(int i = 0; i < pMesh->mNumBones; ++i)
         {
-            pMesh->mNumBones = 0;
-            LoadSkeletonRecursive(lRootNode, pMesh, -1);
-
-            LoadBindPose(pScene, pMesh);
-
-            // Note we calculate and store the inverse bind-pose transform for skinning later
-            for(int i = 0; i < pMesh->mNumBones; ++i)
-            {
-                XMVECTOR det;
-                XMMATRIX m = XMLoadFloat4x4(&pMesh->mOrigGlobalPose[i]);
-                m = XMMatrixInverse(&det, m);
-                XMStoreFloat4x4(&pMesh->mSkeleton[i].invBindPose, m);
-            }
+            XMVECTOR det;
+            XMMATRIX m = XMLoadFloat4x4(&pMesh->mOrigGlobalPose[i]);
+            m = XMMatrixInverse(&det, m);
+            XMStoreFloat4x4(&pMesh->mSkeleton[i].invBindPose, m);
         }
     }
 
