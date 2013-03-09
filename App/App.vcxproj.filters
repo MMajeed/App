@@ -63,17 +63,11 @@
     <ClCompile Include="FbxHandler.cpp">
       <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
     </ClCompile>
-    <ClCompile Include="HeperFunc.cpp">
-      <Filter>DX11ObjectDrawable\FBX Files\HeperFunc</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>DX11ObjectDrawable\FBX Files\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="SkeletalAnimation.cpp">
-      <Filter>DX11ObjectDrawable\FBX Files\SkeletalAnimation</Filter>
-    </ClCompile>
     <ClCompile Include="PlyBuffer.cpp">
       <Filter>Tools\DX11Stuff\PlyBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="cFBXBuffer.cpp">
+      <Filter>Tools\DX11Stuff\cBuffer\cFBXBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,20 +138,20 @@
     <ClInclude Include="FbxHandler.h">
       <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>DX11ObjectDrawable\FBX Files\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="HelperFuncs.h">
-      <Filter>DX11ObjectDrawable\FBX Files\HeperFunc</Filter>
-    </ClInclude>
     <ClInclude Include="SkeletalAnimation.h">
-      <Filter>DX11ObjectDrawable\FBX Files\SkeletalAnimation</Filter>
+      <Filter>Tools\Mesh &amp; Skeletal\SkeletalAnimation</Filter>
     </ClInclude>
     <ClInclude Include="ShaderFiles.h">
       <Filter>Tools\DX11Stuff\ShaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="PlyBuffer.h">
       <Filter>Tools\DX11Stuff\PlyBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Tools\Mesh &amp; Skeletal\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="cFBXBuffer.h">
+      <Filter>Tools\DX11Stuff\cBuffer\cFBXBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,20 +239,23 @@
     <Filter Include="DX11ObjectDrawable\FBX Files\FbxHandler">
       <UniqueIdentifier>{5371c2cc-c3b8-4e0b-8d17-2bdde197f181}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX Files\HeperFunc">
-      <UniqueIdentifier>{2ca2498d-efcc-4a9a-a294-0f511d1e0b5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX Files\Mesh">
-      <UniqueIdentifier>{40ce2031-0f29-4535-aab0-e91c692bbca6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX Files\SkeletalAnimation">
-      <UniqueIdentifier>{b966fe15-2773-4a25-aedb-7406470720f8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\DX11Stuff\ShaderFiles">
       <UniqueIdentifier>{d4fc4a8d-2ffd-4ce5-8a72-76471f42e366}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools\DX11Stuff\PlyBuffer">
       <UniqueIdentifier>{9220a4ad-2ca7-41e7-b7d8-6a42166fda33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Mesh &amp; Skeletal">
+      <UniqueIdentifier>{d2eb6592-dcad-422f-841e-ab62ad2a7713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Mesh &amp; Skeletal\Mesh">
+      <UniqueIdentifier>{40ce2031-0f29-4535-aab0-e91c692bbca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Mesh &amp; Skeletal\SkeletalAnimation">
+      <UniqueIdentifier>{b966fe15-2773-4a25-aedb-7406470720f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\cBuffer\cFBXBuffer">
+      <UniqueIdentifier>{9d5ed5ae-a9b9-4cf6-a394-1e0ffcea44fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

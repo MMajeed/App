@@ -1,7 +1,7 @@
 #include "DisplayMeshGPU.h"
 #include "Mesh.h"
 #include "SkeletalAnimation.h"
-#include "HelperFuncs.h"
+#include "cFBXBuffer.h"
 #include <new>
 #include "Application.h"
 #include "DX11Helper.h"
@@ -11,15 +11,6 @@
 #include "DX11ObjectManager.h"
 
 DisplayMeshGPU::DisplayMeshGPU() :
-	mMesh(NULL),
-    mAnimation(NULL),
-    mChannelMap(NULL),
-
-    mCurrentBones(NULL),
-    mCurrentGlobalPose(NULL),
-
-	mBoneTransforms(NULL),
-
     mAnimTime(0.0f),
     mAnimRate(1.0f),
     mCurrentFrame(0.0f)
@@ -50,10 +41,9 @@ DisplayMeshGPU::DisplayMeshGPU() :
 
 DisplayMeshGPU::~DisplayMeshGPU()
 {
-	mMesh = NULL;
 }
 
-void DisplayMeshGPU::SetMesh(Mesh* pMesh)
+void DisplayMeshGPU::SetMesh(Mesh pMesh)
 {
 	mMesh = pMesh;
 }
@@ -62,16 +52,15 @@ void DisplayMeshGPU::Init()
 {
     HRESULT hr = S_OK;
 	
-	mCurrentGlobalPose.resize(mMesh->mNumBones);
+	mCurrentGlobalPose.resize(mMesh.mNumBones);
 	mBoneTransforms.resize(128);
-	mCurrentBones.resize(mMesh->mNumBones);
-	mChannelMap.resize(mMesh->mNumBones);
+	mChannelMap.resize(mMesh.mNumBones);
+	mCurrentBones.resize(mMesh.mNumBones);
 
-	int b = 0;
-	for(int i = 0; i < mMesh->mNumBones; ++i)
+	for(int i = 0; i < mMesh.mNumBones; ++i)
 	{
-		mCurrentGlobalPose[i] = mMesh->mOrigGlobalPose[i];
-		mCurrentBones[i] = mMesh->mOrigBones[i];
+		mCurrentGlobalPose[i] = mMesh.mOrigGlobalPose[i];
+		mCurrentBones[i] = mMesh.mOrigBones[i];
 	}
 
 	ID3D11Device* device = (dynamic_cast<DX11App*>(App::getInstance()))->direct3d.pd3dDevice;
@@ -94,23 +83,23 @@ void DisplayMeshGPU::Clean()
 
 void DisplayMeshGPU::UpdateDrawing(float delta)
 {
-    if(mAnimation)
+	if(mAnimation.mName != "")
     {
         float oldTime = mAnimTime;
         mAnimTime = oldTime;
         //find the appropriate frame
         mAnimTime += delta * mAnimRate;
-        while(mAnimTime >= mAnimation->mDuration)
+        while(mAnimTime >= mAnimation.mDuration)
         {
-            mAnimTime -= mAnimation->mDuration;
+            mAnimTime -= mAnimation.mDuration;
         }
         int frame = 0;
-        while(mAnimTime > mAnimation->mKeys[frame].mTime && frame < mAnimation->mNumKeys)
+		while(mAnimTime > mAnimation.mKeys[frame].mTime && frame < mAnimation.mKeys.size())
         {
             ++frame;
         }
 
-        if(frame >= mAnimation->mNumKeys)
+        if(frame >= mAnimation.mKeys.size())
         {
             frame = 0;
         }
@@ -120,18 +109,18 @@ void DisplayMeshGPU::UpdateDrawing(float delta)
 		if(frame > 0)
 		{
 			prevFrame = frame - 1;
-			t = (mAnimTime - mAnimation->mKeys[prevFrame].mTime) / (mAnimation->mKeys[frame].mTime - mAnimation->mKeys[prevFrame].mTime);
+			t = (mAnimTime - mAnimation.mKeys[prevFrame].mTime) / (mAnimation.mKeys[frame].mTime - mAnimation.mKeys[prevFrame].mTime);
 		}
 
 		mCurrentFrame = static_cast<float>(frame) + t; //this is just for show in the title-bar
 
         // we've got the frame, so update the animation   
-        for(int i = 0; i < mMesh->mNumBones; ++i)
+        for(int i = 0; i < mMesh.mNumBones; ++i)
         {
             if(mChannelMap[i] != -1)
             {
-                JointPose* jntA = &(mAnimation->mKeys[prevFrame].mBones[mChannelMap[i]]);
-				JointPose* jntB = &(mAnimation->mKeys[frame].mBones[mChannelMap[i]]);
+				cFBXBuffer::JointPose* jntA = &(mAnimation.mKeys[prevFrame].mBones[mChannelMap[i]]);
+				cFBXBuffer::JointPose* jntB = &(mAnimation.mKeys[frame].mBones[mChannelMap[i]]);
 
 				XMStoreFloat3(&mCurrentBones[i].translation, XMVectorLerp(XMLoadFloat3(&jntA->translation), XMLoadFloat3(&jntB->translation), t));
                 XMStoreFloat4(&mCurrentBones[i].rotation, XMQuaternionSlerp(XMLoadFloat4(&jntA->rotation), XMLoadFloat4(&jntB->rotation), t));
@@ -143,9 +132,9 @@ void DisplayMeshGPU::UpdateDrawing(float delta)
     {
         //some test rotation of bones to see the skinning work
         XMVECTOR r = XMQuaternionRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
-        for(int i = 1; i < mMesh->mNumBones; ++i)
+        for(int i = 1; i < mMesh.mNumBones; ++i)
         {
-            XMVECTOR q = XMLoadFloat4(&mMesh->mOrigBones[i].rotation);
+            XMVECTOR q = XMLoadFloat4(&mMesh.mOrigBones[i].rotation);
 
             q = XMQuaternionMultiply(q, r);
 
@@ -154,12 +143,12 @@ void DisplayMeshGPU::UpdateDrawing(float delta)
     }
 
     //update the current pose
-    for(int i = 0; i < mMesh->mNumBones; ++i)
+    for(int i = 0; i < mMesh.mNumBones; ++i)
     {
         XMMATRIX m = mCurrentBones[i].GetTransform();
-        if(mMesh->mSkeleton[i].parent >= 0)
+        if(mMesh.mSkeleton[i].parent >= 0)
         {
-            XMMATRIX c = XMLoadFloat4x4(&mCurrentGlobalPose[mMesh->mSkeleton[i].parent]);
+            XMMATRIX c = XMLoadFloat4x4(&mCurrentGlobalPose[mMesh.mSkeleton[i].parent]);
             m *= c;
         }
         
@@ -175,9 +164,9 @@ void DisplayMeshGPU::UpdateObject(float delta)
 void DisplayMeshGPU::Draw()
 {
 	//update the current pose
-    for(int i = 0; i < mMesh->mNumBones; ++i)
+    for(int i = 0; i < mMesh.mNumBones; ++i)
     {
-		XMMATRIX invBind = XMLoadFloat4x4(&mMesh->mSkeleton[i].invBindPose);
+		XMMATRIX invBind = XMLoadFloat4x4(&mMesh.mSkeleton[i].invBindPose);
 		XMMATRIX currPose = XMLoadFloat4x4(&mCurrentGlobalPose[i]);
 		XMMATRIX total = invBind * currPose;
 		XMMATRIX invTotal = XMMatrixTranspose( total);
@@ -204,7 +193,7 @@ void DisplayMeshGPU::Draw()
 
     // Set vertex buffer
 
-    UINT stride = sizeof( SimpleSkinnedVertex );
+    UINT stride = sizeof( cFBXBuffer::SimpleSkinnedVertex );
     UINT offset = 0;
 	pImmediateContext->IASetVertexBuffers( 0, 1, &(this->pVertexBuffer.second), &stride, &offset );
 	pImmediateContext->IASetIndexBuffer( this->pIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
@@ -219,22 +208,22 @@ void DisplayMeshGPU::Draw()
 
 	pImmediateContext->RSSetState( this->pRastersizerState.second );
 
-    pImmediateContext->DrawIndexed( mMesh->mNumIndices, 0, 0 );
+    pImmediateContext->DrawIndexed( mMesh.mNumIndices, 0, 0 );
 
 }
 
-void DisplayMeshGPU::PlayAnimation(SkeletalAnimation* anim)
+void DisplayMeshGPU::PlayAnimation(SkeletalAnimation anim)
 {
     mAnimation = anim;
     mAnimTime = 0.0f;
-    if(anim && mMesh)
+    if(anim.mName != "")
     {
-        for(int i = 0; i < mMesh->mNumBones; ++i)
+        for(int i = 0; i < mMesh.mNumBones; ++i)
         {
             mChannelMap[i] = -1;
-            for(int j = 0; j < anim->mNumBones; ++j)
+            for(int j = 0; j < anim.mNumBones; ++j)
             {
-                if(strcmp(mMesh->mSkeleton[i].name, anim->mSkeleton[j].name) == 0)
+                if(strcmp(mMesh.mSkeleton[i].name, anim.mSkeleton[j].name) == 0)
                 {
                     mChannelMap[i] = j;
                     break;
@@ -244,12 +233,12 @@ void DisplayMeshGPU::PlayAnimation(SkeletalAnimation* anim)
     }    
 }
 
-char* DisplayMeshGPU::GetPlayingAnimation() const
+std::string DisplayMeshGPU::GetPlayingAnimation() const
 {
     static char none[] = "None";
-    if(mAnimation)
+    if(mAnimation.mName != "")
     {
-        return(mAnimation->mName);
+        return(mAnimation.mName);
     }
     else
     {
@@ -274,7 +263,7 @@ void DisplayMeshGPU::InitVertexBuffer(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->PlyBuffer.Exists(this->pVertexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadVertexBuffer<SimpleSkinnedVertex>(device, mMesh->mVerts, mMesh->mNumVerts, &(this->pVertexBuffer.second), error ))
+		if(!DX11Helper::LoadVertexBuffer<cFBXBuffer::SimpleSkinnedVertex>(device, &(mMesh.mVerts.front()), mMesh.mNumVerts, &(this->pVertexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -286,7 +275,7 @@ void DisplayMeshGPU::InitIndexBuffer(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->pIndexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadIndexBuffer<WORD>(device, mMesh->mIndices, mMesh->mNumIndices, &(this->pIndexBuffer.second), error ))
+		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(mMesh.mIndices.front()), mMesh.mNumIndices, &(this->pIndexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -368,7 +357,7 @@ void DisplayMeshGPU::InitAnimBuffer(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->pAnimBonesBuffer.first))
 	{
 		std::wstring error;
-		if(!cBuffer::LoadBuffer<AnimMatrices>(device, &(this->pAnimBonesBuffer.second), error))
+		if(!cBuffer::LoadBuffer<cFBXBuffer::AnimMatrices>(device, &(this->pAnimBonesBuffer.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}

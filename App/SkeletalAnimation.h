@@ -1,31 +1,32 @@
 #ifndef SKELETAL_ANIM_H
 #define SKELETAL_ANIM_H
 
-#include "HelperFuncs.h"
+#include "cFBXBuffer.h"
+
+struct Frame
+{
+    std::vector<cFBXBuffer::JointPose>	mBones;
+    float					mTime;
+
+    Frame() : mTime(-1.0f) {}
+};
 
 class SkeletalAnimation
 {
 public:
-	SkeletalAnimation();
-	virtual ~SkeletalAnimation();
+	SkeletalAnimation():
+		mNumBones(0),
+		mDuration(0.0f)
+	{
+	}
+	virtual ~SkeletalAnimation(){}
 
-    Joint*                mSkeleton;
-    int                   mNumBones;
+    std::vector<cFBXBuffer::Joint>		mSkeleton;
+    int						mNumBones;
 
-    struct Frame
-    {
-        JointPose*            mBones;
-        float                 mTime;
-
-        Frame() : mBones(NULL), mTime(-1.0f) {}
-    };
-
-    Frame*                mKeys;
-    int                   mNumKeys;
-
-    float                 mDuration;
-
-    char                  mName[100];
+    std::vector<Frame>		mKeys;
+    float					mDuration;
+    std::string				mName;    
 };
 
 #endif

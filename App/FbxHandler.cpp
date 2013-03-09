@@ -3,6 +3,7 @@
 #include "FbxHandler.h"
 #include "Mesh.h"
 #include "SkeletalAnimation.h"
+#include <sstream>
 
 FbxManager* g_FbxSdkManager = NULL;
 
@@ -303,7 +304,7 @@ void PrintFbxFile(const char* szFileName)
 
 }
 
-void LoadSkinInfo(FbxNode* pNode, Mesh* pMesh, int vertOffset, int numVerts)
+void LoadSkinInfo(FbxNode* pNode, Mesh& pMesh, int vertOffset, int numVerts)
 {
     char buffer[500];
     buffer[499] = '\0';
@@ -327,8 +328,8 @@ void LoadSkinInfo(FbxNode* pNode, Mesh* pMesh, int vertOffset, int numVerts)
 
     if(lClusterCount == 0)
     {
-        // This mesh does not have any skin deformers, so check if it is attached directly to a skeleton joint and
-        // do a rigid skinning to that joint
+        // This mesh does not have any skin deformers, so check if it is attached directly to a skeleton cFBXBuffer::Joint and
+        // do a rigid skinning to that cFBXBuffer::Joint
         FbxNode* lParent = pNode->GetParent();
         if(lParent)
         {
@@ -336,19 +337,19 @@ void LoadSkinInfo(FbxNode* pNode, Mesh* pMesh, int vertOffset, int numVerts)
 	        if(lNodeAttribute && 
 		        lNodeAttribute->GetAttributeType() == FbxNodeAttribute::eSkeleton)
             {
-                for(int b = 0; b < pMesh->mNumBones; ++b)
+                for(int b = 0; b < pMesh.mNumBones; ++b)
                 {
-                    if(strcmp(pMesh->mSkeleton[b].name, lParent->GetName()) == 0)
+                    if(strcmp(pMesh.mSkeleton[b].name, lParent->GetName()) == 0)
                     {
                         _snprintf_s(buffer, 499, "  Node [%s] attached to Skeleton [%s][%d]\n", pNode->GetName(), lParent->GetName(), b);
                         OutputDebugStringA(buffer);
 
-                        if(vertOffset + numVerts <= pMesh->mNumVerts)
+                        if(vertOffset + numVerts <= pMesh.mNumVerts)
                         {
                             for(int i = 0; i < numVerts; ++i)
                             {
-                                pMesh->mVerts[i + vertOffset].JointIndex[0] = b;
-                                pMesh->mVerts[i + vertOffset].JointWeight[0] = 1.0f;
+                                pMesh.mVerts[i + vertOffset].JointIndex[0] = b;
+                                pMesh.mVerts[i + vertOffset].JointWeight[0] = 1.0f;
                             }
                         }
                         return;
@@ -376,9 +377,9 @@ void LoadSkinInfo(FbxNode* pNode, Mesh* pMesh, int vertOffset, int numVerts)
             _snprintf_s(buffer, 499, "   cluster[%d] has link[%s]!\n", c, cluster->GetLink()->GetName());
             OutputDebugStringA(buffer);
 
-            for(int b = 0; b < pMesh->mNumBones; ++b)
+            for(int b = 0; b < pMesh.mNumBones; ++b)
             {
-                if(strcmp(pMesh->mSkeleton[b].name, cluster->GetLink()->GetName()) == 0)
+                if(strcmp(pMesh.mSkeleton[b].name, cluster->GetLink()->GetName()) == 0)
                 {
                     int numIndices = cluster->GetControlPointIndicesCount();
                     if(numIndices > 0)
@@ -389,21 +390,21 @@ void LoadSkinInfo(FbxNode* pNode, Mesh* pMesh, int vertOffset, int numVerts)
                         {
                             if(weights[i] > 0.f)
                             {
-                                if(vertOffset + indices[i] < pMesh->mNumVerts)
+                                if(vertOffset + indices[i] < pMesh.mNumVerts)
                                 {
                                     for(int w = 0; w < 4; ++w)
                                     {
                                         //find the next available weight
-                                        if(weights[i] > pMesh->mVerts[vertOffset + indices[i]].JointWeight[w])
+                                        if(weights[i] > pMesh.mVerts[vertOffset + indices[i]].JointWeight[w])
                                         {
                                             //ensure that our skinning info is ordered from most significant to least significant
                                             for(int wb = 3; wb > w; --wb)
                                             {
-                                                pMesh->mVerts[vertOffset + indices[i]].JointIndex[wb] = pMesh->mVerts[vertOffset + indices[i]].JointIndex[wb-1];
-                                                pMesh->mVerts[vertOffset + indices[i]].JointWeight[wb] = pMesh->mVerts[vertOffset + indices[i]].JointWeight[wb-1];
+                                                pMesh.mVerts[vertOffset + indices[i]].JointIndex[wb] = pMesh.mVerts[vertOffset + indices[i]].JointIndex[wb-1];
+                                                pMesh.mVerts[vertOffset + indices[i]].JointWeight[wb] = pMesh.mVerts[vertOffset + indices[i]].JointWeight[wb-1];
                                             }
-                                            pMesh->mVerts[vertOffset + indices[i]].JointIndex[w] = b;
-                                            pMesh->mVerts[vertOffset + indices[i]].JointWeight[w] = static_cast<float>(weights[i]);
+                                            pMesh.mVerts[vertOffset + indices[i]].JointIndex[w] = b;
+                                            pMesh.mVerts[vertOffset + indices[i]].JointWeight[w] = static_cast<float>(weights[i]);
                                             break;
                                         }
                                     }
@@ -421,13 +422,13 @@ void LoadSkinInfo(FbxNode* pNode, Mesh* pMesh, int vertOffset, int numVerts)
             float s = 0.0f;
             for(int w = 0; w < 4; ++w)
             {
-                s += pMesh->mVerts[vertOffset + i].JointWeight[w];
+                s += pMesh.mVerts[vertOffset + i].JointWeight[w];
             }
             if(s > 0.0f && (s < 0.999999f || s > 1.000001f))
             {
                 for(int w = 0; w < 4; ++w)
                 {
-                    pMesh->mVerts[vertOffset + i].JointWeight[w] /= s;
+                    pMesh.mVerts[vertOffset + i].JointWeight[w] /= s;
                 }
             }
         }
@@ -436,7 +437,7 @@ void LoadSkinInfo(FbxNode* pNode, Mesh* pMesh, int vertOffset, int numVerts)
     }
 }
 
-void LoadMeshRecursive(FbxNode* pNode, Mesh* pMesh)
+void LoadMeshRecursive(FbxNode* pNode, Mesh& pMesh)
 {
 	FbxNodeAttribute* lNodeAttribute = pNode->GetNodeAttribute();
 
@@ -454,76 +455,63 @@ void LoadMeshRecursive(FbxNode* pNode, Mesh* pMesh)
 
 		if(lVertexCount > 0)
 		{
-			int vertOffset = pMesh->mNumVerts;
-			if(pMesh->mVerts && vertOffset > 0)
+			int vertOffset = pMesh.mNumVerts;
+			if( vertOffset > 0)
 			{
-				SimpleSkinnedVertex* verts = new (std::nothrow) SimpleSkinnedVertex[vertOffset + lVertexCount];
-				if(!verts)
-					return;
-				memcpy(verts, pMesh->mVerts, sizeof(SimpleSkinnedVertex) * vertOffset);
-				delete [] pMesh->mVerts;
-				pMesh->mVerts = verts;
+				pMesh.mVerts.resize(vertOffset + lVertexCount);
 			}
 			else
 			{
-				pMesh->mVerts = new (std::nothrow) SimpleSkinnedVertex[lVertexCount];
+				pMesh.mVerts.resize(lVertexCount);
 			}
-			if(pMesh->mVerts)
+
+
+			pMesh.mNumVerts = vertOffset + lVertexCount;
+			for(int i = 0; i < lVertexCount; ++i)
 			{
-				pMesh->mNumVerts = vertOffset + lVertexCount;
-				for(int i = 0; i < lVertexCount; ++i)
-				{
-					pMesh->mVerts[i + vertOffset].Pos.x = static_cast<float>(lMesh->GetControlPoints()[i][0] * 0.01);
-					pMesh->mVerts[i + vertOffset].Pos.y = static_cast<float>(lMesh->GetControlPoints()[i][1] * 0.01);
-					pMesh->mVerts[i + vertOffset].Pos.z = static_cast<float>(lMesh->GetControlPoints()[i][2] * 0.01);
+				pMesh.mVerts[i + vertOffset].Pos.x = static_cast<float>(lMesh->GetControlPoints()[i][0] * 0.01);
+				pMesh.mVerts[i + vertOffset].Pos.y = static_cast<float>(lMesh->GetControlPoints()[i][1] * 0.01);
+				pMesh.mVerts[i + vertOffset].Pos.z = static_cast<float>(lMesh->GetControlPoints()[i][2] * 0.01);
 
-					pMesh->mVerts[i + vertOffset].Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-				}
+				pMesh.mVerts[i + vertOffset].Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			}
 				
-				int totalIndices = 0;
-				const int polyCount = lMesh->GetPolygonCount();
-				for (int i = 0; i < polyCount; ++i)
-				{
-					const int vertCount = lMesh->GetPolygonSize(i);
-					totalIndices += vertCount;
-				}
+			int totalIndices = 0;
+			const int polyCount = lMesh->GetPolygonCount();
+			for (int i = 0; i < polyCount; ++i)
+			{
+				const int vertCount = lMesh->GetPolygonSize(i);
+				totalIndices += vertCount;
+			}
 
-				int indOffset = pMesh->mNumIndices;
-				if(pMesh->mIndices && indOffset > 0)
-				{
-					WORD* indices = new (std::nothrow) WORD[indOffset + totalIndices];
-					if(!indices)
-						return;
-					memcpy(indices, pMesh->mIndices, sizeof(WORD) * indOffset);
-					delete [] pMesh->mIndices;
-					pMesh->mIndices = indices;
-				}
-				else
-				{
-					pMesh->mIndices = new (std::nothrow) WORD[totalIndices];
-				}
-				if(pMesh->mIndices)
-				{
-					const int polyCount = lMesh->GetPolygonCount();
-					int ind = 0;
-					for (int i = 0; i < polyCount; ++i)
-					{
-						const int vertCount = lMesh->GetPolygonSize(i);
-						for (int j = 0; j < vertCount; ++j)
-						{
-							pMesh->mIndices[ind + indOffset] = static_cast<WORD>(lMesh->GetPolygonVertex(i, j) + vertOffset);
-							++ind;
-						}
-					}
-					pMesh->mNumIndices += ind;
-				}
+			int indOffset = pMesh.mNumIndices;
+			if(indOffset > 0)
+			{
+				pMesh.mIndices.resize(indOffset + totalIndices);
+			}
+			else
+			{
+				pMesh.mIndices.resize(totalIndices);
+			}
 
-                _snprintf_s(buffer, 499, "  VertexCount ='%d' PolygonCount ='%d' IndicesCount ='%d'\n", lVertexCount, lMesh->GetPolygonCount(), totalIndices);
-		        OutputDebugStringA(buffer);
+			int ind = 0;
+			for (int i = 0; i < polyCount; ++i)
+			{
+				const int vertCount = lMesh->GetPolygonSize(i);
+				for (int j = 0; j < vertCount; ++j)
+				{
+					pMesh.mIndices[ind + indOffset] = static_cast<WORD>(lMesh->GetPolygonVertex(i, j) + vertOffset);
+					++ind;
+				}
+			}
+			pMesh.mNumIndices += ind;
+
+            _snprintf_s(buffer, 499, "  VertexCount ='%d' PolygonCount ='%d' IndicesCount ='%d'\n", lVertexCount, lMesh->GetPolygonCount(), totalIndices);
+		    OutputDebugStringA(buffer);
 			
-                LoadSkinInfo(pNode, pMesh, vertOffset, lVertexCount);
-            }
-		}
+            LoadSkinInfo(pNode, pMesh, vertOffset, lVertexCount);
+        }
+
 	}
 
 	const int lChildCount = pNode->GetChildCount();
@@ -533,7 +521,7 @@ void LoadMeshRecursive(FbxNode* pNode, Mesh* pMesh)
 	}
 }
 
-int CountSkeletonRecursive(FbxNode* pNode)//, Mesh* pMesh)
+int CountSkeletonRecursive(FbxNode* pNode)//, Mesh pMesh)
 {
     int count = 0;
     FbxNodeAttribute* lNodeAttribute = pNode->GetNodeAttribute();
@@ -553,7 +541,7 @@ int CountSkeletonRecursive(FbxNode* pNode)//, Mesh* pMesh)
     return(count);
 }
 
-void LoadSkeletonRecursive(FbxNode* pNode, Mesh* pMesh, int parent)
+void LoadSkeletonRecursive(FbxNode* pNode, Mesh& pMesh, int parent)
 {
 	FbxNodeAttribute* lNodeAttribute = pNode->GetNodeAttribute();
 
@@ -566,30 +554,30 @@ void LoadSkeletonRecursive(FbxNode* pNode, Mesh* pMesh, int parent)
 		_snprintf_s(buffer, 499, "Load Skeleton name='%s' parent='%d'\n", nodeName, parent);
 		OutputDebugStringA(buffer);
 
-        pMesh->mSkeleton[pMesh->mNumBones].parent = parent;
-        _snprintf_s(pMesh->mSkeleton[pMesh->mNumBones].name, 27, "%s", nodeName);
+        pMesh.mSkeleton[pMesh.mNumBones].parent = parent;
+        _snprintf_s(pMesh.mSkeleton[pMesh.mNumBones].name, 27, "%s", nodeName);
 
         FbxDouble3 translation = pNode->LclTranslation.Get();
         FbxDouble3 rotation = pNode->LclRotation.Get();
         FbxDouble3 scaling = pNode->LclScaling.Get();
 
-        pMesh->mOrigBones[pMesh->mNumBones].translation = XMFLOAT3(static_cast<float>(translation[0] * 0.01), static_cast<float>(translation[1] * 0.01), static_cast<float>(translation[2] * 0.01));
+        pMesh.mOrigBones[pMesh.mNumBones].translation = XMFLOAT3(static_cast<float>(translation[0] * 0.01), static_cast<float>(translation[1] * 0.01), static_cast<float>(translation[2] * 0.01));
         XMVECTOR r = XMQuaternionRotationRollPitchYaw(static_cast<float>(rotation[2]), static_cast<float>(rotation[0]), static_cast<float>(rotation[1]));
-        XMStoreFloat4(&(pMesh->mOrigBones[pMesh->mNumBones].rotation), r);
-        pMesh->mOrigBones[pMesh->mNumBones].scale = XMFLOAT3(static_cast<float>(scaling[0]), static_cast<float>(scaling[1]), static_cast<float>(scaling[2]));
+        XMStoreFloat4(&(pMesh.mOrigBones[pMesh.mNumBones].rotation), r);
+        pMesh.mOrigBones[pMesh.mNumBones].scale = XMFLOAT3(static_cast<float>(scaling[0]), static_cast<float>(scaling[1]), static_cast<float>(scaling[2]));
 
 
-        XMMATRIX m = pMesh->mOrigBones[pMesh->mNumBones].GetTransform();
-        if(pMesh->mSkeleton[pMesh->mNumBones].parent >= 0)
+        XMMATRIX m = pMesh.mOrigBones[pMesh.mNumBones].GetTransform();
+        if(pMesh.mSkeleton[pMesh.mNumBones].parent >= 0)
         {
-            XMMATRIX c = XMLoadFloat4x4(&pMesh->mOrigGlobalPose[pMesh->mSkeleton[pMesh->mNumBones].parent]);
+            XMMATRIX c = XMLoadFloat4x4(&pMesh.mOrigGlobalPose[pMesh.mSkeleton[pMesh.mNumBones].parent]);
             m *= c;
         }
         
-        XMStoreFloat4x4(&pMesh->mOrigGlobalPose[pMesh->mNumBones], m);
+        XMStoreFloat4x4(&pMesh.mOrigGlobalPose[pMesh.mNumBones], m);
         
-        parent = pMesh->mNumBones;
-        ++pMesh->mNumBones;
+        parent = pMesh.mNumBones;
+        ++pMesh.mNumBones;
     }
 
     const int lChildCount = pNode->GetChildCount();
@@ -599,7 +587,7 @@ void LoadSkeletonRecursive(FbxNode* pNode, Mesh* pMesh, int parent)
 	}
 }
 
-void LoadSkeletonRecursive2(FbxNode* pNode, Joint* pSkeleton, int* numBones, int parent)
+void LoadSkeletonRecursive2(FbxNode* pNode, cFBXBuffer::Joint* pSkeleton, int* numBones, int parent)
 {
 	FbxNodeAttribute* lNodeAttribute = pNode->GetNodeAttribute();
 
@@ -626,7 +614,7 @@ void LoadSkeletonRecursive2(FbxNode* pNode, Joint* pSkeleton, int* numBones, int
 	}
 }
 
-void LoadBindPose(FbxScene* lScene, Mesh* pMesh)
+void LoadBindPose(FbxScene* lScene, Mesh& pMesh)
 {
     for(int i = 0; i < lScene->GetPoseCount(); ++i)
     {
@@ -658,9 +646,9 @@ void LoadBindPose(FbxScene* lScene, Mesh* pMesh)
                     OutputDebugStringA(buffer);
 
                     //find the same bone in our mesh
-                    for(int b = 0; b < pMesh->mNumBones; ++b)
+                    for(int b = 0; b < pMesh.mNumBones; ++b)
                     {
-                        if(strcmp(pMesh->mSkeleton[b].name, node->GetName()) == 0)
+                        if(strcmp(pMesh.mSkeleton[b].name, node->GetName()) == 0)
                         {
                             //found a match
                             _XMMATRIX mb(static_cast<float>(m[0][0] * 1.00), static_cast<float>(m[0][1] * 1.00), static_cast<float>(m[0][2] * 1.00), static_cast<float>(m[0][3] * 1.00),
@@ -668,11 +656,11 @@ void LoadBindPose(FbxScene* lScene, Mesh* pMesh)
                                          static_cast<float>(m[2][0] * 1.00), static_cast<float>(m[2][1] * 1.00), static_cast<float>(m[2][2] * 1.00), static_cast<float>(m[2][3] * 1.00),
                                          static_cast<float>(m[3][0] * 0.01), static_cast<float>(m[3][1] * 0.01), static_cast<float>(m[3][2] * 0.01), static_cast<float>(m[3][3] * 1.00));
 
-                            XMStoreFloat4x4(&pMesh->mOrigGlobalPose[b], mb);
+                            XMStoreFloat4x4(&pMesh.mOrigGlobalPose[b], mb);
 
                             XMVECTOR det;
                             XMMATRIX invMb = XMMatrixInverse(&det, mb);
-                            XMStoreFloat4x4(&pMesh->mSkeleton[b].invBindPose, invMb);
+                            XMStoreFloat4x4(&pMesh.mSkeleton[b].invBindPose, invMb);
                             break;
                         }
                     }
@@ -682,26 +670,26 @@ void LoadBindPose(FbxScene* lScene, Mesh* pMesh)
     }
 
     //recalculate local transforms
-    for(int i = 0; i < pMesh->mNumBones; ++i)
+    for(int i = 0; i < pMesh.mNumBones; ++i)
     {
-        if(pMesh->mSkeleton[i].parent >= 0)
+        if(pMesh.mSkeleton[i].parent >= 0)
         {
-            XMMATRIX mb = XMLoadFloat4x4(&pMesh->mOrigGlobalPose[i]) * XMLoadFloat4x4(&pMesh->mSkeleton[pMesh->mSkeleton[i].parent].invBindPose);
+            XMMATRIX mb = XMLoadFloat4x4(&pMesh.mOrigGlobalPose[i]) * XMLoadFloat4x4(&pMesh.mSkeleton[pMesh.mSkeleton[i].parent].invBindPose);
 
             XMVECTOR scale;
             XMVECTOR rotQuat;
             XMVECTOR trans;
             if(XMMatrixDecompose(&scale, &rotQuat, &trans, mb))
             {
-                XMStoreFloat3(&pMesh->mOrigBones[i].translation, trans);
-                XMStoreFloat4(&pMesh->mOrigBones[i].rotation, rotQuat);
-                XMStoreFloat3(&pMesh->mOrigBones[i].scale, scale);
+                XMStoreFloat3(&pMesh.mOrigBones[i].translation, trans);
+                XMStoreFloat4(&pMesh.mOrigBones[i].rotation, rotQuat);
+                XMStoreFloat3(&pMesh.mOrigBones[i].scale, scale);
             }
         }
     }
 }
 
-void LoadMeshFromScene(FbxScene* pScene, Mesh* pMesh)
+void LoadMeshFromScene(FbxScene* pScene, Mesh& pMesh)
 {
     OutputDebugStringA("=========================================\nTriangulating\n");
 	FbxNode* lRootNode = pScene->GetRootNode();
@@ -716,22 +704,22 @@ void LoadMeshFromScene(FbxScene* pScene, Mesh* pMesh)
     int numBones = CountSkeletonRecursive(lRootNode);//, pMesh);
     if(numBones > 0)
     {
-		pMesh->mSkeleton.resize(numBones);
-		pMesh->mOrigBones.resize(numBones);
-		pMesh->mOrigGlobalPose.resize(numBones);
+		pMesh.mSkeleton.resize(numBones);
+		pMesh.mOrigBones.resize(numBones);
+		pMesh.mOrigGlobalPose.resize(numBones);
 
-        pMesh->mNumBones = 0;
+        pMesh.mNumBones = 0;
         LoadSkeletonRecursive(lRootNode, pMesh, -1);
 
         LoadBindPose(pScene, pMesh);
 
         // Note we calculate and store the inverse bind-pose transform for skinning later
-        for(int i = 0; i < pMesh->mNumBones; ++i)
+        for(int i = 0; i < pMesh.mNumBones; ++i)
         {
             XMVECTOR det;
-            XMMATRIX m = XMLoadFloat4x4(&pMesh->mOrigGlobalPose[i]);
+            XMMATRIX m = XMLoadFloat4x4(&pMesh.mOrigGlobalPose[i]);
             m = XMMatrixInverse(&det, m);
-            XMStoreFloat4x4(&pMesh->mSkeleton[i].invBindPose, m);
+            XMStoreFloat4x4(&pMesh.mSkeleton[i].invBindPose, m);
         }
     }
 
@@ -739,10 +727,8 @@ void LoadMeshFromScene(FbxScene* pScene, Mesh* pMesh)
     LoadMeshRecursive(lRootNode, pMesh);
 }
 
-Mesh* LoadMeshFromFbx(const char* szFileName)
+Mesh LoadMeshFromFbx(const char* szFileName)
 {
-	Mesh* pMesh = NULL;
-
 	// Create the io settings object.
     FbxIOSettings *ios = FbxIOSettings::Create(g_FbxSdkManager, IOSROOT);
     g_FbxSdkManager->SetIOSettings(ios);
@@ -788,16 +774,9 @@ Mesh* LoadMeshFromFbx(const char* szFileName)
     lImporter->Destroy();
     ios->Destroy();
 
-	pMesh = new (std::nothrow) Mesh();
-	if(pMesh)
-	{
-        LoadMeshFromScene(lScene, pMesh);
-        if(!pMesh->mVerts)
-		{
-			delete pMesh;
-			pMesh = NULL;
-		}
-	}
+	
+	Mesh pMesh;
+    LoadMeshFromScene(lScene, pMesh);
 
 	lScene->Destroy();
 
@@ -823,20 +802,21 @@ void FlattenHeirarchyRecursive(FbxNode* pNode, FbxNode** pFlattenedNodes, int* n
 	}
 }
 
-void LoadAnimationTake(FbxTakeInfo* pTake, FbxScene* pScene, SkeletalAnimation* pAnim)
+void LoadAnimationTake(FbxTakeInfo* pTake, FbxScene* pScene, SkeletalAnimation& pAnim)
 {
-    char buffer[500];
-    buffer[499] = '\0';
     
     int numKeys = static_cast<int>(pTake->mLocalTimeSpan.GetDuration().GetFrameCount() + 1);
-    _snprintf_s(buffer, 499, "  Take[%s] [%d frames]\n", pTake->mName.Buffer(), numKeys);
-    OutputDebugStringA(buffer);
 
-    _snprintf_s(pAnim->mName, 99, "%s", pTake->mName.Buffer());
+	std::string takeName = pTake->mName.Buffer();
+	std::stringstream ssBuffer;
+	ssBuffer << "Take[" << pTake->mName.Buffer() << "] [[" << numKeys << "] frames]\n";
+	OutputDebugStringA(ssBuffer.str().c_str());
 
-    // We flatten the joint hierarchy into an array of FbxNode* so it is easier to 
-    // sample the joint poses during the animation
-    FbxNode** lFlattenedNodes = new (std::nothrow) FbxNode*[pAnim->mNumBones];
+	pAnim.mName = pTake->mName.Buffer();
+
+    // We flatten the cFBXBuffer::Joint hierarchy into an array of FbxNode* so it is easier to 
+    // sample the cFBXBuffer::Joint poses during the animation
+    FbxNode** lFlattenedNodes = new (std::nothrow) FbxNode*[pAnim.mNumBones];
     if(!lFlattenedNodes)
     {
         return;
@@ -844,13 +824,7 @@ void LoadAnimationTake(FbxTakeInfo* pTake, FbxScene* pScene, SkeletalAnimation* 
     int numNodes = 0;
     FlattenHeirarchyRecursive(pScene->GetRootNode(), lFlattenedNodes, &numNodes, -1);
 
-    pAnim->mKeys = new (std::nothrow) SkeletalAnimation::Frame[numKeys];
-
-    if(!pAnim->mKeys)
-    {
-        delete [] lFlattenedNodes;
-        return;
-    }
+	pAnim.mKeys.resize(numKeys);
 
     //prepare some intermediate arrays of matricies
     _XMFLOAT4X4* globalPose = new (std::nothrow) _XMFLOAT4X4[numNodes];
@@ -875,16 +849,10 @@ void LoadAnimationTake(FbxTakeInfo* pTake, FbxScene* pScene, SkeletalAnimation* 
     period.SetTime(0, 0, 0, 1, 0);
     for(int i = 0; i < numKeys; ++i)
     {
-        pAnim->mKeys[i].mBones = new (std::nothrow) JointPose[pAnim->mNumBones];
-        if(!pAnim->mKeys[i].mBones)
-        {
-            delete [] lFlattenedNodes;
-            delete [] globalPose;
-            delete [] invPose;
-            return;
-        }
+		pAnim.mKeys[i].mBones.resize(pAnim.mNumBones);
+        
         //store the 'time-stamp' for this frame
-        pAnim->mKeys[i].mTime = static_cast<float>(curTime.GetSecondDouble()) - startTime;
+        pAnim.mKeys[i].mTime = static_cast<float>(curTime.GetSecondDouble()) - startTime;
 
         for(int b = 0; b < numNodes; ++b)
         {
@@ -903,10 +871,10 @@ void LoadAnimationTake(FbxTakeInfo* pTake, FbxScene* pScene, SkeletalAnimation* 
             XMStoreFloat4x4(&invPose[b], invMb);
 
             XMMATRIX lb = XMLoadFloat4x4(&globalPose[b]);
-            if(pAnim->mSkeleton[b].parent >= 0)
+            if(pAnim.mSkeleton[b].parent >= 0)
             {
-                // get the local joint tranform
-                lb *= XMLoadFloat4x4(&invPose[pAnim->mSkeleton[b].parent]);
+                // get the local cFBXBuffer::Joint tranform
+                lb *= XMLoadFloat4x4(&invPose[pAnim.mSkeleton[b].parent]);
             }
 
             //store the individual components
@@ -915,16 +883,14 @@ void LoadAnimationTake(FbxTakeInfo* pTake, FbxScene* pScene, SkeletalAnimation* 
             XMVECTOR trans;
             if(XMMatrixDecompose(&scale, &rotQuat, &trans, lb))
             {
-                XMStoreFloat3(&pAnim->mKeys[i].mBones[b].translation, trans);
-                XMStoreFloat4(&pAnim->mKeys[i].mBones[b].rotation, rotQuat);
-                XMStoreFloat3(&pAnim->mKeys[i].mBones[b].scale, scale);
+                XMStoreFloat3(&pAnim.mKeys[i].mBones[b].translation, trans);
+                XMStoreFloat4(&pAnim.mKeys[i].mBones[b].rotation, rotQuat);
+                XMStoreFloat3(&pAnim.mKeys[i].mBones[b].scale, scale);
             }
         }
-        pAnim->mDuration = static_cast<float>(curTime.GetSecondDouble()) - startTime;
+        pAnim.mDuration = static_cast<float>(curTime.GetSecondDouble()) - startTime;
         //advance our time period
         curTime += period;
-
-        ++pAnim->mNumKeys;
     }
 
     delete [] lFlattenedNodes;
@@ -932,9 +898,9 @@ void LoadAnimationTake(FbxTakeInfo* pTake, FbxScene* pScene, SkeletalAnimation* 
     delete [] invPose;
 }
 
-SkeletalAnimation* LoadAnimationFromFbx(const char* szFileName)
+SkeletalAnimation LoadAnimationFromFbx(const char* szFileName)
 {
-	SkeletalAnimation* pAnim = NULL;
+	SkeletalAnimation pAnim;
 
 	// Create the io settings object.
     FbxIOSettings *ios = FbxIOSettings::Create(g_FbxSdkManager, IOSROOT);
@@ -962,27 +928,14 @@ SkeletalAnimation* LoadAnimationFromFbx(const char* szFileName)
         int numBones = CountSkeletonRecursive(lRootNode);
         if(numBones > 0)
         {
-            pAnim = new (std::nothrow) SkeletalAnimation();
-	        if(pAnim)
-	        {
-                pAnim->mSkeleton = new (std::nothrow) Joint[numBones];
-                if(pAnim->mSkeleton)
-                {
-                    // First load the skeletal hierarchy
-                    LoadSkeletonRecursive2(lRootNode, pAnim->mSkeleton, &pAnim->mNumBones, -1);
+			pAnim.mSkeleton.resize(numBones);
+            // First load the skeletal hierarchy
+            LoadSkeletonRecursive2(lRootNode, &(pAnim.mSkeleton.front()), &pAnim.mNumBones, -1);
 
-                    // Then go through the stack of takes and load each one
-                    for(int i = 0; i < lImporter->GetAnimStackCount(); ++i)
-                    {
-                        LoadAnimationTake(lImporter->GetTakeInfo(i), lScene, pAnim);
-                    }
-                }
-
-                if(!pAnim->mKeys || !pAnim->mSkeleton)
-                {
-                    delete pAnim;
-                    pAnim = NULL;
-                }
+            // Then go through the stack of takes and load each one
+            for(int i = 0; i < lImporter->GetAnimStackCount(); ++i)
+            {
+                LoadAnimationTake(lImporter->GetTakeInfo(i), lScene, pAnim);
             }
         }
     }

@@ -1,6 +1,6 @@
-#include "HelperFuncs.h"
+#include "cFBXBuffer.h"
 
-XMMATRIX JointPose::GetTransform() const
+XMMATRIX cFBXBuffer::JointPose::GetTransform() const
 {
     XMMATRIX m = XMMatrixScaling(scale.x, scale.y, scale.z) *
                  XMMatrixRotationQuaternion(XMLoadFloat4(&rotation)) *

@@ -34,11 +34,11 @@ protected:
 	std::pair<std::string, ID3D11SamplerState*>		pSamplerLinear;			
 	std::pair<std::string, ID3D11SamplerState*>		pSamplerAnisotropic;
 	
-	Mesh*                   g_pMyMesh;
+	Mesh                   g_pMyMesh;
 	DisplayMeshGPU*         g_pMyDisplayMeshGPU;
-	SkeletalAnimation*      g_pIdleAnim;
-	SkeletalAnimation*      g_pWalkAnim;
-	SkeletalAnimation*      g_pRunAnim;
+	SkeletalAnimation      g_pIdleAnim;
+	SkeletalAnimation      g_pWalkAnim;
+	SkeletalAnimation      g_pRunAnim;
 
 	void LoadD3DStuff();
 };

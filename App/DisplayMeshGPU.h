@@ -1,12 +1,11 @@
 #ifndef DISPLAY_MESH_GPU_H
 #define DISPLAY_MESH_GPU_H
 
-#include "HelperFuncs.h"
+#include "cFBXBuffer.h"
 #include "iObjectDrawable.h"
 #include "ShaderFiles.h"
-
-class Mesh;
-class SkeletalAnimation;
+#include "Mesh.h"
+#include "SkeletalAnimation.h"
 
 class DisplayMeshGPU : public iObjectDrawable
 {
@@ -30,22 +29,22 @@ public:
     DisplayMeshGPU();
     virtual ~DisplayMeshGPU();
 
-	void SetMesh(Mesh* pMesh);
+	void SetMesh(Mesh pMesh);
 
-    void PlayAnimation(SkeletalAnimation* anim);
+    void PlayAnimation(SkeletalAnimation anim);
     
-    char* GetPlayingAnimation() const;
+    std::string GetPlayingAnimation() const;
     float GetCurrentAnimTime() const;
     float GetCurrentAnimFrame() const;
 
     void SetAnimRate(float rate) { mAnimRate = rate; }
     float GetAnimRate() const { return(mAnimRate); }
 
-	Mesh*                   mMesh;				//not owned by this class
-    SkeletalAnimation*      mAnimation;			//not owned by this class
+	Mesh							mMesh;
+    SkeletalAnimation				mAnimation;			//not owned by this class
     std::vector<unsigned char>		mChannelMap;
 
-    std::vector<JointPose>			 mCurrentBones;
+    std::vector<cFBXBuffer::JointPose>			 mCurrentBones;
     std::vector<XMFLOAT4X4>          mCurrentGlobalPose;
 	std::vector<XMFLOAT4X4>          mBoneTransforms;
 

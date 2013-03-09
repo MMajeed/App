@@ -1,25 +1,28 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "HelperFuncs.h"
+#include "cFBXBuffer.h"
 
 class Mesh
 {
 public:
-	Mesh();
-	virtual ~Mesh();
+	Mesh():
+	mNumVerts(0),
+	mNumIndices(0),
+    mNumBones(0){}
+	virtual ~Mesh(){}
 
-	SimpleSkinnedVertex*				mVerts;
-	WORD*								mIndices;
+	std::vector<cFBXBuffer::SimpleSkinnedVertex>	mVerts;
+	std::vector<WORD>					mIndices;
     int									mNumVerts;
 	int									mNumIndices;
 
-    std::vector<Joint>					mSkeleton;
-    std::vector<JointPose>				mOrigBones;
+    std::vector<cFBXBuffer::Joint>					mSkeleton;
+    std::vector<cFBXBuffer::JointPose>				mOrigBones;
     std::vector<XMFLOAT4X4>				mOrigGlobalPose;
     int									mNumBones;
 
-    std::vector<SimpleSkinnedVertex>	mOrigVerts;
+    std::vector<cFBXBuffer::SimpleSkinnedVertex>	mOrigVerts;
 };
 
 #endif

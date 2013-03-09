@@ -209,11 +209,7 @@ void Application::InitDevices()
 
 	PrintFbxFile("DefaultCharacter/DefaultAvatar.fbx");
 	g_pMyMesh = LoadMeshFromFbx("DefaultCharacter/DefaultAvatar.fbx");
-	if(!g_pMyMesh)
-	{
-		throw std::exception("Error loading fbx file");
-	}
-
+	
 	g_pMyDisplayMeshGPU = new DisplayMeshGPU();
 	if(!g_pMyDisplayMeshGPU)
 	{
@@ -225,10 +221,7 @@ void Application::InitDevices()
 	g_pIdleAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx");
     g_pWalkAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx");
     g_pRunAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx");
-    if(!g_pIdleAnim || !g_pWalkAnim || !g_pRunAnim)
-	{
-		throw std::exception("Failed to initlize g_pMyDisplayMeshGPU");
-	}
+    
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
