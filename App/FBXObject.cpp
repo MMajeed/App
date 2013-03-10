@@ -15,15 +15,15 @@ FBXObject::FBXObject()
 	this->mCurrentFrame					= 0;
 	this->currAnimation					= 50000;
 
-	this->Shader.ShaderInput.FileName	= "ShaderFiles/7_GpuSkinShader.fx";
+	this->Shader.ShaderInput.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
 	this->Shader.ShaderInput.EntryPoint = "VS";
 	this->Shader.ShaderInput.Mode		= "vs_4_0";
 	
-	this->Shader.ShaderVertex.FileName	= "ShaderFiles/7_GpuSkinShader.fx";
+	this->Shader.ShaderVertex.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
 	this->Shader.ShaderVertex.EntryPoint = "VS";
 	this->Shader.ShaderVertex.Mode		= "vs_4_0";
 
-	this->Shader.ShaderPixel.FileName	= "ShaderFiles/7_GpuSkinShader.fx";
+	this->Shader.ShaderPixel.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
 	this->Shader.ShaderPixel.EntryPoint = "PS";
 	this->Shader.ShaderPixel.Mode		= "ps_4_0";
 
@@ -41,21 +41,17 @@ FBXObject::~FBXObject()
 {
 }
 
-void FBXObject::SetMesh(Mesh pMesh)
-{
-	this->mMesh = pMesh;
-}
 void FBXObject::Init()
 {
 	this->mCurrentGlobalPose.resize(this->mMesh.mNumBones);
 	this->mBoneTransforms.resize(128);
 	this->mChannelMap.resize(this->mMesh.mNumBones);
-	mCurrentBones.resize(this->mMesh.mNumBones);
+	this->mCurrentBones.resize(this->mMesh.mNumBones);
 
 	for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
 	{
 		this->mCurrentGlobalPose[i] = this->mMesh.mOrigGlobalPose[i];
-		mCurrentBones[i] = this->mMesh.mOrigBones[i];
+		this->mCurrentBones[i] = this->mMesh.mOrigBones[i];
 	}
 
 	ID3D11Device* device = (dynamic_cast<DX11App*>(App::getInstance()))->direct3d.pd3dDevice;
@@ -97,11 +93,10 @@ void FBXObject::UpdateDrawing(float delta)
 		if(this->mCurrentFrame > 0)
 		{
 			prevFrame = this->mCurrentFrame - 1;
-			ratio = (this->mAnimTime - this->mAnimation[this->currAnimation].mKeys[prevFrame].mTime) / (this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime
-							- this->mAnimation[this->currAnimation].mKeys[prevFrame].mTime);
+			ratio = (this->mAnimTime - this->mAnimation[this->currAnimation].mKeys[prevFrame].mTime) / 
+						(this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime - this->mAnimation[this->currAnimation].mKeys[prevFrame].mTime);
 		}
 
-        // we've got the frame, so update the animation   
         for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
         {
             if(this->mChannelMap[i] != -1)
@@ -109,13 +104,12 @@ void FBXObject::UpdateDrawing(float delta)
 				cFBXBuffer::JointPose* jntA = &(this->mAnimation[this->currAnimation].mKeys[prevFrame].mBones[this->mChannelMap[i]]);
 				cFBXBuffer::JointPose* jntB = &(this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mBones[this->mChannelMap[i]]);
 
-				XMStoreFloat3(&mCurrentBones[i].translation, XMVectorLerp(XMLoadFloat3(&jntA->translation), XMLoadFloat3(&jntB->translation), ratio));
-                XMStoreFloat4(&mCurrentBones[i].rotation, XMQuaternionSlerp(XMLoadFloat4(&jntA->rotation), XMLoadFloat4(&jntB->rotation), ratio));
-                XMStoreFloat3(&mCurrentBones[i].scale, XMVectorLerp(XMLoadFloat3(&jntA->scale), XMLoadFloat3(&jntB->scale), ratio));
+				XMStoreFloat3(&(this->mCurrentBones[i].translation), XMVectorLerp(XMLoadFloat3(&jntA->translation), XMLoadFloat3(&jntB->translation), ratio));
+                XMStoreFloat4(&(this->mCurrentBones[i].rotation), XMQuaternionSlerp(XMLoadFloat4(&jntA->rotation), XMLoadFloat4(&jntB->rotation), ratio));
+                XMStoreFloat3(&(this->mCurrentBones[i].scale), XMVectorLerp(XMLoadFloat3(&jntA->scale), XMLoadFloat3(&jntB->scale), ratio));
             }
         }
 
-		//update the current pose
 		for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
 		{
 			XMMATRIX m = mCurrentBones[i].GetTransform();
@@ -131,11 +125,10 @@ void FBXObject::UpdateDrawing(float delta)
 }
 void FBXObject::UpdateObject(float delta)
 {
-	UNREFERENCED_PARAMETER(delta);
+	this->object.Update(delta);
 }
 void FBXObject::Draw()
 {
-	//update the current pose
     for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
     {
 		XMMATRIX invBind = XMLoadFloat4x4(&this->mMesh.mSkeleton[i].invBindPose);
@@ -148,9 +141,6 @@ void FBXObject::Draw()
 		this->mBoneTransforms[i] = inv;
 	}
 
-    //
-    // Update variables
-    //
 	cBuffer::cbChangeEveryFrame cb;
 	XMFLOAT4X4 world = this->object.CalculateMatrix();
 	cb.mWorld = XMMatrixTranspose(XMLoadFloat4x4(&world));
@@ -163,17 +153,12 @@ void FBXObject::Draw()
     pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 	pImmediateContext->VSSetConstantBuffers( 3, 1, &(this->pAnimBonesBuffer.second) );
 
-    // Set vertex buffer
-
     UINT stride = sizeof( cFBXBuffer::SimpleSkinnedVertex );
     UINT offset = 0;
 	pImmediateContext->IASetVertexBuffers( 0, 1, &(this->pVertexBuffer.second), &stride, &offset );
 	pImmediateContext->IASetIndexBuffer( this->pIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
     pImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-
-    // Render a triangle
-    // Set the input layout
 	pImmediateContext->IASetInputLayout( this->pInputLayout.second );
 	pImmediateContext->VSSetShader( this->pVertexShader.second, NULL, 0 );
 	pImmediateContext->PSSetShader( this->pPixelShader.second, NULL, 0 );
@@ -184,6 +169,10 @@ void FBXObject::Draw()
 
 }
 
+void FBXObject::SetMesh(const Mesh& pMesh)
+{
+	this->mMesh = pMesh;
+}
 void FBXObject::AddAnimation(const SkeletalAnimation& anim)
 {
 	this->mAnimation.push_back(anim);

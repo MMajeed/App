@@ -273,25 +273,25 @@ SphericalMirror::SphericalMirror()
 	this->UpdateEvery = 0.012f;
 	this->Timer = this->UpdateEvery; // you want the timer to start with the same as the update so that it runs on the first render
 
-	this->pVertexBuffer.first        = "PlyFiles/Sphere_Smooth_3.ply";
-	this->pIndexBuffer.first         = "PlyFiles/Sphere_Smooth_3.ply";
+	this->pVertexBuffer.first        = "../Resources/PlyFiles/Sphere_Smooth_3.ply";
+	this->pIndexBuffer.first         = "../Resources/PlyFiles/Sphere_Smooth_3.ply";
 
 	this->pCBChangesEveryFrame.first = "CBChangeEveryFrame";
 	this->pRastersizerState.first	 = "FillSolid";
 
-	this->pInputLayout.first         = "ShaderFiles/4_CubeMapping.fx";
-	this->pVertexShader.first        = "ShaderFiles/4_CubeMapping.fx";
-	this->pPixelShader.first         = "ShaderFiles/4_CubeMapping.fx";
+	this->pInputLayout.first         = "../Resources/ShaderFiles/4_CubeMapping.fx";
+	this->pVertexShader.first        = "../Resources/ShaderFiles/4_CubeMapping.fx";
+	this->pPixelShader.first         = "../Resources/ShaderFiles/4_CubeMapping.fx";
 
-	this->Shader.ShaderInput.FileName		 = "ShaderFiles/4_CubeMapping.fx";
+	this->Shader.ShaderInput.FileName		 = "../Resources/ShaderFiles/4_CubeMapping.fx";
 	this->Shader.ShaderInput.EntryPoint	 = "VS";	
 	this->Shader.ShaderInput.Mode			 = "vs_4_0";
 
-	this->Shader.ShaderVertex.FileName		 = "ShaderFiles/4_CubeMapping.fx";
+	this->Shader.ShaderVertex.FileName		 = "../Resources/ShaderFiles/4_CubeMapping.fx";
 	this->Shader.ShaderVertex.EntryPoint	 = "VS";	
 	this->Shader.ShaderVertex.Mode			 = "vs_4_0";
 
-	this->Shader.ShaderPixel.FileName		 = "ShaderFiles/4_CubeMapping.fx";
+	this->Shader.ShaderPixel.FileName		 = "../Resources/ShaderFiles/4_CubeMapping.fx";
 	this->Shader.ShaderPixel.EntryPoint	 = "PS";	
 	this->Shader.ShaderPixel.Mode			 = "ps_4_0";
 
@@ -299,7 +299,7 @@ SphericalMirror::SphericalMirror()
 
 	std::wstring error;
 	
-	bool hr = PlyBuffer::LoadFromPlyFile(L"PlyFiles/Sphere_Smooth_3.ply", this->PlyBuffer,error); 
+	bool hr = PlyBuffer::LoadFromPlyFile(L"../Resources/PlyFiles/Sphere_Smooth_3.ply", this->PlyBuffer,error); 
 	if(!hr)
 	{
 		throw std::exception("Error loading ply file");

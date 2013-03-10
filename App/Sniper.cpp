@@ -222,33 +222,33 @@ Sniper::Sniper()
 	this->pDepthMapSRV = NULL;
 	this->pDepthMapDSV = NULL;
 
-	this->pTextureAlpha.first		 = "Texture/Sniper2.png";
-	this->pVertexBuffer.first        = "PlyFiles/1x1_2Tri_Quad_2_Sided.ply";
-	this->pIndexBuffer.first         = "PlyFiles/1x1_2Tri_Quad_2_Sided.ply";
+	this->pTextureAlpha.first		 = "../Resources/Texture/Sniper2.png";
+	this->pVertexBuffer.first        = "../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply";
+	this->pIndexBuffer.first         = "../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply";
 
 	this->pCBChangesEveryFrame.first = "CBChangeEveryFrame";
 	this->pRastersizerState.first	 = "FillSolid";
 
-	this->pInputLayout.first         = "ShaderFiles/6_Binoculars.fx";
-	this->pVertexShader.first        = "ShaderFiles/6_Binoculars.fx";
-	this->pPixelShader.first         = "ShaderFiles/6_Binoculars.fx";
+	this->pInputLayout.first         = "../Resources/ShaderFiles/6_Binoculars.fx";
+	this->pVertexShader.first        = "../Resources/ShaderFiles/6_Binoculars.fx";
+	this->pPixelShader.first         = "../Resources/ShaderFiles/6_Binoculars.fx";
 
-	this->Shader.ShaderInput.FileName		 = "ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderInput.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
 	this->Shader.ShaderInput.EntryPoint	 = "VS";	
 	this->Shader.ShaderInput.Mode			 = "vs_4_0";
 
-	this->Shader.ShaderVertex.FileName		 = "ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderVertex.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
 	this->Shader.ShaderVertex.EntryPoint	 = "VS";	
 	this->Shader.ShaderVertex.Mode			 = "vs_4_0";
 
-	this->Shader.ShaderPixel.FileName		 = "ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderPixel.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
 	this->Shader.ShaderPixel.EntryPoint	 = "PS";	
 	this->Shader.ShaderPixel.Mode			 = "ps_4_0";
 
 
 	std::wstring error;
 	
-	bool hr = PlyBuffer::LoadFromPlyFile(L"PlyFiles/1x1_2Tri_Quad_2_Sided.ply", this->PlyBuffer,error); 
+	bool hr = PlyBuffer::LoadFromPlyFile(L"../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply", this->PlyBuffer,error); 
 	if(!hr)
 	{
 		throw std::exception("Error loading ply file");

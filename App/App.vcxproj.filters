@@ -64,7 +64,7 @@
       <Filter>Tools\DX11Stuff\PlyBuffer</Filter>
     </ClCompile>
     <ClCompile Include="cFBXBuffer.cpp">
-      <Filter>Tools\DX11Stuff\cBuffer\cFBXBuffer</Filter>
+      <Filter>Tools\DX11Stuff\Buffer\cFBXBuffer</Filter>
     </ClCompile>
     <ClCompile Include="FBXObject.cpp">
       <Filter>DX11ObjectDrawable\FBX Files</Filter>
@@ -94,7 +94,7 @@
       <Filter>DX11ObjectDrawable\BasicObject</Filter>
     </ClInclude>
     <ClInclude Include="cBuffer.h">
-      <Filter>Tools\DX11Stuff\cBuffer</Filter>
+      <Filter>Tools\DX11Stuff\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="PlyLib\rply.h">
       <Filter>Tools\Helper\PlyFile</Filter>
@@ -136,7 +136,7 @@
       <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
     </ClInclude>
     <ClInclude Include="SkeletalAnimation.h">
-      <Filter>Tools\Mesh &amp; Skeletal\SkeletalAnimation</Filter>
+      <Filter>Tools\DX11Stuff\Buffer\Mesh &amp; Skeletal\SkeletalAnimation</Filter>
     </ClInclude>
     <ClInclude Include="ShaderFiles.h">
       <Filter>Tools\DX11Stuff\ShaderFiles</Filter>
@@ -145,10 +145,10 @@
       <Filter>Tools\DX11Stuff\PlyBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Tools\Mesh &amp; Skeletal\Mesh</Filter>
+      <Filter>Tools\DX11Stuff\Buffer\Mesh &amp; Skeletal\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="cFBXBuffer.h">
-      <Filter>Tools\DX11Stuff\cBuffer\cFBXBuffer</Filter>
+      <Filter>Tools\DX11Stuff\Buffer\cFBXBuffer</Filter>
     </ClInclude>
     <ClInclude Include="FBXObject.h">
       <Filter>DX11ObjectDrawable\FBX Files</Filter>
@@ -224,9 +224,6 @@
     <Filter Include="Tools\DX11Stuff\DX11Helper">
       <UniqueIdentifier>{7b277ef2-d875-4211-baf6-9a6d99b4e888}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\DX11Stuff\cBuffer">
-      <UniqueIdentifier>{76a3dc53-1495-4086-8b60-56903e6c0a49}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\DX11Stuff\DX11ObjectManager">
       <UniqueIdentifier>{24ca17f6-50ba-496e-a326-b9b065ed777a}</UniqueIdentifier>
     </Filter>
@@ -242,46 +239,49 @@
     <Filter Include="Tools\DX11Stuff\PlyBuffer">
       <UniqueIdentifier>{9220a4ad-2ca7-41e7-b7d8-6a42166fda33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\Mesh &amp; Skeletal">
+    <Filter Include="Tools\DX11Stuff\Buffer">
+      <UniqueIdentifier>{76a3dc53-1495-4086-8b60-56903e6c0a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\Buffer\cFBXBuffer">
+      <UniqueIdentifier>{9d5ed5ae-a9b9-4cf6-a394-1e0ffcea44fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\DX11Stuff\Buffer\Mesh &amp; Skeletal">
       <UniqueIdentifier>{d2eb6592-dcad-422f-841e-ab62ad2a7713}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\Mesh &amp; Skeletal\Mesh">
+    <Filter Include="Tools\DX11Stuff\Buffer\Mesh &amp; Skeletal\Mesh">
       <UniqueIdentifier>{40ce2031-0f29-4535-aab0-e91c692bbca6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\Mesh &amp; Skeletal\SkeletalAnimation">
+    <Filter Include="Tools\DX11Stuff\Buffer\Mesh &amp; Skeletal\SkeletalAnimation">
       <UniqueIdentifier>{b966fe15-2773-4a25-aedb-7406470720f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\DX11Stuff\cBuffer\cFBXBuffer">
-      <UniqueIdentifier>{9d5ed5ae-a9b9-4cf6-a394-1e0ffcea44fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ShaderFiles\2_TwoTexturesOnly_DX11.fx">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="ShaderFiles\3_TexturingAndLighting_DX11.fx">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="ShaderFiles\4_CubeMapping.fx">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="ShaderFiles\1_LightingOnly_DX11.fx">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="ShaderFiles\0_Basic.fx">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="ShaderFiles\HLSL_4_BasicLightFunctions.fx">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="Commands.xml" />
-    <None Include="ShaderFiles\5_SkyMap.fx">
+    <None Include="..\ShaderFiles\0_Basic.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="ShaderFiles\6_Binoculars.fx">
+    <None Include="..\ShaderFiles\1_LightingOnly_DX11.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="ShaderFiles\7_GpuSkinShader.fx">
+    <None Include="..\ShaderFiles\2_TwoTexturesOnly_DX11.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\ShaderFiles\3_TexturingAndLighting_DX11.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\ShaderFiles\4_CubeMapping.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\ShaderFiles\5_SkyMap.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\ShaderFiles\6_Binoculars.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\ShaderFiles\7_GpuSkinShader.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\ShaderFiles\HLSL_4_BasicLightFunctions.fx">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

@@ -26,10 +26,7 @@ public:
 	virtual void InitCBChangesEveryFrameBuffer(ID3D11Device* device);
 	virtual void InitAnimBuffer(ID3D11Device* device);
 
-    FBXObject();
-    virtual ~FBXObject();
-
-	void SetMesh(Mesh pMesh);
+	void SetMesh(const Mesh& pMesh);
 
 	void AddAnimation(const SkeletalAnimation& anim);
 
@@ -66,6 +63,9 @@ public:
 	void LoadD3DStuff();
 
 	ShaderFiles Shader;
+
+    FBXObject();
+    virtual ~FBXObject();
 };
 
 #endif

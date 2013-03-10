@@ -6,7 +6,7 @@
 struct Frame
 {
     std::vector<cFBXBuffer::JointPose>	mBones;
-    float					mTime;
+    float								mTime;
 
     Frame() : mTime(-1.0f) {}
 };
