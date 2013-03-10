@@ -92,7 +92,7 @@ void Camera::Yaw(float delta)
 }
 
 Camera::Camera()
-		: eye( 0.0f, 0.0f, -5.0f, 0.0f )
+		: eye( 0.0f, 2.0f, -7.0f, 0.0f )
 		, target( 0.0f, 0.0f, 1.0f, 0.0f )
 		, up( 0.0f, 1.0f, 0.0f, 0.0f )
 		, RadianRoll(0.0f), RadianPitch(0.0f), RadianYaw(0.0f)

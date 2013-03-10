@@ -296,7 +296,7 @@ void FBXObject::InitRastersizerState(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->RastersizerState.Exists(this->pRastersizerState.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadRasterizerState(D3D11_CULL_BACK, D3D11_FILL_SOLID, true, true, device, &(this->pRastersizerState.second), error))
+		if(!DX11Helper::LoadRasterizerState(D3D11_CULL_NONE, D3D11_FILL_WIREFRAME, true, true, device, &(this->pRastersizerState.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}

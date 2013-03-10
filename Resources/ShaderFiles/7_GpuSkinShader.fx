@@ -52,7 +52,6 @@ VS_OUTPUT VS( VS_INPUT input )
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
 	
-
 	uint b1 = input.JointIndx.x;	
 	matrix k1 = BoneTransforms[b1];
 	float w1 = input.JointWght.x;

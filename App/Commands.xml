@@ -8,7 +8,7 @@
     <ShaderVertex FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="20.0f" Y="20.0f" Z="20.0f"/>
-    <XYZLocation X="0.0f" Y="-1.0f" Z="1.57"/>
+    <XYZLocation X="0.0f" Y="0.0f" Z="1.57"/>
     <XYZRotation X="0.0f" Y="3.14f" Z="3.14f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <Texture0>../Resources/Texture/Tiles.png</Texture0>
@@ -21,7 +21,7 @@
     <ShaderVertex FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="2.0f" Y="0.0f" Z="2.0f"/>
+    <XYZLocation X="2.0f" Y="1.0f" Z="2.0f"/>
     <XYZRotation X="1.57f" Y="0.0f" Z="1.57f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZDiffuse  X="1.0f" Y="0.0f" Z="1.0f" W="0.5f"/>
@@ -37,7 +37,7 @@
     <ShaderVertex FileName="../Resources/ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="../Resources/ShaderFiles/0_Basic.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="5.0f" Y="5.0f" Z="5.0f"/>
-    <XYZLocation X="2.0f" Y="0.0f" Z="0.0f"/>
+    <XYZLocation X="2.0f" Y="1.0f" Z="0.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZDiffuse  X="0.5f" Y="0.5f" Z="0.5f" W="0.7f"/>
@@ -59,7 +59,7 @@
     <ID>SphericalMirror</ID>
     <Class>SphericalMirror</Class>
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="0.0f" Y="0.0f" Z="4.0f"/>
+    <XYZLocation X="0.0f" Y="1.0f" Z="10.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <UpdateEvery>0.012</UpdateEvery>
