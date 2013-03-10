@@ -344,7 +344,7 @@ void LoadSkinInfo(FbxNode* pNode, Mesh& pMesh, int vertOffset, int numVerts)
                         _snprintf_s(buffer, 499, "  Node [%s] attached to Skeleton [%s][%d]\n", pNode->GetName(), lParent->GetName(), b);
                         OutputDebugStringA(buffer);
 
-                        if(vertOffset + numVerts <= pMesh.mNumVerts)
+						if(vertOffset + numVerts <= pMesh.mVerts.size())
                         {
                             for(int i = 0; i < numVerts; ++i)
                             {
@@ -390,7 +390,7 @@ void LoadSkinInfo(FbxNode* pNode, Mesh& pMesh, int vertOffset, int numVerts)
                         {
                             if(weights[i] > 0.f)
                             {
-                                if(vertOffset + indices[i] < pMesh.mNumVerts)
+								if(vertOffset + indices[i] < pMesh.mVerts.size())
                                 {
                                     for(int w = 0; w < 4; ++w)
                                     {
@@ -455,7 +455,7 @@ void LoadMeshRecursive(FbxNode* pNode, Mesh& pMesh)
 
 		if(lVertexCount > 0)
 		{
-			int vertOffset = pMesh.mNumVerts;
+			int vertOffset = pMesh.mVerts.size();
 			if( vertOffset > 0)
 			{
 				pMesh.mVerts.resize(vertOffset + lVertexCount);
@@ -466,7 +466,6 @@ void LoadMeshRecursive(FbxNode* pNode, Mesh& pMesh)
 			}
 
 
-			pMesh.mNumVerts = vertOffset + lVertexCount;
 			for(int i = 0; i < lVertexCount; ++i)
 			{
 				pMesh.mVerts[i + vertOffset].Pos.x = static_cast<float>(lMesh->GetControlPoints()[i][0] * 0.01);
@@ -484,7 +483,7 @@ void LoadMeshRecursive(FbxNode* pNode, Mesh& pMesh)
 				totalIndices += vertCount;
 			}
 
-			int indOffset = pMesh.mNumIndices;
+			int indOffset = pMesh.mIndices.size();
 			if(indOffset > 0)
 			{
 				pMesh.mIndices.resize(indOffset + totalIndices);
@@ -504,7 +503,6 @@ void LoadMeshRecursive(FbxNode* pNode, Mesh& pMesh)
 					++ind;
 				}
 			}
-			pMesh.mNumIndices += ind;
 
             _snprintf_s(buffer, 499, "  VertexCount ='%d' PolygonCount ='%d' IndicesCount ='%d'\n", lVertexCount, lMesh->GetPolygonCount(), totalIndices);
 		    OutputDebugStringA(buffer);
@@ -587,7 +585,7 @@ void LoadSkeletonRecursive(FbxNode* pNode, Mesh& pMesh, int parent)
 	}
 }
 
-void LoadSkeletonRecursive2(FbxNode* pNode, cFBXBuffer::Joint* pSkeleton, int* numBones, int parent)
+void LoadSkeletonRecursive2(FbxNode* pNode, cFBXBuffer::Joint* pSkeleton, std::size_t& numBones, int parent)
 {
 	FbxNodeAttribute* lNodeAttribute = pNode->GetNodeAttribute();
 
@@ -600,11 +598,11 @@ void LoadSkeletonRecursive2(FbxNode* pNode, cFBXBuffer::Joint* pSkeleton, int* n
 		_snprintf_s(buffer, 499, "Load Skeleton name='%s' parent='%d'\n", nodeName, parent);
 		OutputDebugStringA(buffer);
 
-        pSkeleton[*numBones].parent = parent;
-		pSkeleton[*numBones].name = nodeName;
+        pSkeleton[numBones].parent = parent;
+		pSkeleton[numBones].name = nodeName;
 
-        parent = *numBones;
-        ++(*numBones);
+        parent = numBones;
+        ++(numBones);
     }
 
     const int lChildCount = pNode->GetChildCount();
@@ -930,7 +928,7 @@ SkeletalAnimation LoadAnimationFromFbx(const char* szFileName)
         {
 			pAnim.mSkeleton.resize(numBones);
             // First load the skeletal hierarchy
-            LoadSkeletonRecursive2(lRootNode, &(pAnim.mSkeleton.front()), &pAnim.mNumBones, -1);
+            LoadSkeletonRecursive2(lRootNode, &(pAnim.mSkeleton.front()), pAnim.mNumBones, -1);
 
             // Then go through the stack of takes and load each one
             for(int i = 0; i < lImporter->GetAnimStackCount(); ++i)

@@ -1,21 +1,18 @@
-#include "DisplayMeshGPU.h"
-#include "Mesh.h"
-#include "SkeletalAnimation.h"
+#include "FBXObject.h"
 #include "cFBXBuffer.h"
-#include <new>
 #include "Application.h"
 #include "DX11Helper.h"
-#include <sstream>
 #include "Helper.h"
 #include "cBuffer.h"
 #include "DX11ObjectManager.h"
 #include "MathHelper.h"
+#include <sstream>
 
-DisplayMeshGPU::DisplayMeshGPU() :
-    mAnimTime(0.0f),
-    mAnimRate(1.0f),
-    mCurrentFrame(0.0f)
+FBXObject::FBXObject()
 {
+	this->mAnimTime						= 0.0f;
+	this->mAnimRate						= 1.0f;
+	this->mCurrentFrame					= 0;
 	this->currAnimation					= 50000;
 
 	this->Shader.ShaderInput.FileName	= "ShaderFiles/7_GpuSkinShader.fx";
@@ -40,27 +37,25 @@ DisplayMeshGPU::DisplayMeshGPU() :
 	this->pAnimBonesBuffer.first		= "AnimBoneBuffer";
 }
 
-DisplayMeshGPU::~DisplayMeshGPU()
+FBXObject::~FBXObject()
 {
 }
 
-void DisplayMeshGPU::SetMesh(Mesh pMesh)
+void FBXObject::SetMesh(Mesh pMesh)
 {
-	mMesh = pMesh;
+	this->mMesh = pMesh;
 }
-void DisplayMeshGPU::Init()
+void FBXObject::Init()
 {
-    HRESULT hr = S_OK;
-	
-	mCurrentGlobalPose.resize(mMesh.mNumBones);
-	mBoneTransforms.resize(128);
-	mChannelMap.resize(mMesh.mNumBones);
-	mCurrentBones.resize(mMesh.mNumBones);
+	this->mCurrentGlobalPose.resize(this->mMesh.mNumBones);
+	this->mBoneTransforms.resize(128);
+	this->mChannelMap.resize(this->mMesh.mNumBones);
+	mCurrentBones.resize(this->mMesh.mNumBones);
 
-	for(int i = 0; i < mMesh.mNumBones; ++i)
+	for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
 	{
-		mCurrentGlobalPose[i] = mMesh.mOrigGlobalPose[i];
-		mCurrentBones[i] = mMesh.mOrigBones[i];
+		this->mCurrentGlobalPose[i] = this->mMesh.mOrigGlobalPose[i];
+		mCurrentBones[i] = this->mMesh.mOrigBones[i];
 	}
 
 	ID3D11Device* device = (dynamic_cast<DX11App*>(App::getInstance()))->direct3d.pd3dDevice;
@@ -75,101 +70,95 @@ void DisplayMeshGPU::Init()
 	this->InitAnimBuffer(device);
 	this->LoadD3DStuff();
 }
-void DisplayMeshGPU::Clean()
+void FBXObject::Clean()
 {
 
 }
-void DisplayMeshGPU::UpdateDrawing(float delta)
+void FBXObject::UpdateDrawing(float delta)
 {
 	if(this->currAnimation < this->mAnimation.size())
 	{
-        float oldTime = mAnimTime;
-        mAnimTime = oldTime;
         //find the appropriate frame
-        mAnimTime += delta * mAnimRate;
-		while(mAnimTime >= mAnimation[this->currAnimation].mDuration)
+        this->mAnimTime += delta * this->mAnimRate;
+
+		if(this->mAnimTime >= this->mAnimation[this->currAnimation].mDuration)
         {
-            mAnimTime -= mAnimation[this->currAnimation].mDuration;
-        }
-        int frame = 0;
-		while(mAnimTime > mAnimation[this->currAnimation].mKeys[frame].mTime && frame < mAnimation[this->currAnimation].mKeys.size())
-        {
-            ++frame;
+            this->mAnimTime = 0.0f;
+			this->mCurrentFrame = 0;
         }
 
-        if(frame >= mAnimation[this->currAnimation].mKeys.size())
-        {
-            frame = 0;
-        }
-        
-        int prevFrame = 0;
-		float t = 0;
-		if(frame > 0)
+		if(this->mAnimTime > this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime)
 		{
-			prevFrame = frame - 1;
-			t = (mAnimTime - mAnimation[this->currAnimation].mKeys[prevFrame].mTime) / (mAnimation[this->currAnimation].mKeys[frame].mTime - mAnimation[this->currAnimation].mKeys[prevFrame].mTime);
+			this->mCurrentFrame += 1;
 		}
 
-		mCurrentFrame = static_cast<float>(frame) + t; //this is just for show in the title-bar
+        int prevFrame = 0;
+		float ratio = 0;
+		if(this->mCurrentFrame > 0)
+		{
+			prevFrame = this->mCurrentFrame - 1;
+			ratio = (this->mAnimTime - this->mAnimation[this->currAnimation].mKeys[prevFrame].mTime) / (this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime
+							- this->mAnimation[this->currAnimation].mKeys[prevFrame].mTime);
+		}
 
         // we've got the frame, so update the animation   
-        for(int i = 0; i < mMesh.mNumBones; ++i)
+        for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
         {
-            if(mChannelMap[i] != -1)
+            if(this->mChannelMap[i] != -1)
             {
-				cFBXBuffer::JointPose* jntA = &(mAnimation[this->currAnimation].mKeys[prevFrame].mBones[mChannelMap[i]]);
-				cFBXBuffer::JointPose* jntB = &(mAnimation[this->currAnimation].mKeys[frame].mBones[mChannelMap[i]]);
+				cFBXBuffer::JointPose* jntA = &(this->mAnimation[this->currAnimation].mKeys[prevFrame].mBones[this->mChannelMap[i]]);
+				cFBXBuffer::JointPose* jntB = &(this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mBones[this->mChannelMap[i]]);
 
-				XMStoreFloat3(&mCurrentBones[i].translation, XMVectorLerp(XMLoadFloat3(&jntA->translation), XMLoadFloat3(&jntB->translation), t));
-                XMStoreFloat4(&mCurrentBones[i].rotation, XMQuaternionSlerp(XMLoadFloat4(&jntA->rotation), XMLoadFloat4(&jntB->rotation), t));
-                XMStoreFloat3(&mCurrentBones[i].scale, XMVectorLerp(XMLoadFloat3(&jntA->scale), XMLoadFloat3(&jntB->scale), t));
+				XMStoreFloat3(&mCurrentBones[i].translation, XMVectorLerp(XMLoadFloat3(&jntA->translation), XMLoadFloat3(&jntB->translation), ratio));
+                XMStoreFloat4(&mCurrentBones[i].rotation, XMQuaternionSlerp(XMLoadFloat4(&jntA->rotation), XMLoadFloat4(&jntB->rotation), ratio));
+                XMStoreFloat3(&mCurrentBones[i].scale, XMVectorLerp(XMLoadFloat3(&jntA->scale), XMLoadFloat3(&jntB->scale), ratio));
             }
         }
 
 		//update the current pose
-		for(int i = 0; i < mMesh.mNumBones; ++i)
+		for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
 		{
 			XMMATRIX m = mCurrentBones[i].GetTransform();
-			if(mMesh.mSkeleton[i].parent >= 0)
+			if(this->mMesh.mSkeleton[i].parent >= 0)
 			{
-				XMMATRIX c = XMLoadFloat4x4(&mCurrentGlobalPose[mMesh.mSkeleton[i].parent]);
+				XMMATRIX c = XMLoadFloat4x4(&this->mCurrentGlobalPose[this->mMesh.mSkeleton[i].parent]);
 				m *= c;
 			}
         
-			XMStoreFloat4x4(&mCurrentGlobalPose[i], m);
+			XMStoreFloat4x4(&this->mCurrentGlobalPose[i], m);
 		}
     }
 }
-void DisplayMeshGPU::UpdateObject(float delta)
+void FBXObject::UpdateObject(float delta)
 {
 	UNREFERENCED_PARAMETER(delta);
 }
-void DisplayMeshGPU::Draw()
+void FBXObject::Draw()
 {
 	//update the current pose
-    for(int i = 0; i < mMesh.mNumBones; ++i)
+    for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
     {
-		XMMATRIX invBind = XMLoadFloat4x4(&mMesh.mSkeleton[i].invBindPose);
-		XMMATRIX currPose = XMLoadFloat4x4(&mCurrentGlobalPose[i]);
+		XMMATRIX invBind = XMLoadFloat4x4(&this->mMesh.mSkeleton[i].invBindPose);
+		XMMATRIX currPose = XMLoadFloat4x4(&this->mCurrentGlobalPose[i]);
 		XMMATRIX total = invBind * currPose;
 		XMMATRIX invTotal = XMMatrixTranspose( total);
 		XMFLOAT4X4 inv;
 		XMStoreFloat4x4(&inv, invTotal);
 	
-		mBoneTransforms[i] = inv;
+		this->mBoneTransforms[i] = inv;
 	}
 
     //
     // Update variables
     //
 	cBuffer::cbChangeEveryFrame cb;
-	memset(&cb, 0, sizeof(cb));
-	cb.mWorld = XMMatrixTranspose( XMMatrixIdentity() );
+	XMFLOAT4X4 world = this->object.CalculateMatrix();
+	cb.mWorld = XMMatrixTranspose(XMLoadFloat4x4(&world));
 
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 
 	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cb, 0, 0 );
-	pImmediateContext->UpdateSubresource( this->pAnimBonesBuffer.second, 0, NULL, &(mBoneTransforms.front()), 0, 0 );
+	pImmediateContext->UpdateSubresource( this->pAnimBonesBuffer.second, 0, NULL, &(this->mBoneTransforms.front()), 0, 0 );
     	
     pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 	pImmediateContext->VSSetConstantBuffers( 3, 1, &(this->pAnimBonesBuffer.second) );
@@ -191,82 +180,83 @@ void DisplayMeshGPU::Draw()
 
 	pImmediateContext->RSSetState( this->pRastersizerState.second );
 
-    pImmediateContext->DrawIndexed( mMesh.mNumIndices, 0, 0 );
+    pImmediateContext->DrawIndexed( this->mMesh.mIndices.size(), 0, 0 );
 
 }
 
-void DisplayMeshGPU::AddAnimation(const SkeletalAnimation& anim)
+void FBXObject::AddAnimation(const SkeletalAnimation& anim)
 {
 	this->mAnimation.push_back(anim);
 }
-void DisplayMeshGPU::PlayAnimation(std::size_t anim)
+void FBXObject::PlayAnimation(std::size_t anim)
 {
 	if(anim < this->mAnimation.size())
 	{
-		this->currAnimation = anim;
-		mAnimTime = 0.0f;
+		this->currAnimation		= anim;
+		this->mAnimTime			= 0.0f;
+		this->mCurrentFrame		= 0;
 
-		for(int i = 0; i < mMesh.mNumBones; ++i)
+		for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
 		{
-			mChannelMap[i] = -1;
-			for(int j = 0; j < this->mAnimation[this->currAnimation].mNumBones; ++j)
+			this->mChannelMap[i] = static_cast<unsigned char>(-1);
+			for(std::size_t j = 0; j < this->mAnimation[this->currAnimation].mNumBones; ++j)
 			{
-				if(mMesh.mSkeleton[i].name == this->mAnimation[this->currAnimation].mSkeleton[j].name)
+				if(this->mMesh.mSkeleton[i].name == this->mAnimation[this->currAnimation].mSkeleton[j].name)
 				{
-					mChannelMap[i] = j;
+					this->mChannelMap[i] = static_cast<unsigned char>(j);
 					break;
 				}
 			}
 		}
 	}
 }
-std::string DisplayMeshGPU::GetPlayingAnimation() const
+std::string FBXObject::GetPlayingAnimation() const
 {
 	if(this->currAnimation < this->mAnimation.size())
 	{
-        return(mAnimation[this->currAnimation].mName);
+        return(this->mAnimation[this->currAnimation].mName);
     }
     else
     {
         return("None");
     }
 }
-float DisplayMeshGPU::GetCurrentAnimTime() const
+float FBXObject::GetCurrentAnimTime() const
 {
     return(mAnimTime);
 }
-float DisplayMeshGPU::GetCurrentAnimFrame() const
+std::size_t FBXObject::GetCurrentAnimFrame() const
 {
-    return(mCurrentFrame);
+    return(this->mCurrentFrame);
 }
 
-void DisplayMeshGPU::InitVertexBuffer(ID3D11Device* device)
+void FBXObject::InitVertexBuffer(ID3D11Device* device)
 {
 	std::wstring error;
 
 	if(!DX11ObjectManager::getInstance()->PlyBuffer.Exists(this->pVertexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadVertexBuffer<cFBXBuffer::SimpleSkinnedVertex>(device, &(mMesh.mVerts.front()), mMesh.mNumVerts, &(this->pVertexBuffer.second), error ))
+		if(!DX11Helper::LoadVertexBuffer<cFBXBuffer::SimpleSkinnedVertex>(device, &(this->mMesh.mVerts.front()), this->mMesh.mVerts.size(), &(this->pVertexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
 		DX11ObjectManager::getInstance()->PlyBuffer.Add(this->pVertexBuffer.first, pVertexBuffer.second);
 	}
 }
-void DisplayMeshGPU::InitIndexBuffer(ID3D11Device* device)
+void FBXObject::InitIndexBuffer(ID3D11Device* device)
 {
 	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->pIndexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(mMesh.mIndices.front()), mMesh.mNumIndices, &(this->pIndexBuffer.second), error ))
+		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(this->mMesh.mIndices.front()), this->mMesh.mIndices.size(), &(this->pIndexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
 		DX11ObjectManager::getInstance()->IndexBuffer.Add(this->pIndexBuffer.first, this->pIndexBuffer.second);
 	}
 }
-void DisplayMeshGPU::InitInputLayout(ID3D11Device* device)
+void FBXObject::InitInputLayout(ID3D11Device* device)
 {
 	if(!DX11ObjectManager::getInstance()->InputLayout.Exists(this->pInputLayout.first))
 	{
@@ -288,7 +278,7 @@ void DisplayMeshGPU::InitInputLayout(ID3D11Device* device)
 		DX11ObjectManager::getInstance()->InputLayout.Add(this->pInputLayout.first, this->pInputLayout.second);
 	}
 }
-void DisplayMeshGPU::InitVertexShader(ID3D11Device* device)
+void FBXObject::InitVertexShader(ID3D11Device* device)
 {
 	if(!DX11ObjectManager::getInstance()->VertexShader.Exists(this->pVertexShader.first))
 	{
@@ -300,7 +290,7 @@ void DisplayMeshGPU::InitVertexShader(ID3D11Device* device)
 		DX11ObjectManager::getInstance()->VertexShader.Add(this->pVertexShader.first , this->pVertexShader.second);
 	}
 }
-void DisplayMeshGPU::InitPixelShader(ID3D11Device* device)
+void FBXObject::InitPixelShader(ID3D11Device* device)
 {
 	if(!DX11ObjectManager::getInstance()->PixelShader.Exists(this->pPixelShader.first))
 	{
@@ -312,7 +302,7 @@ void DisplayMeshGPU::InitPixelShader(ID3D11Device* device)
 		DX11ObjectManager::getInstance()->PixelShader.Add(this->pPixelShader.first , this->pPixelShader.second);
 	}
 }
-void DisplayMeshGPU::InitRastersizerState(ID3D11Device* device)
+void FBXObject::InitRastersizerState(ID3D11Device* device)
 {
 	if(!DX11ObjectManager::getInstance()->RastersizerState.Exists(this->pRastersizerState.first))
 	{
@@ -324,7 +314,7 @@ void DisplayMeshGPU::InitRastersizerState(ID3D11Device* device)
 		DX11ObjectManager::getInstance()->RastersizerState.Add(this->pRastersizerState.first, this->pRastersizerState.second);
 	}
 }
-void DisplayMeshGPU::InitCBChangesEveryFrameBuffer(ID3D11Device* device)
+void FBXObject::InitCBChangesEveryFrameBuffer(ID3D11Device* device)
 {
 	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->pCBChangesEveryFrame.first))
 	{
@@ -336,7 +326,7 @@ void DisplayMeshGPU::InitCBChangesEveryFrameBuffer(ID3D11Device* device)
 		DX11ObjectManager::getInstance()->CBuffer.Add(this->pCBChangesEveryFrame.first, this->pCBChangesEveryFrame.second);
 	}
 }
-void DisplayMeshGPU::InitAnimBuffer(ID3D11Device* device)
+void FBXObject::InitAnimBuffer(ID3D11Device* device)
 {
 	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->pAnimBonesBuffer.first))
 	{
@@ -349,7 +339,7 @@ void DisplayMeshGPU::InitAnimBuffer(ID3D11Device* device)
 	}
 }
 
-void DisplayMeshGPU::LoadD3DStuff()
+void FBXObject::LoadD3DStuff()
 {
 	if(!DX11ObjectManager::getInstance()->PlyBuffer.Get(this->pVertexBuffer.first, this->pVertexBuffer.second)){ throw std::exception("Vertex Buffer not found"); }
 	if(!DX11ObjectManager::getInstance()->IndexBuffer.Get(this->pIndexBuffer.first, this->pIndexBuffer.second)){ throw std::exception("Index Buffer not found"); }

@@ -22,7 +22,7 @@ public:
 	virtual ~SkeletalAnimation(){}
 
     std::vector<cFBXBuffer::Joint>		mSkeleton;
-    int						mNumBones;
+    std::size_t							mNumBones;
 
     std::vector<Frame>		mKeys;
     float					mDuration;

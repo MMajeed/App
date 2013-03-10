@@ -57,9 +57,6 @@
     <ClCompile Include="Prespective.cpp">
       <Filter>Tools\View\Prespective</Filter>
     </ClCompile>
-    <ClCompile Include="DisplayMeshGPU.cpp">
-      <Filter>DX11ObjectDrawable\FBX Files\DisplayMeshGPU</Filter>
-    </ClCompile>
     <ClCompile Include="FbxHandler.cpp">
       <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
     </ClCompile>
@@ -68,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="cFBXBuffer.cpp">
       <Filter>Tools\DX11Stuff\cBuffer\cFBXBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXObject.cpp">
+      <Filter>DX11ObjectDrawable\FBX Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +132,6 @@
     <ClInclude Include="Prespective.h">
       <Filter>Tools\View\Prespective</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayMeshGPU.h">
-      <Filter>DX11ObjectDrawable\FBX Files\DisplayMeshGPU</Filter>
-    </ClInclude>
     <ClInclude Include="FbxHandler.h">
       <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
     </ClInclude>
@@ -152,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="cFBXBuffer.h">
       <Filter>Tools\DX11Stuff\cBuffer\cFBXBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXObject.h">
+      <Filter>DX11ObjectDrawable\FBX Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -232,9 +232,6 @@
     </Filter>
     <Filter Include="DX11ObjectDrawable\FBX Files">
       <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX Files\DisplayMeshGPU">
-      <UniqueIdentifier>{37004407-b752-43af-af31-6c59674dcb8a}</UniqueIdentifier>
     </Filter>
     <Filter Include="DX11ObjectDrawable\FBX Files\FbxHandler">
       <UniqueIdentifier>{5371c2cc-c3b8-4e0b-8d17-2bdde197f181}</UniqueIdentifier>

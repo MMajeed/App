@@ -6,7 +6,7 @@
 #include "iObjectDrawable.h"
 #include "Prespective.h"
 #include "Mesh.h"
-#include "DisplayMeshGPU.h"
+#include "FBXObject.h"
 #include "SkeletalAnimation.h"
 
 class Application : public DX11App

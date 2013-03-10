@@ -7,7 +7,7 @@
 #include "Mesh.h"
 #include "SkeletalAnimation.h"
 
-class DisplayMeshGPU : public iObjectDrawable
+class FBXObject : public iObjectDrawable
 {
 public:
 	virtual void Init();
@@ -26,8 +26,8 @@ public:
 	virtual void InitCBChangesEveryFrameBuffer(ID3D11Device* device);
 	virtual void InitAnimBuffer(ID3D11Device* device);
 
-    DisplayMeshGPU();
-    virtual ~DisplayMeshGPU();
+    FBXObject();
+    virtual ~FBXObject();
 
 	void SetMesh(Mesh pMesh);
 
@@ -36,7 +36,7 @@ public:
     void PlayAnimation(std::size_t anim);    
     std::string GetPlayingAnimation() const;
     float GetCurrentAnimTime() const;
-    float GetCurrentAnimFrame() const;
+    std::size_t GetCurrentAnimFrame() const;
 
     void SetAnimRate(float rate) { mAnimRate = rate; }
     float GetAnimRate() const { return(mAnimRate); }
@@ -50,10 +50,9 @@ public:
     std::vector<XMFLOAT4X4>						mCurrentGlobalPose;
 	std::vector<XMFLOAT4X4>						mBoneTransforms;
 
-
     float                   mAnimTime;
     float                   mAnimRate;
-    float                   mCurrentFrame;
+    std::size_t             mCurrentFrame;
 
 	std::pair<std::string, ID3D11Buffer*> 			pVertexBuffer;
 	std::pair<std::string, ID3D11Buffer*>			pIndexBuffer;

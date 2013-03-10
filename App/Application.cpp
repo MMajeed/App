@@ -205,16 +205,16 @@ void Application::InitDevices()
 
 	//PrintFbxFile("DefaultCharacter/DefaultAvatar.fbx");
 	
-	auto g_pMyDisplayMeshGPU = new DisplayMeshGPU();
+	auto g_pMyFBXObject = new FBXObject();
 
-	g_pMyDisplayMeshGPU->SetMesh(LoadMeshFromFbx("DefaultCharacter/DefaultAvatar.fbx"));
-	g_pMyDisplayMeshGPU->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx"));
-    g_pMyDisplayMeshGPU->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx"));
-    g_pMyDisplayMeshGPU->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx"));
+	g_pMyFBXObject->SetMesh(LoadMeshFromFbx("DefaultCharacter/DefaultAvatar.fbx"));
+	g_pMyFBXObject->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx"));
+    g_pMyFBXObject->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx"));
+    g_pMyFBXObject->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx"));
 
-	g_pMyDisplayMeshGPU->Init();
+	g_pMyFBXObject->Init();
 
-	this->objects.push_back(g_pMyDisplayMeshGPU);
+	this->objects.push_back(g_pMyFBXObject);
     
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
@@ -296,9 +296,9 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 							objectIter != this->objects.end();
 							++objectIter)
 						{
-							if( dynamic_cast<DisplayMeshGPU*>(*objectIter) != 0)
+							if( dynamic_cast<FBXObject*>(*objectIter) != 0)
 							{
-								dynamic_cast<DisplayMeshGPU*>(*objectIter)->PlayAnimation(0);
+								dynamic_cast<FBXObject*>(*objectIter)->PlayAnimation(0);
 							}
 						}
 					}
@@ -309,9 +309,9 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 							objectIter != this->objects.end();
 							++objectIter)
 						{
-							if( dynamic_cast<DisplayMeshGPU*>(*objectIter) != 0)
+							if( dynamic_cast<FBXObject*>(*objectIter) != 0)
 							{
-								dynamic_cast<DisplayMeshGPU*>(*objectIter)->PlayAnimation(1);
+								dynamic_cast<FBXObject*>(*objectIter)->PlayAnimation(1);
 							}
 						}
 					}
@@ -322,9 +322,37 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 							objectIter != this->objects.end();
 							++objectIter)
 						{
-							if( dynamic_cast<DisplayMeshGPU*>(*objectIter) != 0)
+							if( dynamic_cast<FBXObject*>(*objectIter) != 0)
 							{
-								dynamic_cast<DisplayMeshGPU*>(*objectIter)->PlayAnimation(2);
+								dynamic_cast<FBXObject*>(*objectIter)->PlayAnimation(2);
+							}
+						}
+					}
+					break;
+				case VK_SUBTRACT:
+					{
+						for(auto objectIter = this->objects.begin();
+							objectIter != this->objects.end();
+							++objectIter)
+						{
+							FBXObject* fbxObject = dynamic_cast<FBXObject*>(*objectIter);
+							if(fbxObject != 0)
+							{
+								fbxObject->SetAnimRate(fbxObject->GetAnimRate() - 0.1f);
+							}
+						}
+					}
+					break;
+				case VK_ADD:
+					{
+						for(auto objectIter = this->objects.begin();
+							objectIter != this->objects.end();
+							++objectIter)
+						{
+							FBXObject* fbxObject = dynamic_cast<FBXObject*>(*objectIter);
+							if(fbxObject != 0)
+							{
+								fbxObject->SetAnimRate(fbxObject->GetAnimRate() + 0.1f);
 							}
 						}
 					}
