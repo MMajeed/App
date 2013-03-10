@@ -50,6 +50,7 @@ public:
     float                   mAnimTime;
     float                   mAnimRate;
     std::size_t             mCurrentFrame;
+	std::size_t             mPreviousFrame;
 
 	std::pair<std::string, ID3D11Buffer*> 			pVertexBuffer;
 	std::pair<std::string, ID3D11Buffer*>			pIndexBuffer;

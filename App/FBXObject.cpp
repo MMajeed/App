@@ -13,6 +13,7 @@ FBXObject::FBXObject()
 	this->mAnimTime						= 0.0f;
 	this->mAnimRate						= 1.0f;
 	this->mCurrentFrame					= 0;
+	this->mPreviousFrame				= 0;
 	this->currAnimation					= 50000;
 
 	this->Shader.ShaderInput.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
@@ -82,31 +83,46 @@ void FBXObject::UpdateDrawing(float delta)
             this->mAnimTime = 0.0f;
 			this->mCurrentFrame = 0;
         }
+		else if(this->mAnimTime < 0.0f)
+        {
+            this->mAnimTime = this->mAnimation[this->currAnimation].mDuration;
+			this->mCurrentFrame = this->mAnimation[this->currAnimation].mKeys.size() - 1;
+        }
 
-		if(this->mAnimTime > this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime)
+		std::size_t prevFrame = this->mCurrentFrame;
+		if(this->mAnimTime < this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime)
 		{
-			this->mCurrentFrame += 1;
+			do
+			{
+				this->mCurrentFrame -= 1;
+			}while(this->mAnimTime < this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime);
+		}
+		else if(this->mAnimTime > this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime)
+		{
+			do
+			{
+				this->mCurrentFrame += 1;
+			}while(this->mAnimTime > this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime);
 		}
 
-        int prevFrame = 0;
-		float ratio = 0;
-		if(this->mCurrentFrame > 0)
+		if(prevFrame != this->mCurrentFrame)
 		{
-			prevFrame = this->mCurrentFrame - 1;
-			ratio = (this->mAnimTime - this->mAnimation[this->currAnimation].mKeys[prevFrame].mTime) / 
-						(this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime - this->mAnimation[this->currAnimation].mKeys[prevFrame].mTime);
+			this->mPreviousFrame = prevFrame;
 		}
 
+		float ratio = (this->mAnimTime - this->mAnimation[this->currAnimation].mKeys[this->mPreviousFrame].mTime) / 
+						(this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mTime - this->mAnimation[this->currAnimation].mKeys[this->mPreviousFrame].mTime);
+		
         for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
         {
             if(this->mChannelMap[i] != -1)
             {
-				cFBXBuffer::JointPose* jntA = &(this->mAnimation[this->currAnimation].mKeys[prevFrame].mBones[this->mChannelMap[i]]);
-				cFBXBuffer::JointPose* jntB = &(this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mBones[this->mChannelMap[i]]);
+				const cFBXBuffer::JointPose& jntA = this->mAnimation[this->currAnimation].mKeys[this->mPreviousFrame].mBones[this->mChannelMap[i]];
+				const cFBXBuffer::JointPose& jntB = this->mAnimation[this->currAnimation].mKeys[this->mCurrentFrame].mBones[this->mChannelMap[i]];
 
-				XMStoreFloat3(&(this->mCurrentBones[i].translation), XMVectorLerp(XMLoadFloat3(&jntA->translation), XMLoadFloat3(&jntB->translation), ratio));
-                XMStoreFloat4(&(this->mCurrentBones[i].rotation), XMQuaternionSlerp(XMLoadFloat4(&jntA->rotation), XMLoadFloat4(&jntB->rotation), ratio));
-                XMStoreFloat3(&(this->mCurrentBones[i].scale), XMVectorLerp(XMLoadFloat3(&jntA->scale), XMLoadFloat3(&jntB->scale), ratio));
+				XMStoreFloat3(&(this->mCurrentBones[i].translation), XMVectorLerp(XMLoadFloat3(&jntA.translation), XMLoadFloat3(&jntB.translation), ratio));
+                XMStoreFloat4(&(this->mCurrentBones[i].rotation), XMQuaternionSlerp(XMLoadFloat4(&jntA.rotation), XMLoadFloat4(&jntB.rotation), ratio));
+                XMStoreFloat3(&(this->mCurrentBones[i].scale), XMVectorLerp(XMLoadFloat3(&jntA.scale), XMLoadFloat3(&jntB.scale), ratio));
             }
         }
 
@@ -115,7 +131,7 @@ void FBXObject::UpdateDrawing(float delta)
 			XMMATRIX m = mCurrentBones[i].GetTransform();
 			if(this->mMesh.mSkeleton[i].parent >= 0)
 			{
-				XMMATRIX c = XMLoadFloat4x4(&this->mCurrentGlobalPose[this->mMesh.mSkeleton[i].parent]);
+				const XMMATRIX& c = XMLoadFloat4x4(&this->mCurrentGlobalPose[this->mMesh.mSkeleton[i].parent]);
 				m *= c;
 			}
         
@@ -184,7 +200,7 @@ void FBXObject::PlayAnimation(std::size_t anim)
 		this->currAnimation		= anim;
 		this->mAnimTime			= 0.0f;
 		this->mCurrentFrame		= 0;
-
+		this->mPreviousFrame	= 0;
 		for(std::size_t i = 0; i < this->mMesh.mNumBones; ++i)
 		{
 			this->mChannelMap[i] = static_cast<unsigned char>(-1);
