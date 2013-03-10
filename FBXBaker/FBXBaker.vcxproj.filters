@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="FBXMeshLoader">
+      <UniqueIdentifier>{9f4bc0d2-685a-41be-a07b-04b7acf65b4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBXAnimationLoader">
+      <UniqueIdentifier>{8dd3d0b4-4334-47ba-8ce1-e37c81f86d43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh &amp; Animation">
+      <UniqueIdentifier>{bf3f208c-9519-4dc0-a629-7c891ee29e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh &amp; Animation\Mesh">
+      <UniqueIdentifier>{ef06f6cc-8339-4d26-ba1b-9f4f5b46997b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh &amp; Animation\Animation">
+      <UniqueIdentifier>{1ace3810-08c6-48a0-b0c2-348035fb8503}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FBXMeshLoader.cpp">
+      <Filter>FBXMeshLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXAnimationLoader.cpp">
+      <Filter>FBXAnimationLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FBXMeshLoader.h">
+      <Filter>FBXMeshLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXAnimationLoader.h">
+      <Filter>FBXAnimationLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Mesh &amp; Animation\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Mesh &amp; Animation\Animation</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
