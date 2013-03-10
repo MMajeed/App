@@ -257,31 +257,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Commands.xml" />
-    <None Include="..\ShaderFiles\0_Basic.fx">
+    <None Include="..\Resources\ShaderFiles\0_Basic.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\ShaderFiles\1_LightingOnly_DX11.fx">
+    <None Include="..\Resources\ShaderFiles\1_LightingOnly_DX11.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\ShaderFiles\2_TwoTexturesOnly_DX11.fx">
+    <None Include="..\Resources\ShaderFiles\2_TwoTexturesOnly_DX11.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\ShaderFiles\3_TexturingAndLighting_DX11.fx">
+    <None Include="..\Resources\ShaderFiles\3_TexturingAndLighting_DX11.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\ShaderFiles\4_CubeMapping.fx">
+    <None Include="..\Resources\ShaderFiles\4_CubeMapping.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\ShaderFiles\5_SkyMap.fx">
+    <None Include="..\Resources\ShaderFiles\5_SkyMap.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\ShaderFiles\6_Binoculars.fx">
+    <None Include="..\Resources\ShaderFiles\6_Binoculars.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\ShaderFiles\7_GpuSkinShader.fx">
+    <None Include="..\Resources\ShaderFiles\7_GpuSkinShader.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\ShaderFiles\HLSL_4_BasicLightFunctions.fx">
+    <None Include="..\Resources\ShaderFiles\HLSL_4_BasicLightFunctions.fx">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>
