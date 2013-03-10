@@ -31,9 +31,17 @@ XMFLOAT4 MathHelper::Normalize(XMFLOAT4 v1)
 	return v1Nomrlized;
 }
 
-XMFLOAT4 MathHelper::Identity()
+XMFLOAT4 MathHelper::IdentityFloat4()
 {
 	return XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+}
+
+XMFLOAT4X4 MathHelper::IdentityFloat4X4()
+{
+	XMMATRIX identity = XMMatrixIdentity();
+	XMFLOAT4X4 returnValue;
+	XMStoreFloat4x4(&returnValue, identity);
+	return returnValue;
 }
 
 XMFLOAT4 operator-(const XMFLOAT4& rh, const XMFLOAT4& lh)

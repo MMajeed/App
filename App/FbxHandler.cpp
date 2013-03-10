@@ -339,7 +339,7 @@ void LoadSkinInfo(FbxNode* pNode, Mesh& pMesh, int vertOffset, int numVerts)
             {
                 for(int b = 0; b < pMesh.mNumBones; ++b)
                 {
-                    if(strcmp(pMesh.mSkeleton[b].name, lParent->GetName()) == 0)
+					if(pMesh.mSkeleton[b].name == lParent->GetName())
                     {
                         _snprintf_s(buffer, 499, "  Node [%s] attached to Skeleton [%s][%d]\n", pNode->GetName(), lParent->GetName(), b);
                         OutputDebugStringA(buffer);
@@ -379,7 +379,7 @@ void LoadSkinInfo(FbxNode* pNode, Mesh& pMesh, int vertOffset, int numVerts)
 
             for(int b = 0; b < pMesh.mNumBones; ++b)
             {
-                if(strcmp(pMesh.mSkeleton[b].name, cluster->GetLink()->GetName()) == 0)
+				if(pMesh.mSkeleton[b].name == cluster->GetLink()->GetName())
                 {
                     int numIndices = cluster->GetControlPointIndicesCount();
                     if(numIndices > 0)
@@ -555,7 +555,7 @@ void LoadSkeletonRecursive(FbxNode* pNode, Mesh& pMesh, int parent)
 		OutputDebugStringA(buffer);
 
         pMesh.mSkeleton[pMesh.mNumBones].parent = parent;
-        _snprintf_s(pMesh.mSkeleton[pMesh.mNumBones].name, 27, "%s", nodeName);
+		pMesh.mSkeleton[pMesh.mNumBones].name = nodeName;
 
         FbxDouble3 translation = pNode->LclTranslation.Get();
         FbxDouble3 rotation = pNode->LclRotation.Get();
@@ -601,7 +601,7 @@ void LoadSkeletonRecursive2(FbxNode* pNode, cFBXBuffer::Joint* pSkeleton, int* n
 		OutputDebugStringA(buffer);
 
         pSkeleton[*numBones].parent = parent;
-        _snprintf_s(pSkeleton[*numBones].name, 27, "%s", nodeName);
+		pSkeleton[*numBones].name = nodeName;
 
         parent = *numBones;
         ++(*numBones);
@@ -648,7 +648,7 @@ void LoadBindPose(FbxScene* lScene, Mesh& pMesh)
                     //find the same bone in our mesh
                     for(int b = 0; b < pMesh.mNumBones; ++b)
                     {
-                        if(strcmp(pMesh.mSkeleton[b].name, node->GetName()) == 0)
+						if(pMesh.mSkeleton[b].name == node->GetName())
                         {
                             //found a match
                             _XMMATRIX mb(static_cast<float>(m[0][0] * 1.00), static_cast<float>(m[0][1] * 1.00), static_cast<float>(m[0][2] * 1.00), static_cast<float>(m[0][3] * 1.00),

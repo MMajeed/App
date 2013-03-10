@@ -57,8 +57,6 @@ void Application::DrawObjects()
 	{
 		this->objects[i]->Draw();
 	}
-
-	g_pMyDisplayMeshGPU->Draw();
 }
 void  Application::Present()
 {
@@ -116,9 +114,7 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			{
 				objects[i]->UpdateObject(static_cast<float>(timer._frameTime));
 			}
-
-			g_pMyDisplayMeshGPU->UpdateDrawing(timer._frameTime);
-	
+			
 			this->SortObject();
 
 			// render
@@ -201,26 +197,24 @@ void Application::InitDevices()
 	
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
-	objects = ObjectLoader::getInstance()->SpawnAll();
+	this->objects = ObjectLoader::getInstance()->SpawnAll();
 
 	////-------------------------------------------------------------------------
     // Initialize our entities
     InitializeFbxSdk();
 
-	PrintFbxFile("DefaultCharacter/DefaultAvatar.fbx");
-	g_pMyMesh = LoadMeshFromFbx("DefaultCharacter/DefaultAvatar.fbx");
+	//PrintFbxFile("DefaultCharacter/DefaultAvatar.fbx");
 	
-	g_pMyDisplayMeshGPU = new DisplayMeshGPU();
-	if(!g_pMyDisplayMeshGPU)
-	{
-		throw std::exception("Failed at creating memory for display mesh gpu");
-	}
-	g_pMyDisplayMeshGPU->SetMesh(g_pMyMesh);
+	auto g_pMyDisplayMeshGPU = new DisplayMeshGPU();
+
+	g_pMyDisplayMeshGPU->SetMesh(LoadMeshFromFbx("DefaultCharacter/DefaultAvatar.fbx"));
+	g_pMyDisplayMeshGPU->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx"));
+    g_pMyDisplayMeshGPU->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx"));
+    g_pMyDisplayMeshGPU->AddAnimation(LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx"));
+
 	g_pMyDisplayMeshGPU->Init();
 
-	g_pIdleAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx");
-    g_pWalkAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx");
-    g_pRunAnim = LoadAnimationFromFbx("DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx");
+	this->objects.push_back(g_pMyDisplayMeshGPU);
     
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
@@ -298,17 +292,41 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 					return 0;
 				case '1':
 					{
-						g_pMyDisplayMeshGPU->PlayAnimation(g_pIdleAnim);
+						for(auto objectIter = this->objects.begin();
+							objectIter != this->objects.end();
+							++objectIter)
+						{
+							if( dynamic_cast<DisplayMeshGPU*>(*objectIter) != 0)
+							{
+								dynamic_cast<DisplayMeshGPU*>(*objectIter)->PlayAnimation(0);
+							}
+						}
 					}
 					break;
 				case '2':
 					{
-						g_pMyDisplayMeshGPU->PlayAnimation(g_pWalkAnim);
+						for(auto objectIter = this->objects.begin();
+							objectIter != this->objects.end();
+							++objectIter)
+						{
+							if( dynamic_cast<DisplayMeshGPU*>(*objectIter) != 0)
+							{
+								dynamic_cast<DisplayMeshGPU*>(*objectIter)->PlayAnimation(1);
+							}
+						}
 					}
 					break;
 				case '3':
 					{
-						g_pMyDisplayMeshGPU->PlayAnimation(g_pRunAnim);
+						for(auto objectIter = this->objects.begin();
+							objectIter != this->objects.end();
+							++objectIter)
+						{
+							if( dynamic_cast<DisplayMeshGPU*>(*objectIter) != 0)
+							{
+								dynamic_cast<DisplayMeshGPU*>(*objectIter)->PlayAnimation(2);
+							}
+						}
 					}
 					break;
 			}

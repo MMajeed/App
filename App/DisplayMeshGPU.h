@@ -31,8 +31,9 @@ public:
 
 	void SetMesh(Mesh pMesh);
 
-    void PlayAnimation(SkeletalAnimation anim);
-    
+	void AddAnimation(const SkeletalAnimation& anim);
+
+    void PlayAnimation(std::size_t anim);    
     std::string GetPlayingAnimation() const;
     float GetCurrentAnimTime() const;
     float GetCurrentAnimFrame() const;
@@ -41,12 +42,13 @@ public:
     float GetAnimRate() const { return(mAnimRate); }
 
 	Mesh							mMesh;
-    SkeletalAnimation				mAnimation;			//not owned by this class
+	std::vector<SkeletalAnimation>	mAnimation;
+	std::size_t						currAnimation;
     std::vector<unsigned char>		mChannelMap;
 
-    std::vector<cFBXBuffer::JointPose>			 mCurrentBones;
-    std::vector<XMFLOAT4X4>          mCurrentGlobalPose;
-	std::vector<XMFLOAT4X4>          mBoneTransforms;
+    std::vector<cFBXBuffer::JointPose>			mCurrentBones;
+    std::vector<XMFLOAT4X4>						mCurrentGlobalPose;
+	std::vector<XMFLOAT4X4>						mBoneTransforms;
 
 
     float                   mAnimTime;

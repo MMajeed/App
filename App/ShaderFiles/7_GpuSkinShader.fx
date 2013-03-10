@@ -56,7 +56,7 @@ VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR, uint4 JointIndx : JOI
 	output.Pos = mul( output.Pos, Projection );
 
 	
-	output.Color = JointWght;// mul( Pos, World );
+	output.Color = JointWght;
 
     return output;
 }

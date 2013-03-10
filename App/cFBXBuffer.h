@@ -18,12 +18,9 @@ public:
 
 	struct Joint
 	{
-		_XMFLOAT4X4 invBindPose;
-		int      parent;
-		char     name[28];
-
-		Joint() : parent(0) 
-		{ name[0]='\0'; }
+		_XMFLOAT4X4		invBindPose;
+		int				parent;
+		std::string		name;
 	};
 
 	struct JointPose

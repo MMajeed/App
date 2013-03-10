@@ -9,12 +9,15 @@
 #include "Helper.h"
 #include "cBuffer.h"
 #include "DX11ObjectManager.h"
+#include "MathHelper.h"
 
 DisplayMeshGPU::DisplayMeshGPU() :
     mAnimTime(0.0f),
     mAnimRate(1.0f),
     mCurrentFrame(0.0f)
 {
+	this->currAnimation					= 50000;
+
 	this->Shader.ShaderInput.FileName	= "ShaderFiles/7_GpuSkinShader.fx";
 	this->Shader.ShaderInput.EntryPoint = "VS";
 	this->Shader.ShaderInput.Mode		= "vs_4_0";
@@ -35,8 +38,6 @@ DisplayMeshGPU::DisplayMeshGPU() :
 	this->pRastersizerState.first		= "Wire";
 	this->pCBChangesEveryFrame.first	= "ChangeEveryFrame";
 	this->pAnimBonesBuffer.first		= "AnimBoneBuffer";
-
-
 }
 
 DisplayMeshGPU::~DisplayMeshGPU()
@@ -47,7 +48,6 @@ void DisplayMeshGPU::SetMesh(Mesh pMesh)
 {
 	mMesh = pMesh;
 }
-
 void DisplayMeshGPU::Init()
 {
     HRESULT hr = S_OK;
@@ -75,31 +75,29 @@ void DisplayMeshGPU::Init()
 	this->InitAnimBuffer(device);
 	this->LoadD3DStuff();
 }
-
 void DisplayMeshGPU::Clean()
 {
 
 }
-
 void DisplayMeshGPU::UpdateDrawing(float delta)
 {
-	if(mAnimation.mName != "")
-    {
+	if(this->currAnimation < this->mAnimation.size())
+	{
         float oldTime = mAnimTime;
         mAnimTime = oldTime;
         //find the appropriate frame
         mAnimTime += delta * mAnimRate;
-        while(mAnimTime >= mAnimation.mDuration)
+		while(mAnimTime >= mAnimation[this->currAnimation].mDuration)
         {
-            mAnimTime -= mAnimation.mDuration;
+            mAnimTime -= mAnimation[this->currAnimation].mDuration;
         }
         int frame = 0;
-		while(mAnimTime > mAnimation.mKeys[frame].mTime && frame < mAnimation.mKeys.size())
+		while(mAnimTime > mAnimation[this->currAnimation].mKeys[frame].mTime && frame < mAnimation[this->currAnimation].mKeys.size())
         {
             ++frame;
         }
 
-        if(frame >= mAnimation.mKeys.size())
+        if(frame >= mAnimation[this->currAnimation].mKeys.size())
         {
             frame = 0;
         }
@@ -109,7 +107,7 @@ void DisplayMeshGPU::UpdateDrawing(float delta)
 		if(frame > 0)
 		{
 			prevFrame = frame - 1;
-			t = (mAnimTime - mAnimation.mKeys[prevFrame].mTime) / (mAnimation.mKeys[frame].mTime - mAnimation.mKeys[prevFrame].mTime);
+			t = (mAnimTime - mAnimation[this->currAnimation].mKeys[prevFrame].mTime) / (mAnimation[this->currAnimation].mKeys[frame].mTime - mAnimation[this->currAnimation].mKeys[prevFrame].mTime);
 		}
 
 		mCurrentFrame = static_cast<float>(frame) + t; //this is just for show in the title-bar
@@ -119,48 +117,33 @@ void DisplayMeshGPU::UpdateDrawing(float delta)
         {
             if(mChannelMap[i] != -1)
             {
-				cFBXBuffer::JointPose* jntA = &(mAnimation.mKeys[prevFrame].mBones[mChannelMap[i]]);
-				cFBXBuffer::JointPose* jntB = &(mAnimation.mKeys[frame].mBones[mChannelMap[i]]);
+				cFBXBuffer::JointPose* jntA = &(mAnimation[this->currAnimation].mKeys[prevFrame].mBones[mChannelMap[i]]);
+				cFBXBuffer::JointPose* jntB = &(mAnimation[this->currAnimation].mKeys[frame].mBones[mChannelMap[i]]);
 
 				XMStoreFloat3(&mCurrentBones[i].translation, XMVectorLerp(XMLoadFloat3(&jntA->translation), XMLoadFloat3(&jntB->translation), t));
                 XMStoreFloat4(&mCurrentBones[i].rotation, XMQuaternionSlerp(XMLoadFloat4(&jntA->rotation), XMLoadFloat4(&jntB->rotation), t));
                 XMStoreFloat3(&mCurrentBones[i].scale, XMVectorLerp(XMLoadFloat3(&jntA->scale), XMLoadFloat3(&jntB->scale), t));
             }
         }
-    }
-    else
-    {
-        //some test rotation of bones to see the skinning work
-        XMVECTOR r = XMQuaternionRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
-        for(int i = 1; i < mMesh.mNumBones; ++i)
-        {
-            XMVECTOR q = XMLoadFloat4(&mMesh.mOrigBones[i].rotation);
 
-            q = XMQuaternionMultiply(q, r);
-
-            XMStoreFloat4(&mCurrentBones[i].rotation, q);
-        }
-    }
-
-    //update the current pose
-    for(int i = 0; i < mMesh.mNumBones; ++i)
-    {
-        XMMATRIX m = mCurrentBones[i].GetTransform();
-        if(mMesh.mSkeleton[i].parent >= 0)
-        {
-            XMMATRIX c = XMLoadFloat4x4(&mCurrentGlobalPose[mMesh.mSkeleton[i].parent]);
-            m *= c;
-        }
+		//update the current pose
+		for(int i = 0; i < mMesh.mNumBones; ++i)
+		{
+			XMMATRIX m = mCurrentBones[i].GetTransform();
+			if(mMesh.mSkeleton[i].parent >= 0)
+			{
+				XMMATRIX c = XMLoadFloat4x4(&mCurrentGlobalPose[mMesh.mSkeleton[i].parent]);
+				m *= c;
+			}
         
-        XMStoreFloat4x4(&mCurrentGlobalPose[i], m);
+			XMStoreFloat4x4(&mCurrentGlobalPose[i], m);
+		}
     }
 }
-
 void DisplayMeshGPU::UpdateObject(float delta)
 {
 	UNREFERENCED_PARAMETER(delta);
 }
-
 void DisplayMeshGPU::Draw()
 {
 	//update the current pose
@@ -212,45 +195,46 @@ void DisplayMeshGPU::Draw()
 
 }
 
-void DisplayMeshGPU::PlayAnimation(SkeletalAnimation anim)
+void DisplayMeshGPU::AddAnimation(const SkeletalAnimation& anim)
 {
-    mAnimation = anim;
-    mAnimTime = 0.0f;
-    if(anim.mName != "")
-    {
-        for(int i = 0; i < mMesh.mNumBones; ++i)
-        {
-            mChannelMap[i] = -1;
-            for(int j = 0; j < anim.mNumBones; ++j)
-            {
-                if(strcmp(mMesh.mSkeleton[i].name, anim.mSkeleton[j].name) == 0)
-                {
-                    mChannelMap[i] = j;
-                    break;
-                }
-            }
-        }
-    }    
+	this->mAnimation.push_back(anim);
 }
+void DisplayMeshGPU::PlayAnimation(std::size_t anim)
+{
+	if(anim < this->mAnimation.size())
+	{
+		this->currAnimation = anim;
+		mAnimTime = 0.0f;
 
+		for(int i = 0; i < mMesh.mNumBones; ++i)
+		{
+			mChannelMap[i] = -1;
+			for(int j = 0; j < this->mAnimation[this->currAnimation].mNumBones; ++j)
+			{
+				if(mMesh.mSkeleton[i].name == this->mAnimation[this->currAnimation].mSkeleton[j].name)
+				{
+					mChannelMap[i] = j;
+					break;
+				}
+			}
+		}
+	}
+}
 std::string DisplayMeshGPU::GetPlayingAnimation() const
 {
-    static char none[] = "None";
-    if(mAnimation.mName != "")
-    {
-        return(mAnimation.mName);
+	if(this->currAnimation < this->mAnimation.size())
+	{
+        return(mAnimation[this->currAnimation].mName);
     }
     else
     {
-        return(none);
+        return("None");
     }
 }
-
 float DisplayMeshGPU::GetCurrentAnimTime() const
 {
     return(mAnimTime);
 }
-
 float DisplayMeshGPU::GetCurrentAnimFrame() const
 {
     return(mCurrentFrame);

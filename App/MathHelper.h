@@ -10,7 +10,8 @@ public:
 	static float Length(XMFLOAT4 v1, XMFLOAT4 v2);
 	static float Length(XMFLOAT4 v1);
 	static XMFLOAT4 Normalize(XMFLOAT4 v1);
-	static XMFLOAT4 Identity();
+	static XMFLOAT4 IdentityFloat4();
+	static XMFLOAT4X4 IdentityFloat4X4();
 };
 
 XMFLOAT4 operator-(const XMFLOAT4& rh, const XMFLOAT4& lh);
