@@ -156,7 +156,6 @@
     <ClCompile Include="FBXObject.cpp" />
     <ClCompile Include="DX11App.cpp" />
     <ClCompile Include="DX11Helper.cpp" />
-    <ClCompile Include="FbxHandler.cpp" />
     <ClCompile Include="cFBXBuffer.cpp" />
     <ClCompile Include="Prespective.cpp" />
     <ClCompile Include="SphericalMirror.cpp" />
@@ -183,7 +182,6 @@
     <ClInclude Include="FBXObject.h" />
     <ClInclude Include="DX11App.h" />
     <ClInclude Include="DX11Helper.h" />
-    <ClInclude Include="FbxHandler.h" />
     <ClInclude Include="cFBXBuffer.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Prespective.h" />

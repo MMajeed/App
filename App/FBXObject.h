@@ -26,9 +26,9 @@ public:
 	virtual void InitCBChangesEveryFrameBuffer(ID3D11Device* device);
 	virtual void InitAnimBuffer(ID3D11Device* device);
 
-	void SetMesh(const Mesh& pMesh);
+	void LoadMesh(std::string path);
 
-	void AddAnimation(const SkeletalAnimation& anim);
+	void AddAnimation(std::string path);
 
     void PlayAnimation(std::size_t anim);    
     std::string GetPlayingAnimation() const;
@@ -52,8 +52,8 @@ public:
     std::size_t             mCurrentFrame;
 	std::size_t             mPreviousFrame;
 
-	std::pair<std::string, ID3D11Buffer*> 			pVertexBuffer;
-	std::pair<std::string, ID3D11Buffer*>			pIndexBuffer;
+	std::pair<std::string, ID3D11Buffer*> 			pMeshVertexBuffer;
+	std::pair<std::string, ID3D11Buffer*>			pMeshIndexBuffer;
 	std::pair<std::string, ID3D11InputLayout*>		pInputLayout;
 	std::pair<std::string, ID3D11VertexShader*>		pVertexShader;
 	std::pair<std::string, ID3D11PixelShader*>		pPixelShader;

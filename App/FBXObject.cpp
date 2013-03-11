@@ -7,6 +7,7 @@
 #include "DX11ObjectManager.h"
 #include "MathHelper.h"
 #include <sstream>
+#include <fstream>
 
 FBXObject::FBXObject()
 {
@@ -15,6 +16,8 @@ FBXObject::FBXObject()
 	this->mCurrentFrame					= 0;
 	this->mPreviousFrame				= 0;
 	this->currAnimation					= 50000;
+
+	this->mAnimation.reserve(10);
 
 	this->Shader.ShaderInput.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
 	this->Shader.ShaderInput.EntryPoint = "VS";
@@ -28,8 +31,8 @@ FBXObject::FBXObject()
 	this->Shader.ShaderPixel.EntryPoint = "PS";
 	this->Shader.ShaderPixel.Mode		= "ps_4_0";
 
-	this->pVertexBuffer.first			= "FBXFile";
-	this->pIndexBuffer.first			= "FBXFile";
+	this->pMeshVertexBuffer.first			= "FBXFile";
+	this->pMeshIndexBuffer.first			= "FBXFile";
 	this->pInputLayout.first			= this->Shader.ShaderInput.EntryPoint;
 	this->pVertexShader.first			= this->Shader.ShaderInput.EntryPoint;
 	this->pPixelShader.first			= this->Shader.ShaderInput.EntryPoint;
@@ -171,8 +174,8 @@ void FBXObject::Draw()
 
     UINT stride = sizeof( cFBXBuffer::SimpleSkinnedVertex );
     UINT offset = 0;
-	pImmediateContext->IASetVertexBuffers( 0, 1, &(this->pVertexBuffer.second), &stride, &offset );
-	pImmediateContext->IASetIndexBuffer( this->pIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
+	pImmediateContext->IASetVertexBuffers( 0, 1, &(this->pMeshVertexBuffer.second), &stride, &offset );
+	pImmediateContext->IASetIndexBuffer( this->pMeshIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
     pImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
 	pImmediateContext->IASetInputLayout( this->pInputLayout.second );
@@ -185,13 +188,147 @@ void FBXObject::Draw()
 
 }
 
-void FBXObject::SetMesh(const Mesh& pMesh)
+void FBXObject::LoadMesh(std::string path)
 {
-	this->mMesh = pMesh;
+	std::ifstream inputFile;
+	inputFile.open (path, std::ios::in|std::ios::binary);
+	
+	// Get the size of the file
+	std::streamoff start = inputFile.tellg();
+    inputFile.seekg( 0, std::ios::end );
+	std::streamoff end = inputFile.tellg();
+	inputFile.seekg( 0, std::ios::beg );	
+	std::streamoff size = end - start;
+	
+	// Read all of the binrary and put it into binary input
+	std::vector<char> binaryInput;
+	binaryInput.resize(static_cast<unsigned int>(size));
+	inputFile.read( (&binaryInput.front()), size);
+	inputFile.close();
+	
+	int currentlyRead = 0;
+	{
+	//Add mVerts
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	this->mMesh.mVerts.resize(sizeOfVec);
+	int totalVecSize = sizeof(this->mMesh.mVerts.front()) * (sizeOfVec);
+	memcpy(&this->mMesh.mVerts.front(), ((&binaryInput.front()) + currentlyRead), totalVecSize);
+	currentlyRead += totalVecSize;
+	}
+	{
+	//Add mIndices
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	this->mMesh.mIndices.resize(sizeOfVec);
+	int totalVecSize = sizeof(this->mMesh.mIndices.front()) * (sizeOfVec);
+	memcpy(&this->mMesh.mIndices.front(), ((&binaryInput.front()) + currentlyRead), totalVecSize);
+	currentlyRead += totalVecSize;
+	}
+	{
+	//Add mSkeleton
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	this->mMesh.mSkeleton.resize(sizeOfVec);
+	int totalVecSize = sizeof(this->mMesh.mSkeleton.front()) * (sizeOfVec);
+	memcpy(&this->mMesh.mSkeleton.front(), ((&binaryInput.front()) + currentlyRead), totalVecSize);
+	currentlyRead += totalVecSize;
+	}
+	{
+	//Add mOrigBones
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	this->mMesh.mOrigBones.resize(sizeOfVec);
+	int totalVecSize = sizeof(this->mMesh.mOrigBones.front()) * (sizeOfVec);
+	memcpy(&this->mMesh.mOrigBones.front(), ((&binaryInput.front()) + currentlyRead), totalVecSize);
+	currentlyRead += totalVecSize;
+	}
+	{
+	//Add mOrigGlobalPose
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	this->mMesh.mOrigGlobalPose.resize(sizeOfVec);
+	int totalVecSize = sizeof(this->mMesh.mOrigGlobalPose.front()) * (sizeOfVec);
+	memcpy(&this->mMesh.mOrigGlobalPose.front(), ((&binaryInput.front()) + currentlyRead), totalVecSize);
+	currentlyRead += totalVecSize;
+	}
+	{
+	//Add mNumBones
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	this->mMesh.mNumBones = sizeOfVec;
+	}
 }
-void FBXObject::AddAnimation(const SkeletalAnimation& anim)
+void FBXObject::AddAnimation(std::string path)
 {
-	this->mAnimation.push_back(anim);
+	this->mAnimation.push_back(SkeletalAnimation());
+	SkeletalAnimation& anim = this->mAnimation.back();
+
+	std::ifstream inputFile;
+	inputFile.open (path, std::ios::in|std::ios::binary);
+	
+	// Get the size of the file
+	std::streamoff start = inputFile.tellg();
+    inputFile.seekg( 0, std::ios::end );
+	std::streamoff end = inputFile.tellg();
+	inputFile.seekg( 0, std::ios::beg );	
+	std::streamoff size = end - start;
+	
+	// Read all of the binrary and put it into binary input
+	std::vector<char> binaryInput;
+	binaryInput.resize(static_cast<unsigned int>(size));
+	inputFile.read( (&binaryInput.front()), size);
+	inputFile.close();
+
+	int currentlyRead = 0;
+	{
+	//Add mVerts
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	anim.mSkeleton.resize(sizeOfVec);
+	int totalVecSize = sizeof(anim.mSkeleton.front()) * (sizeOfVec);
+	memcpy(&anim.mSkeleton.front(), ((&binaryInput.front()) + currentlyRead), totalVecSize);
+	currentlyRead += totalVecSize;
+	}
+	{
+	//Add mNumBones
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	anim.mNumBones = sizeOfVec;
+	}
+	{
+	//Add mKeys
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	anim.mKeys.resize(sizeOfVec);
+
+	for(std::size_t i = 0; i < anim.mKeys.size(); ++i)
+	{
+		int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+		currentlyRead += sizeof(int);
+		anim.mKeys[i].mBones.resize(sizeOfVec);
+		int totalVecSize = sizeof(anim.mKeys[i].mBones.front()) * (sizeOfVec);
+		memcpy(&anim.mKeys[i].mBones.front(), ((&binaryInput.front()) + currentlyRead), totalVecSize);
+		currentlyRead += totalVecSize;
+
+		float duration = *(reinterpret_cast<float*>( (&binaryInput.front()) + currentlyRead));
+		currentlyRead += sizeof(float);
+		anim.mKeys[i].mTime = duration;
+	}
+	}
+	{
+	//Add mDuration
+	float duration = *(reinterpret_cast<float*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(float);
+	anim.mDuration = duration;
+	}
+	{
+	//Add mName
+	int sizeOfVec = *(reinterpret_cast<int*>( (&binaryInput.front()) + currentlyRead));
+	currentlyRead += sizeof(int);
+	anim.mName = ((&binaryInput.front()) + currentlyRead);
+	currentlyRead += sizeOfVec;
+	}
 }
 void FBXObject::PlayAnimation(std::size_t anim)
 {
@@ -240,26 +377,26 @@ void FBXObject::InitVertexBuffer(ID3D11Device* device)
 {
 	std::wstring error;
 
-	if(!DX11ObjectManager::getInstance()->PlyBuffer.Exists(this->pVertexBuffer.first))
+	if(!DX11ObjectManager::getInstance()->PlyBuffer.Exists(this->pMeshVertexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadVertexBuffer<cFBXBuffer::SimpleSkinnedVertex>(device, &(this->mMesh.mVerts.front()), this->mMesh.mVerts.size(), &(this->pVertexBuffer.second), error ))
+		if(!DX11Helper::LoadVertexBuffer<cFBXBuffer::SimpleSkinnedVertex>(device, &(this->mMesh.mVerts.front()), this->mMesh.mVerts.size(), &(this->pMeshVertexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->PlyBuffer.Add(this->pVertexBuffer.first, pVertexBuffer.second);
+		DX11ObjectManager::getInstance()->PlyBuffer.Add(this->pMeshVertexBuffer.first, pMeshVertexBuffer.second);
 	}
 }
 void FBXObject::InitIndexBuffer(ID3D11Device* device)
 {
-	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->pIndexBuffer.first))
+	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->pMeshIndexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(this->mMesh.mIndices.front()), this->mMesh.mIndices.size(), &(this->pIndexBuffer.second), error ))
+		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(this->mMesh.mIndices.front()), this->mMesh.mIndices.size(), &(this->pMeshIndexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
-		DX11ObjectManager::getInstance()->IndexBuffer.Add(this->pIndexBuffer.first, this->pIndexBuffer.second);
+		DX11ObjectManager::getInstance()->IndexBuffer.Add(this->pMeshIndexBuffer.first, this->pMeshIndexBuffer.second);
 	}
 }
 void FBXObject::InitInputLayout(ID3D11Device* device)
@@ -347,8 +484,8 @@ void FBXObject::InitAnimBuffer(ID3D11Device* device)
 
 void FBXObject::LoadD3DStuff()
 {
-	if(!DX11ObjectManager::getInstance()->PlyBuffer.Get(this->pVertexBuffer.first, this->pVertexBuffer.second)){ throw std::exception("Vertex Buffer not found"); }
-	if(!DX11ObjectManager::getInstance()->IndexBuffer.Get(this->pIndexBuffer.first, this->pIndexBuffer.second)){ throw std::exception("Index Buffer not found"); }
+	if(!DX11ObjectManager::getInstance()->PlyBuffer.Get(this->pMeshVertexBuffer.first, this->pMeshVertexBuffer.second)){ throw std::exception("Vertex Buffer not found"); }
+	if(!DX11ObjectManager::getInstance()->IndexBuffer.Get(this->pMeshIndexBuffer.first, this->pMeshIndexBuffer.second)){ throw std::exception("Index Buffer not found"); }
 	if(!DX11ObjectManager::getInstance()->InputLayout.Get(this->pInputLayout.first, this->pInputLayout.second)){ throw std::exception("Input Layout not found"); }
 	if(!DX11ObjectManager::getInstance()->VertexShader.Get(this->pVertexShader.first, this->pVertexShader.second)){ throw std::exception("Vertex Shader not found"); }
 	if(!DX11ObjectManager::getInstance()->PixelShader.Get(this->pPixelShader.first, this->pPixelShader.second)){ throw std::exception("Pixel Shader not found"); }

@@ -12,7 +12,6 @@
 #include <sstream>
 #include <iomanip>
 #include "SphericalMirror.h"
-#include "FbxHandler.h"
 
 void Application::Render()
 {
@@ -103,7 +102,7 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			timer._absoluteTime = elapsedCount / tickInterval;
 			timer._frameTime = elapsedFrameCount / tickInterval;
 						
-			//Sleep( 10 - timer._frameTime); // Used to lock the framerate. Turned off because I want to see how fast the program is going
+			//Sleep( 8 - timer._frameTime); // Used to lock the framerate. Turned off because I want to see how fast the program is going
 			
 			for(std::size_t i = 0; i < this->objects.size(); ++i)
 			{
@@ -203,10 +202,10 @@ void Application::InitDevices()
 	
 	auto g_pMyFBXObject = new FBXObject();
 
-	g_pMyFBXObject->SetMesh(LoadMeshFromFbx("../Resources/DefaultCharacter/DefaultAvatar.BakedFBX"));
-	g_pMyFBXObject->AddAnimation(LoadBakedAnimationFromFBX("../Resources/DefaultCharacter/DefaultAvatar_Idle_Neutral.Bakedfbx"));
-    g_pMyFBXObject->AddAnimation(LoadBakedAnimationFromFBX("../Resources/DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.Bakedfbx"));
-    g_pMyFBXObject->AddAnimation(LoadBakedAnimationFromFBX("../Resources/DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.Bakedfbx"));
+	g_pMyFBXObject->LoadMesh("../Resources/DefaultCharacter/DefaultAvatar.BakedFBX");
+	g_pMyFBXObject->AddAnimation("../Resources/DefaultCharacter/DefaultAvatar_Idle_Neutral.Bakedfbx");
+    g_pMyFBXObject->AddAnimation("../Resources/DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.Bakedfbx");
+    g_pMyFBXObject->AddAnimation("../Resources/DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.Bakedfbx");
 
 	g_pMyFBXObject->Init();
 

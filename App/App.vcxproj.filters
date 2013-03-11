@@ -57,9 +57,6 @@
     <ClCompile Include="Prespective.cpp">
       <Filter>Tools\View\Prespective</Filter>
     </ClCompile>
-    <ClCompile Include="FbxHandler.cpp">
-      <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
-    </ClCompile>
     <ClCompile Include="PlyBuffer.cpp">
       <Filter>Tools\DX11Stuff\PlyBuffer</Filter>
     </ClCompile>
@@ -131,9 +128,6 @@
     </ClInclude>
     <ClInclude Include="Prespective.h">
       <Filter>Tools\View\Prespective</Filter>
-    </ClInclude>
-    <ClInclude Include="FbxHandler.h">
-      <Filter>DX11ObjectDrawable\FBX Files\FbxHandler</Filter>
     </ClInclude>
     <ClInclude Include="SkeletalAnimation.h">
       <Filter>Tools\DX11Stuff\Buffer\Mesh &amp; Animation\SkeletalAnimation</Filter>
@@ -229,9 +223,6 @@
     </Filter>
     <Filter Include="DX11ObjectDrawable\FBX Files">
       <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX Files\FbxHandler">
-      <UniqueIdentifier>{5371c2cc-c3b8-4e0b-8d17-2bdde197f181}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools\DX11Stuff\ShaderFiles">
       <UniqueIdentifier>{d4fc4a8d-2ffd-4ce5-8a72-76471f42e366}</UniqueIdentifier>

@@ -55,7 +55,7 @@ Prespective::Prespective()
 	Width(1024.0f),
 	Height(768.0f),
 	MinViewable(0.01f),
-	MaxViewable(10000.0f)
+	MaxViewable(5000.0f)
 {
 
 }

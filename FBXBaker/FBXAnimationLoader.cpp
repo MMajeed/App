@@ -229,7 +229,7 @@ void FBXAnimationLoader::LoadSkeletonRecursive(FbxNode* pNode, cFBXBuffer::Joint
 		std::cout << "Load Skeleton name='"<< nodeName << "' parent='"<< parent << "'" << std::endl;
 		
         pSkeleton[numBones].parent = parent;
-		strcpy(pSkeleton[numBones].name, nodeName);
+		strcpy_s(pSkeleton[numBones].name, nodeName);
 
         parent = numBones;
         ++(numBones);
