@@ -18,35 +18,35 @@ void FBXMeshLoader::WriteToFile(std::string path)
 	// Add verts
 	int length = this->pMesh.mVerts.size();
 	AddToVector(&length, sizeof(int), binaryMesh);
-	int vecSize = sizeof(this->pMesh.mVerts.front()) + this->pMesh.mVerts.size();
+	int vecSize = sizeof(this->pMesh.mVerts.front()) * this->pMesh.mVerts.size();
 	AddToVector((&this->pMesh.mVerts.front()), vecSize, binaryMesh);
 	}
 	{
 	// Add indices
 	int length = this->pMesh.mIndices.size();
 	AddToVector(&length, sizeof(int), binaryMesh);
-	int vecSize = sizeof(this->pMesh.mIndices.front()) + this->pMesh.mIndices.size();
+	int vecSize = sizeof(this->pMesh.mIndices.front()) * this->pMesh.mIndices.size();
 	AddToVector((&this->pMesh.mIndices.front()), vecSize, binaryMesh);
 	}
 	{
 	// Add skelton
 	int length = this->pMesh.mSkeleton.size();
 	AddToVector(&length, sizeof(int), binaryMesh);
-	int vecSize = sizeof(this->pMesh.mSkeleton.front()) + this->pMesh.mSkeleton.size();
+	int vecSize = sizeof(this->pMesh.mSkeleton.front()) * this->pMesh.mSkeleton.size();
 	AddToVector((&this->pMesh.mSkeleton.front()), vecSize, binaryMesh);
 	}
 	{
 	// Add skelton
 	int length = this->pMesh.mOrigBones.size();
 	AddToVector(&length, sizeof(int), binaryMesh);
-	int vecSize = sizeof(this->pMesh.mOrigBones.front()) + this->pMesh.mOrigBones.size();
+	int vecSize = sizeof(this->pMesh.mOrigBones.front()) * this->pMesh.mOrigBones.size();
 	AddToVector((&this->pMesh.mOrigBones.front()), vecSize, binaryMesh);
 	}
 	{
 	// Add origGlobalPose
 	int length = this->pMesh.mOrigGlobalPose.size();
 	AddToVector(&length, sizeof(int), binaryMesh);
-	int vecSize = sizeof(this->pMesh.mOrigGlobalPose.front()) + this->pMesh.mOrigGlobalPose.size();
+	int vecSize = sizeof(this->pMesh.mOrigGlobalPose.front()) * this->pMesh.mOrigGlobalPose.size();
 	AddToVector((&this->pMesh.mOrigGlobalPose.front()), vecSize, binaryMesh);
 	}
 	{
@@ -244,7 +244,7 @@ void FBXMeshLoader::LoadSkinInfo(FbxNode* pNode, int vertOffset, int numVerts)
             {
                 for(std::size_t b = 0; b < pMesh.mNumBones; ++b)
                 {
-					if(pMesh.mSkeleton[b].name == lParent->GetName())
+					if(strcmp(pMesh.mSkeleton[b].name, lParent->GetName()) == 0)
                     {
 						std::cout << "  Node [" << pNode->GetName() << "] attached to Skeleton [" << lParent->GetName() << "][" << b << "]\n" << std::endl;
 						
@@ -281,7 +281,7 @@ void FBXMeshLoader::LoadSkinInfo(FbxNode* pNode, int vertOffset, int numVerts)
 
             for(std::size_t b = 0; b < pMesh.mNumBones; ++b)
             {
-				if(pMesh.mSkeleton[b].name == cluster->GetLink()->GetName())
+				if(strcmp(pMesh.mSkeleton[b].name, cluster->GetLink()->GetName()) == 0)
                 {
                     int numIndices = cluster->GetControlPointIndicesCount();
                     if(numIndices > 0)
@@ -374,7 +374,7 @@ void FBXMeshLoader::LoadBindPose()
                     //find the same bone in our mesh
                     for(std::size_t b = 0; b < pMesh.mNumBones; ++b)
                     {
-						if(pMesh.mSkeleton[b].name == node->GetName())
+						if(strcmp(pMesh.mSkeleton[b].name, node->GetName()) == 0)
                         {
                             //found a match
                             _XMMATRIX mb(static_cast<float>(m[0][0] * 1.00), static_cast<float>(m[0][1] * 1.00), static_cast<float>(m[0][2] * 1.00), static_cast<float>(m[0][3] * 1.00),
@@ -426,7 +426,7 @@ void FBXMeshLoader::LoadSkeletonRecursive(FbxNode* pNode, int parent)
 		std::cout << "Load Skeleton name='" << nodeName << "' parent='" << parent << "'" << std::endl;
 
         this->pMesh.mSkeleton[this->pMesh.mNumBones].parent = parent;
-		this->pMesh.mSkeleton[this->pMesh.mNumBones].name = nodeName;
+		strcpy_s(this->pMesh.mSkeleton[this->pMesh.mNumBones].name, nodeName.c_str());
 
         FbxDouble3 translation = pNode->LclTranslation.Get();
         FbxDouble3 rotation = pNode->LclRotation.Get();

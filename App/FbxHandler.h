@@ -6,11 +6,7 @@
 class Mesh;
 class SkeletalAnimation;
 
-void InitializeFbxSdk();
-void CleanUpFbxSdk();
-
-void PrintFbxFile(const char* szFileName);
-Mesh LoadMeshFromFbx(const char* szFileName);
-SkeletalAnimation LoadAnimationFromFbx(const char* szFileName);
+Mesh LoadMeshFromFbx(std::string path);
+SkeletalAnimation LoadBakedAnimationFromFBX(std::string path);\
 
 #endif

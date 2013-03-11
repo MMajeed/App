@@ -206,7 +206,8 @@ void FBXObject::PlayAnimation(std::size_t anim)
 			this->mChannelMap[i] = static_cast<unsigned char>(-1);
 			for(std::size_t j = 0; j < this->mAnimation[this->currAnimation].mNumBones; ++j)
 			{
-				if(this->mMesh.mSkeleton[i].name == this->mAnimation[this->currAnimation].mSkeleton[j].name)
+				if(strcmp(this->mMesh.mSkeleton[i].name, this->mAnimation[this->currAnimation].mSkeleton[j].name)  == 0)
+				//if(this->mMesh.mSkeleton[i].name == this->mAnimation[this->currAnimation].mSkeleton[j].name)
 				{
 					this->mChannelMap[i] = static_cast<unsigned char>(j);
 					break;

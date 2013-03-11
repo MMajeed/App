@@ -200,17 +200,13 @@ void Application::InitDevices()
 	this->objects = ObjectLoader::getInstance()->SpawnAll();
 
 	////-------------------------------------------------------------------------
-    // Initialize our entities
-    InitializeFbxSdk();
-
-	//PrintFbxFile("../Resources/DefaultCharacter/DefaultAvatar.fbx");
 	
 	auto g_pMyFBXObject = new FBXObject();
 
-	g_pMyFBXObject->SetMesh(LoadMeshFromFbx("../Resources/DefaultCharacter/DefaultAvatar.fbx"));
-	g_pMyFBXObject->AddAnimation(LoadAnimationFromFbx("../Resources/DefaultCharacter/DefaultAvatar_Idle_Neutral.fbx"));
-    g_pMyFBXObject->AddAnimation(LoadAnimationFromFbx("../Resources/DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.fbx"));
-    g_pMyFBXObject->AddAnimation(LoadAnimationFromFbx("../Resources/DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.fbx"));
+	g_pMyFBXObject->SetMesh(LoadMeshFromFbx("../Resources/DefaultCharacter/DefaultAvatar.BakedFBX"));
+	g_pMyFBXObject->AddAnimation(LoadBakedAnimationFromFBX("../Resources/DefaultCharacter/DefaultAvatar_Idle_Neutral.Bakedfbx"));
+    g_pMyFBXObject->AddAnimation(LoadBakedAnimationFromFBX("../Resources/DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.Bakedfbx"));
+    g_pMyFBXObject->AddAnimation(LoadBakedAnimationFromFBX("../Resources/DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.Bakedfbx"));
 
 	g_pMyFBXObject->Init();
 

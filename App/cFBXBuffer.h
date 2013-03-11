@@ -20,7 +20,10 @@ public:
 	{
 		XMFLOAT4X4		invBindPose;
 		int				parent;
-		std::string		name;
+		char			name[28];
+
+		Joint() : parent(0) 
+		{ name[0]='\0'; }
 	};
 
 	struct JointPose

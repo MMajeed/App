@@ -19,12 +19,12 @@ protected:
 	FbxScene* lScene;
 	Mesh pMesh;
 	void LoadMeshFromScene();
-	void TriangulateRecursive(FbxNode* pNode);
-	int CountSkeletonRecursive(FbxNode* pNode);
-	void LoadSkeletonRecursive(FbxNode* pNode, int parent);
-	void LoadBindPose();
 	void LoadMeshRecursive(FbxNode* pNode);
 	void LoadSkinInfo(FbxNode* pNode, int vertOffset, int numVerts);
+	void LoadBindPose();
+	void LoadSkeletonRecursive(FbxNode* pNode, int parent);
+	int CountSkeletonRecursive(FbxNode* pNode);
+	void TriangulateRecursive(FbxNode* pNode);
 };
 
 #endif //__FBXMESHLOADER__

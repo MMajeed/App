@@ -1,7 +1,8 @@
 #ifndef __SKELETAL_ANIM__
 #define __SKELETAL_ANIM__
 
-#include "cFBXBuffer.h"
+#include "FBXBuffer.h"
+#include <vector>
 
 struct Frame
 {
