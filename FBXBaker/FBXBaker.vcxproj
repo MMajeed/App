@@ -50,10 +50,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FBX\FBX SDK\2013.3\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>fbxsdk-2013.3.lib;d3d11.lib;d3dcompiler.lib;d3dx11d.lib;d3dx9d.lib;dxerr.lib;dxguid.lib;winmm.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\FBX\FBX SDK\2013.3\lib\vs2010\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -75,12 +78,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="FBXAnimationLoader.h" />
+    <ClInclude Include="FBXBuffer.h" />
     <ClInclude Include="FBXMeshLoader.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Animation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FBXAnimationLoader.cpp" />
+    <ClCompile Include="FBXBuffer.cpp" />
     <ClCompile Include="FBXMeshLoader.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

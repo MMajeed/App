@@ -16,6 +16,9 @@
     <Filter Include="Mesh &amp; Animation\Animation">
       <UniqueIdentifier>{1ace3810-08c6-48a0-b0c2-348035fb8503}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mesh &amp; Animation\FBXBuffer">
+      <UniqueIdentifier>{c9db5d81-3e6c-4c09-bf60-acfab99934ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FBXMeshLoader.cpp">
@@ -25,6 +28,9 @@
       <Filter>FBXAnimationLoader</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="FBXBuffer.cpp">
+      <Filter>Mesh &amp; Animation\FBXBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FBXMeshLoader.h">
@@ -38,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Mesh &amp; Animation\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXBuffer.h">
+      <Filter>Mesh &amp; Animation\FBXBuffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

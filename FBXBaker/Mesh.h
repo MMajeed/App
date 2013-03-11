@@ -1,7 +1,9 @@
 #ifndef __MESH__
 #define __MESH__
 
-#include "cFBXBuffer.h"
+#include "FBXBuffer.h"
+#include <string>
+#include <vector>
 
 class Mesh
 {
@@ -17,8 +19,6 @@ public:
     std::vector<cFBXBuffer::JointPose>				mOrigBones;
     std::vector<XMFLOAT4X4>							mOrigGlobalPose;
     std::size_t										mNumBones;
-
-    std::vector<cFBXBuffer::SimpleSkinnedVertex>	mOrigVerts;
 };
 
 #endif

@@ -17,8 +17,6 @@ public:
     std::vector<cFBXBuffer::JointPose>				mOrigBones;
     std::vector<XMFLOAT4X4>							mOrigGlobalPose;
     std::size_t										mNumBones;
-
-    std::vector<cFBXBuffer::SimpleSkinnedVertex>	mOrigVerts;
 };
 
 #endif

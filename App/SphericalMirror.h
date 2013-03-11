@@ -23,7 +23,7 @@ public:
 	ID3D11ShaderResourceView*	pDynamicCubeMapSRV;
 	D3D11_VIEWPORT				pCubeMapViewport;
 
-	static const unsigned int CubeMapSize = 1028;
+	static const unsigned int CubeMapSize = 256;
 	
 	float UpdateEvery;
 	float Timer;

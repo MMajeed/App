@@ -59,7 +59,7 @@
     <ID>SphericalMirror</ID>
     <Class>SphericalMirror</Class>
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="3.0f" Y="1.0f" Z="0.0f"/>
+    <XYZLocation X="0.0f" Y="1.0f" Z="8.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <UpdateEvery>0.012</UpdateEvery>
