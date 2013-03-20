@@ -32,13 +32,16 @@ cbuffer AnimMatrices : register( b3 )
 //--------------------------------------------------------------------------------------
 struct VS_OUTPUT
 {
-    float4 Pos : SV_POSITION;
+    float4 PosMVP : SV_POSITION;
+	float4 PosWorld : POSITION;
+	float4 Normal : NORMAL;
     float4 Color : COLOR0;
 };
 
 struct VS_INPUT
 {
 	float4 Pos : POSITION;
+	float4 Normal : NORMAL;
 	float4 Color : COLOR;
 	uint4 JointIndx : JOINTINDEX;
 	float4 JointWght : JOINTWEIGHT;
@@ -52,32 +55,31 @@ VS_OUTPUT VS( VS_INPUT input )
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
 	
-	uint b1 = input.JointIndx.x;	
-	matrix k1 = BoneTransforms[b1];
-	float w1 = input.JointWght.x;
-	output.Pos += w1 * mul( input.Pos, k1);
-
-	uint b2 = input.JointIndx.y;	
-	matrix k2 = BoneTransforms[b2];
-	float w2 = input.JointWght.y;
-	output.Pos += w2 * mul( input.Pos, k2);
-
-	uint b3 = input.JointIndx.z;	
-	matrix k3 = BoneTransforms[b3];
-	float w3 = input.JointWght.z;
-	output.Pos += w3 * mul( input.Pos, k3);
+	uint JoinIndexArray[4] = { input.JointIndx.x, input.JointIndx.y, input.JointIndx.z, input.JointIndx.w } ;
+	float JointWghtArray[4] = { input.JointWght.x, input.JointWght.y, input.JointWght.z, input.JointWght.w } ;
 	
-	uint b4 = input.JointIndx.w;	
-	matrix k4 = BoneTransforms[b4];
-	float w4 = input.JointWght.w;
-	output.Pos += w4 * mul( input.Pos, k4);
+	// Set pos MVP	
+	float4 VertexPosSkined = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	for(int i = 0; i < 4; ++i)
+	{
+		uint b1 = JoinIndexArray[i];	
+		matrix k1 = BoneTransforms[b1];
+		float w1 = JointWghtArray[i];
+		VertexPosSkined += w1 * mul( input.Pos, k1);
+	}
+	output.PosMVP = VertexPosSkined;
+	output.PosMVP = mul( output.PosMVP, World );
+	output.PosMVP = mul( output.PosMVP, View );
+	output.PosMVP = mul( output.PosMVP, Projection );
 
-	output.Pos = mul( output.Pos, World );
-	output.Pos = mul( output.Pos, View );
-	output.Pos = mul( output.Pos, Projection );
+	// Set pos World
+	output.PosWorld = mul( input.Pos, World);
 
-	
-	output.Color = input.JointWght;
+	// Set Normal
+	output.Normal = normalize( mul( input.Normal, World ));
+
+	// Set Color
+	output.Color = input.Color;
 
     return output;
 }
@@ -88,5 +90,39 @@ VS_OUTPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( VS_OUTPUT input ) : SV_Target
 {
-	return input.Color;
+	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
+
+	for ( int index = 0; index < 10; index++ )
+	{
+		if ( light[index].lightPowerRangeType.z > 2.9f && light[index].lightPowerRangeType.z < 3.1f ) // Don't do light
+		{			
+			continue;
+		}
+		else if ( light[index].lightPowerRangeType.z == 0.0f ) // Parallel light
+		{
+			finalLightColour += ParallelLight( objectMaterial, light[index], 
+										 input.PosWorld, 
+										 input.Normal, eye );	
+		}
+		else if ( light[index].lightPowerRangeType.z == 1.0f ) // Point
+		{
+			finalLightColour += PointLight(objectMaterial, light[index], 
+									 input.PosWorld, 
+									 input.Normal, eye );
+		}
+		else if ( light[index].lightPowerRangeType.z > 1.0f ) // Point
+		{
+			finalLightColour += Spotlight( objectMaterial, light[index], 
+									 input.PosWorld, 
+									 input.Normal, eye );
+		}
+	}
+
+
+	finalLightColour = saturate( finalLightColour );
+
+	finalLightColour.w = objectMaterial.diffuse.w;
+
+	return finalLightColour;
+
 }

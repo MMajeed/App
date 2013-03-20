@@ -157,6 +157,8 @@
     <ClCompile Include="DX11App.cpp" />
     <ClCompile Include="DX11Helper.cpp" />
     <ClCompile Include="cFBXBuffer.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="Prespective.cpp" />
     <ClCompile Include="SphericalMirror.cpp" />
     <ClCompile Include="Helper.cpp" />
@@ -183,6 +185,8 @@
     <ClInclude Include="DX11App.h" />
     <ClInclude Include="DX11Helper.h" />
     <ClInclude Include="cFBXBuffer.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightManager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Prespective.h" />
     <ClInclude Include="ShaderFiles.h" />

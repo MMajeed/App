@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include "iObjectDrawable.h"
-
+#include "LightManager.h"
 class ObjectLoader
 {
 public:
@@ -14,9 +14,11 @@ public:
 	void LoadXMLFile(std::string loc);
 	bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object);
 	std::vector<iObjectDrawable*> SpawnAll();
+	LightManager SetupLight();
 
 protected:
 	std::map<std::string, std::map<std::string, std::string>> objects;
+	std::vector<std::map<std::string, std::string>> Lights;
 	static ObjectLoader* ObjectManager;
 
     ObjectLoader();

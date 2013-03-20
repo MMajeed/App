@@ -29,3 +29,14 @@ float Helper::StringToFloat(std::string inputString)
 
 	return returnValue;	
 }
+
+int StringToInt(std::string inputString)
+{
+	int returnValue = std::numeric_limits<int>::min();
+
+	std::stringstream ss;
+	ss << inputString;
+	ss >> returnValue;
+
+	return returnValue;	
+}

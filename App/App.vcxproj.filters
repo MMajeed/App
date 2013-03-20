@@ -66,6 +66,12 @@
     <ClCompile Include="FBXObject.cpp">
       <Filter>DX11ObjectDrawable\FBX Files</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Tools\Light Manager\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="LightManager.cpp">
+      <Filter>Tools\Light Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -146,6 +152,12 @@
     </ClInclude>
     <ClInclude Include="FBXObject.h">
       <Filter>DX11ObjectDrawable\FBX Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Tools\Light Manager\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager.h">
+      <Filter>Tools\Light Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +256,12 @@
     </Filter>
     <Filter Include="Tools\DX11Stuff\Buffer\Mesh &amp; Animation\SkeletalAnimation">
       <UniqueIdentifier>{b966fe15-2773-4a25-aedb-7406470720f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Light Manager">
+      <UniqueIdentifier>{83b77681-519c-4c29-abbe-4b42368598b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Light Manager\Light">
+      <UniqueIdentifier>{d37a84f2-17a2-4f7d-9d28-e134dac8ef9d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

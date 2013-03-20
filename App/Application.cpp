@@ -16,6 +16,7 @@
 void Application::Render()
 {
 	this->ClearScreen();
+	this->SetupDraw();
 	this->DrawObjects();
 	this->Present();	
 }
@@ -26,7 +27,7 @@ void Application::ClearScreen()
 	this->direct3d.pImmediateContext->ClearRenderTargetView( this->direct3d.pRenderTargetView, ClearColor );
 	this->direct3d.pImmediateContext->ClearDepthStencilView( this->direct3d.pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
-void Application::DrawObjects()
+void Application::SetupDraw()
 {
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 
@@ -39,6 +40,10 @@ void Application::DrawObjects()
 	cbCNV.mView = XMMatrixTranspose(XMLoadFloat4x4(&view));
 	cbCNV.eye = App::getInstance()->camera.Eye();
 	cbCNV.target = App::getInstance()->camera.Target();
+	for(int i = 0; i < 10; ++i)
+	{
+		cbCNV.lights[i] = this->lightManager.GetLightBuffer(i);
+	}
 
 	auto projection = Projection.GetPrespective();
 	cBuffer::cbChangeOnResize cbCOR ;
@@ -51,7 +56,9 @@ void Application::DrawObjects()
 	pImmediateContext->VSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
 	pImmediateContext->PSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
 
-	
+}
+void Application::DrawObjects()
+{
 	for(std::size_t i = 0; i < this->objects.size(); ++i)
 	{
 		this->objects[i]->Draw();
@@ -197,20 +204,7 @@ void Application::InitDevices()
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
 	this->objects = ObjectLoader::getInstance()->SpawnAll();
-
-	////-------------------------------------------------------------------------
-	
-	auto g_pMyFBXObject = new FBXObject();
-
-	g_pMyFBXObject->LoadMesh("../Resources/DefaultCharacter/DefaultAvatar.BakedFBX");
-	g_pMyFBXObject->AddAnimation("../Resources/DefaultCharacter/DefaultAvatar_Idle_Neutral.Bakedfbx");
-    g_pMyFBXObject->AddAnimation("../Resources/DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.Bakedfbx");
-    g_pMyFBXObject->AddAnimation("../Resources/DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.Bakedfbx");
-
-	g_pMyFBXObject->Init();
-
-	this->objects.push_back(g_pMyFBXObject);
-    
+	this->lightManager = ObjectLoader::getInstance()->SetupLight();
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {

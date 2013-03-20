@@ -14,6 +14,19 @@
     <Texture0>../Resources/Texture/Tiles.png</Texture0>
   </Object>
   <Object>
+    <ID>Ball</ID>
+    <Class>PlyFile</Class>
+    <PlyFile>../Resources/PlyFiles/Sphere_Smooth_3.ply</PlyFile>
+    <ShaderInput  FileName="../Resources/ShaderFiles/1_LightingOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderVertex FileName="../Resources/ShaderFiles/1_LightingOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderPixel  FileName="../Resources/ShaderFiles/1_LightingOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="5.0f" Z="0.0f"/>
+    <XYZDiffuse  X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZAmbent   X="0.5f" Y="0.5f" Z="0.5f"/>
+    <XYZSpec     X="0.06f" Y="0.04f" Z="0.02f"/>
+  </Object>
+  <Object>
     <ID>TransparentPly</ID>
     <Class>TransparentPly</Class>
     <PlyFile>../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
@@ -64,4 +77,40 @@
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <UpdateEvery>0.012</UpdateEvery>
   </Object>
+  <Object>
+    <ID>FBXObject</ID>
+    <Class>FBXFile</Class>
+    <Mesh>../Resources/DefaultCharacter/DefaultAvatar.BakedFBX</Mesh>
+    <Animation1>../Resources/DefaultCharacter/DefaultAvatar_Idle_Neutral.Bakedfbx</Animation1>
+    <Animation2>../Resources/DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.Bakedfbx</Animation2>
+    <Animation3>../Resources/DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.Bakedfbx</Animation3>    
+    <ShaderVertex FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderPixel  FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZDiffuse  X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZAmbent   X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZSpec     X="0.06f" Y="0.04f" Z="0.02f"/>
+  </Object>
+  <Light>
+    <Type>Parallel</Type>
+    <XYZDiffuse         X="0.005f" Y="0.005f" Z="0.005f"/>
+    <XYZAmbient         X="0.26f" Y="0.24f" Z="0.22f"/>
+    <XYZSpec            X="0.1f" Y="0.1f" Z="0.1f"/>
+    <XYZDir             X="0.0f" Y="-200.0f" Z="0.0f"/>
+  </Light>
 </Objects>
+<!--
+<Light>
+  <XYZDiffuse         X="0.0f" Y="0.0f" Z="0.0f"/>
+  <XYZAmbient         X="0.0f" Y="0.0f" Z="0.0f"/>
+  <XYZSpec            X="0.0f" Y="0.0f" Z="0.0f"/>
+  <XYZPos             X="0.0f" Y="0.0f" Z="0.0f"/>
+  <XYZDir             X="0.0f" Y="0.0f" Z="0.0f"/>
+  <XYZAttenuation     X="0.0f" Y="0.0f" Z="0.0f"/>
+  <Power>0.0f</Power>
+  <Range>0.0f</Range>
+  <Type>Parallel</Type>--><!--None, Parrallel, Point, Spot--><!--
+</Light>
+-->

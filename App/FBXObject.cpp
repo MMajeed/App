@@ -163,6 +163,9 @@ void FBXObject::Draw()
 	cBuffer::cbChangeEveryFrame cb;
 	XMFLOAT4X4 world = this->object.CalculateMatrix();
 	cb.mWorld = XMMatrixTranspose(XMLoadFloat4x4(&world));
+	cb.colour.diffuse = this->object.Colour.Diffuse;
+	cb.colour.ambient = this->object.Colour.Ambient;
+	cb.colour.spec = this->object.Colour.Spec;
 
 	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
 
@@ -171,6 +174,8 @@ void FBXObject::Draw()
     	
     pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 	pImmediateContext->VSSetConstantBuffers( 3, 1, &(this->pAnimBonesBuffer.second) );
+
+	pImmediateContext->PSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 
     UINT stride = sizeof( cFBXBuffer::SimpleSkinnedVertex );
     UINT offset = 0;
@@ -408,9 +413,10 @@ void FBXObject::InitInputLayout(ID3D11Device* device)
 		D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "JOINTINDEX", 0, DXGI_FORMAT_R8G8B8A8_UINT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "JOINTWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "JOINTINDEX", 0, DXGI_FORMAT_R8G8B8A8_UINT, 0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "JOINTWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 44, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		UINT numElements = ARRAYSIZE( layout );
 
@@ -450,7 +456,7 @@ void FBXObject::InitRastersizerState(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->RastersizerState.Exists(this->pRastersizerState.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadRasterizerState(D3D11_CULL_NONE, D3D11_FILL_WIREFRAME, true, true, device, &(this->pRastersizerState.second), error))
+		if(!DX11Helper::LoadRasterizerState(D3D11_CULL_BACK, D3D11_FILL_SOLID, true, true, device, &(this->pRastersizerState.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -492,4 +498,116 @@ void FBXObject::LoadD3DStuff()
 	if(!DX11ObjectManager::getInstance()->RastersizerState.Get(this->pRastersizerState.first, this->pRastersizerState.second)){ throw std::exception("Rastersizer State not found"); }
 	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pCBChangesEveryFrame.first, this->pCBChangesEveryFrame.second)){ throw std::exception("const buffer not found"); }	
 	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pAnimBonesBuffer.first, this->pAnimBonesBuffer.second)){ throw std::exception("Anim Bone buffer not found"); }	
+}
+
+FBXObject* FBXObject::Spawn(std::map<std::string, std::string> info)
+{
+	FBXObject* FBX = new FBXObject;
+	
+	auto iter = info.find("Mesh");
+	if(iter == info.end()){throw std::exception("No Mesh was included in the object");}
+	FBX->LoadMesh(iter->second);
+
+	iter = info.find("Animation1");
+	if(iter != info.end()){ FBX->AddAnimation(iter->second); }
+
+	iter = info.find("Animation2");
+	if(iter != info.end()){ FBX->AddAnimation(iter->second); }
+
+	iter = info.find("Animation3");
+	if(iter != info.end()){ FBX->AddAnimation(iter->second); }
+
+
+	iter = info.find("ShaderVertexEntryPoint");
+	if(iter == info.end()){throw std::exception("No Shader Input Entry point Name was included in the object");}
+	FBX->Shader.ShaderVertex.EntryPoint = iter->second;
+	FBX->Shader.ShaderInput.EntryPoint = iter->second;
+
+	iter = info.find("ShaderVertexModel");
+	if(iter == info.end()){throw std::exception("No Shader Input Model point Name was included in the object");}
+	FBX->Shader.ShaderVertex.Mode = iter->second;
+	FBX->Shader.ShaderInput.Mode = iter->second;
+
+	// Shader Vertex
+	iter = info.find("ShaderVertexFileName");
+	if(iter == info.end()){throw std::exception("No Shader Vertex File Name was included in the object");}
+	FBX->Shader.ShaderVertex.FileName = iter->second;	
+	FBX->pVertexShader.first = iter->second;
+	FBX->Shader.ShaderInput.FileName = iter->second;	
+	FBX->pInputLayout.first = iter->second;
+
+
+	iter = info.find("ShaderVertexEntryPoint");
+	if(iter == info.end()){throw std::exception("No Shader Vertex Entry point Name was included in the object");}
+	FBX->Shader.ShaderVertex.EntryPoint = iter->second;
+
+	iter = info.find("ShaderVertexModel");
+	if(iter == info.end()){throw std::exception("No Shader Vertex Model point Name was included in the object");}
+	FBX->Shader.ShaderVertex.Mode = iter->second;
+
+	// Shader Pixel
+	iter = info.find("ShaderPixelFileName");
+	if(iter == info.end()){throw std::exception("No Shader Pixel File Name was included in the object");}
+	FBX->Shader.ShaderPixel.FileName = iter->second;
+	FBX->pPixelShader.first = iter->second;
+
+	iter = info.find("ShaderPixelEntryPoint");
+	if(iter == info.end()){throw std::exception("No Shader Pixel Entry point Name was included in the object");}
+	FBX->Shader.ShaderPixel.EntryPoint = iter->second;
+
+	iter = info.find("ShaderPixelModel");
+	if(iter == info.end()){throw std::exception("No Shader Pixel Model point Name was included in the object");}
+	FBX->Shader.ShaderPixel.Mode = iter->second;
+
+	// Scale XYZ
+	iter = info.find("XYZScaleX");
+	if(iter != info.end()) { FBX->object.Scale.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZScaleY");
+	if(iter != info.end()) { FBX->object.Scale.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZScaleZ");
+	if(iter != info.end()) { FBX->object.Scale.z = Helper::StringToFloat(iter->second); } 
+	
+	// Location
+	iter = info.find("XYZLocationX");
+	if(iter != info.end()) { FBX->object.Pos.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZLocationY");
+	if(iter != info.end()) { FBX->object.Pos.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZLocationZ");
+	if(iter != info.end()) { FBX->object.Pos.z = Helper::StringToFloat(iter->second); } 
+
+	// XYZRotation
+	iter = info.find("XYZRotationX");
+	if(iter != info.end()) { FBX->object.Rot.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZRotationY");
+	if(iter != info.end()) { FBX->object.Rot.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZRotationZ");
+	if(iter != info.end()) { FBX->object.Rot.z = Helper::StringToFloat(iter->second); } 
+
+	// XYZDiffuse
+	iter = info.find("XYZDiffuseX");
+	if(iter != info.end()) { FBX->object.Colour.Diffuse.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZDiffuseY");
+	if(iter != info.end()) { FBX->object.Colour.Diffuse.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZDiffuseZ");
+	if(iter != info.end()) { FBX->object.Colour.Diffuse.z = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZDiffuseW");
+	if(iter != info.end()) { FBX->object.Colour.Diffuse.w = Helper::StringToFloat(iter->second); } 
+
+	// XYZAmbent
+	iter = info.find("XYZAmbentX");
+	if(iter != info.end()) { FBX->object.Colour.Ambient.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZAmbentY");
+	if(iter != info.end()) { FBX->object.Colour.Ambient.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZAmbentZ");
+	if(iter != info.end()) { FBX->object.Colour.Ambient.z = Helper::StringToFloat(iter->second); } 
+
+	// XYZAmbent
+	iter = info.find("XYZSpecX");
+	if(iter != info.end()) { FBX->object.Colour.Spec.x = Helper::StringToFloat(iter->second); } 	
+	iter = info.find("XYZSpecY");
+	if(iter != info.end()) { FBX->object.Colour.Spec.y = Helper::StringToFloat(iter->second); } 
+	iter = info.find("XYZSpecZ");
+	if(iter != info.end()) { FBX->object.Colour.Spec.z = Helper::StringToFloat(iter->second); } 
+
+	return FBX;
 }

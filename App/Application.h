@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "FBXObject.h"
 #include "SkeletalAnimation.h"
+#include "LightManager.h"
 
 class Application : public DX11App
 {
@@ -21,6 +22,7 @@ public:
 	
 	virtual void Render();
 	virtual void ClearScreen();
+	virtual void SetupDraw();
 	virtual void DrawObjects();
 	virtual void Present();
 
@@ -35,6 +37,8 @@ protected:
 	std::pair<std::string, ID3D11SamplerState*>		pSamplerAnisotropic;
 	
 	void LoadD3DStuff();
+
+	LightManager lightManager;
 };
 
 #endif

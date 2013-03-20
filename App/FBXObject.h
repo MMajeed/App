@@ -6,6 +6,7 @@
 #include "ShaderFiles.h"
 #include "Mesh.h"
 #include "SkeletalAnimation.h"
+#include <map>
 
 class FBXObject : public iObjectDrawable
 {
@@ -38,14 +39,14 @@ public:
     void SetAnimRate(float rate) { mAnimRate = rate; }
     float GetAnimRate() const { return(mAnimRate); }
 
-	Mesh							mMesh;
-	std::vector<SkeletalAnimation>	mAnimation;
-	std::size_t						currAnimation;
-    std::vector<unsigned char>		mChannelMap;
-
+	Mesh										mMesh;
     std::vector<cFBXBuffer::JointPose>			mCurrentBones;
     std::vector<XMFLOAT4X4>						mCurrentGlobalPose;
 	std::vector<XMFLOAT4X4>						mBoneTransforms;
+
+	std::vector<SkeletalAnimation>	mAnimation;
+	std::size_t						currAnimation;
+    std::vector<unsigned char>		mChannelMap;
 
     float                   mAnimTime;
     float                   mAnimRate;
@@ -64,6 +65,8 @@ public:
 	void LoadD3DStuff();
 
 	ShaderFiles Shader;
+
+	static FBXObject* Spawn(std::map<std::string, std::string> info);
 
     FBXObject();
     virtual ~FBXObject();

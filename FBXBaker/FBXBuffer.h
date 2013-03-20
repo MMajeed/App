@@ -37,12 +37,13 @@ public:
 
 	struct SimpleSkinnedVertex
 	{
-		XMFLOAT3      Pos;              
+		XMFLOAT3      Pos;
+		XMFLOAT3      Normal;
 		XMFLOAT4      Color;            
 		unsigned char JointIndex[4];    
 		float         JointWeight[4];   
 
-		SimpleSkinnedVertex() : Pos(0.0f, 0.0f, 0.0f), Color(1.0f, 1.0f, 1.0f, 1.0f) 
+		SimpleSkinnedVertex() : Pos(0.0f, 0.0f, 0.0f), Normal(1.0f, 0.0f, 0.0f), Color(1.0f, 1.0f, 1.0f, 1.0f) 
 		{ JointIndex[0] = JointIndex[1] = JointIndex[2] = JointIndex[3] = 0; JointWeight[0] = JointWeight[1] = JointWeight[2] = JointWeight[3] = 0.0f; }
 	};
 };

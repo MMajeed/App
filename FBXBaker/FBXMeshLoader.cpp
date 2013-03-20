@@ -92,7 +92,54 @@ Mesh FBXMeshLoader::LoadMesh(std::string path)
 
 	lScene->Destroy();
 
+	this->NormalizeTheMesh();
+
 	return ( this->pMesh );
+}
+
+void FBXMeshLoader::NormalizeTheMesh()
+{
+	for(std::size_t i = 0; i < this->pMesh.mIndices.size(); i += 3)
+	{
+		XMFLOAT3 vertexA = this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 0)).Pos;
+		XMFLOAT3 vertexB = this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 1)).Pos;
+		XMFLOAT3 vertexC = this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 2)).Pos;
+
+		XMVECTOR vectorA = { vertexA.x, vertexA.y, vertexA.z };
+		XMVECTOR vectorB = { vertexB.x, vertexB.y, vertexB.z };
+		XMVECTOR vectorC = { vertexC.x, vertexC.y, vertexC.z };
+
+		XMVECTOR vecAB = XMVectorSubtract( vectorB, vectorA );
+		XMVECTOR vecBC = XMVectorSubtract( vectorC, vectorB );
+		XMVECTOR normal;
+		normal = XMVector3Cross( vecAB, vecBC );
+		normal = XMVector3Normalize( normal );
+		XMFLOAT3 normalXMFLOAT3;
+		XMStoreFloat3( &normalXMFLOAT3, normal );
+		
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 0)).Normal.x += normalXMFLOAT3.x;
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 0)).Normal.y += normalXMFLOAT3.y;
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 0)).Normal.z += normalXMFLOAT3.z;
+
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 1)).Normal.x += normalXMFLOAT3.x;
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 1)).Normal.y += normalXMFLOAT3.y;
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 1)).Normal.z += normalXMFLOAT3.z;
+
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 2)).Normal.x += normalXMFLOAT3.x;
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 2)).Normal.y += normalXMFLOAT3.y;
+		this->pMesh.mVerts.at(this->pMesh.mIndices.at(i + 2)).Normal.z += normalXMFLOAT3.z;
+	}
+
+	for(std::size_t i = 0; i < this->pMesh.mVerts.size(); ++i)
+	{
+		XMVECTOR normal = {  this->pMesh.mVerts.at(i).Normal.x, this->pMesh.mVerts.at(i).Normal.y, this->pMesh.mVerts.at(i).Normal.z };
+		normal = XMVector3Normalize( normal );
+		XMFLOAT3 normalXMFLOAT3;
+		XMStoreFloat3( &normalXMFLOAT3, normal );
+		this->pMesh.mVerts.at(i).Normal.x = normalXMFLOAT3.x;
+		this->pMesh.mVerts.at(i).Normal.y = normalXMFLOAT3.y;
+		this->pMesh.mVerts.at(i).Normal.z = normalXMFLOAT3.z;
+	}
 }
 
 void FBXMeshLoader::LoadMeshFromScene()

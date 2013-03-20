@@ -83,6 +83,7 @@ void SphericalMirror::GetNewDynamicTexture()
 		}
 
 		App::getInstance()->camera = newCamera;
+		((Application*)App::getInstance())->SetupDraw();
 		((Application*)App::getInstance())->SortObject();
 		((Application*)App::getInstance())->DrawObjects();
 	}

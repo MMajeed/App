@@ -25,6 +25,7 @@ protected:
 	void LoadSkeletonRecursive(FbxNode* pNode, int parent);
 	int CountSkeletonRecursive(FbxNode* pNode);
 	void TriangulateRecursive(FbxNode* pNode);
+	void NormalizeTheMesh();
 };
 
 #endif //__FBXMESHLOADER__
