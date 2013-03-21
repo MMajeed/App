@@ -6,6 +6,7 @@
 #include "ShaderFiles.h"
 #include "Mesh.h"
 #include "SkeletalAnimation.h"
+#include "AnimationPlayer.h"
 #include <map>
 
 class FBXObject : public iObjectDrawable
@@ -36,22 +37,17 @@ public:
     float GetCurrentAnimTime() const;
     std::size_t GetCurrentAnimFrame() const;
 
-    void SetAnimRate(float rate) { mAnimRate = rate; }
-    float GetAnimRate() const { return(mAnimRate); }
+	void SetAnimRate(float rate);
+    float GetAnimRate() const;
 
-	Mesh										mMesh;
-    std::vector<cFBXBuffer::JointPose>			mCurrentBones;
+	Mesh*										mMesh;
+	std::string									MeshKey;
+	AnimationPlayer								AnimationPlayer;
     std::vector<XMFLOAT4X4>						mCurrentGlobalPose;
-	std::vector<XMFLOAT4X4>						mBoneTransforms;
 
-	std::vector<SkeletalAnimation>	mAnimation;
+	std::vector<std::string	>		AnimationKey;
+	std::vector<SkeletalAnimation*>	mAnimation;
 	std::size_t						currAnimation;
-    std::vector<unsigned char>		mChannelMap;
-
-    float                   mAnimTime;
-    float                   mAnimRate;
-    std::size_t             mCurrentFrame;
-	std::size_t             mPreviousFrame;
 
 	std::pair<std::string, ID3D11Buffer*> 			pMeshVertexBuffer;
 	std::pair<std::string, ID3D11Buffer*>			pMeshIndexBuffer;

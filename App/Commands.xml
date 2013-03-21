@@ -97,7 +97,7 @@
     <Type>Parallel</Type>
     <XYZDiffuse         X="0.005f" Y="0.005f" Z="0.005f"/>
     <XYZAmbient         X="0.26f" Y="0.24f" Z="0.22f"/>
-    <XYZSpec            X="0.1f" Y="0.1f" Z="0.1f"/>
+    <XYZSpec            X="0.01f" Y="0.01f" Z="0.01f"/>
     <XYZDir             X="0.0f" Y="-200.0f" Z="0.0f"/>
   </Light>
 </Objects>

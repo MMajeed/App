@@ -149,6 +149,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="AnimationPlayer.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BasicObject.cpp" />
@@ -159,6 +161,7 @@
     <ClCompile Include="cFBXBuffer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
+    <ClCompile Include="MeshAnimationManager.cpp" />
     <ClCompile Include="Prespective.cpp" />
     <ClCompile Include="SphericalMirror.cpp" />
     <ClCompile Include="Helper.cpp" />
@@ -176,6 +179,8 @@
     <ClCompile Include="PlyBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AnimationPlayer.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BasicObject.h" />
@@ -187,6 +192,7 @@
     <ClInclude Include="cFBXBuffer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
+    <ClInclude Include="MeshAnimationManager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Prespective.h" />
     <ClInclude Include="ShaderFiles.h" />

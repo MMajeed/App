@@ -72,6 +72,15 @@
     <ClCompile Include="LightManager.cpp">
       <Filter>Tools\Light Manager</Filter>
     </ClCompile>
+    <ClCompile Include="MeshAnimationManager.cpp">
+      <Filter>Tools\Mesh &amp; Animation Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationPlayer.cpp">
+      <Filter>Animation\AnimationPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationController.cpp">
+      <Filter>Animation\AnimationController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -158,6 +167,15 @@
     </ClInclude>
     <ClInclude Include="LightManager.h">
       <Filter>Tools\Light Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshAnimationManager.h">
+      <Filter>Tools\Mesh &amp; Animation Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationPlayer.h">
+      <Filter>Animation\AnimationPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationController.h">
+      <Filter>Animation\AnimationController</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +280,18 @@
     </Filter>
     <Filter Include="Tools\Light Manager\Light">
       <UniqueIdentifier>{d37a84f2-17a2-4f7d-9d28-e134dac8ef9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Mesh &amp; Animation Manager">
+      <UniqueIdentifier>{a1df9569-961c-4f5e-810c-c6717a570e20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{58a1b361-6efd-4779-bd6c-8530814bc7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation\AnimationPlayer">
+      <UniqueIdentifier>{2304cc8d-a9a5-416a-8b7a-c35b403999a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation\AnimationController">
+      <UniqueIdentifier>{0e750b11-c7bf-44c0-9949-eb0184c4eb3b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
