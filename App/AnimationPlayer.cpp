@@ -18,16 +18,11 @@ void AnimationPlayer::Init(std::string meshPath, std::string animationPath)
 	Mesh* mesh;
 
 	bool hr = MeshAnimationManager::getInstance()->GetMesh(meshPath, mesh);
-	if(!hr)
-	{
-		std::exception("Failed to load mesh");
-	}
+	if(!hr) { std::exception("Failed to load mesh"); }
 
+	this->Animation.first = animationPath;
 	hr = MeshAnimationManager::getInstance()->GetAnimation(animationPath, this->Animation.second);
-	if(!hr)
-	{
-		std::exception("Failed to load animation");
-	}
+	if(!hr) { std::exception("Failed to load animation"); }
 
 	this->AnimTime = 0.0f;
 	this->CurrentFrame = 0;
@@ -110,4 +105,9 @@ void AnimationPlayer::Play(float delta)
             XMStoreFloat3(&(this->CurrentBones[i].scale), lerpedScale);
         }
     }
+}
+
+bool AnimationPlayer::IsSet() const
+{
+	return (this->Animation.first != "");
 }

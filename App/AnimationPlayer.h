@@ -14,6 +14,8 @@ public:
 
 	void Play(float delta);
 
+	bool IsSet() const;
+
 	std::pair<std::string, SkeletalAnimation*>	Animation;	
     std::vector<unsigned char>					ChannelMap;
     std::vector<cFBXBuffer::JointPose>			CurrentBones;

@@ -9,15 +9,20 @@ public:
 	AnimationController();
 	virtual ~AnimationController();
 
-	void Init(std::string path);
-	void SetAnimation(std::string path);
+	void Init(std::string meshKey);
+	void SetAnimation(std::string animationKey);
 
 	void Update(float delta);
 
 	std::pair<std::string, Mesh*>	Mesh; // Don't delete
 	std::vector<XMFLOAT4X4>			CurrentGlobalPose;
+
 	AnimationPlayer					AnimationPlayerA;
-	
+	AnimationPlayer					AnimationPlayerB;
+
+	bool					betweenAnimation;
+	float					timeBetweenAnimation;
+	float					finalTimeBetweenAnimation;	
 };
 
 #endif // __AnimationController__

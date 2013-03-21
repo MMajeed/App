@@ -13,8 +13,6 @@ FBXObject::FBXObject()
 {
 	this->currAnimation					= 50000;
 
-	this->mAnimation.reserve(10);
-
 	this->Shader.ShaderInput.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
 	this->Shader.ShaderInput.EntryPoint = "VS";
 	this->Shader.ShaderInput.Mode		= "vs_4_0";
@@ -43,12 +41,7 @@ FBXObject::~FBXObject()
 
 void FBXObject::Init()
 {
-	this->mCurrentGlobalPose.resize(this->mMesh->mNumBones);
-
-	for(std::size_t i = 0; i < this->mMesh->mNumBones; ++i)
-	{
-		this->mCurrentGlobalPose[i] = this->mMesh->mOrigGlobalPose[i];
-	}
+	AnimController.Init(this->MeshKey);
 
 	ID3D11Device* device = (dynamic_cast<DX11App*>(App::getInstance()))->direct3d.pd3dDevice;
 
@@ -68,22 +61,7 @@ void FBXObject::Clean()
 }
 void FBXObject::UpdateDrawing(float delta)
 {
-	if(this->currAnimation < this->mAnimation.size())
-	{
-		this->AnimationPlayer.Play(delta);
-
-		for(std::size_t i = 0; i < this->mMesh->mNumBones; ++i)
-		{
-			XMMATRIX m = this->AnimationPlayer.CurrentBones[i].GetTransform();
-			if(this->mMesh->mSkeleton[i].parent >= 0)
-			{
-				const XMMATRIX& c = XMLoadFloat4x4(&this->mCurrentGlobalPose[this->mMesh->mSkeleton[i].parent]);
-				m *= c;
-			}
-        
-			XMStoreFloat4x4(&this->mCurrentGlobalPose[i], m);
-		}
-    }
+	this->AnimController.Update(delta);
 }
 void FBXObject::UpdateObject(float delta)
 {
@@ -92,10 +70,10 @@ void FBXObject::UpdateObject(float delta)
 void FBXObject::Draw()
 {
 	static std::vector<XMFLOAT4X4> mBoneTransforms(128);
-    for(std::size_t i = 0; i < this->mMesh->mNumBones; ++i)
+	for(std::size_t i = 0; i < this->AnimController.Mesh.second->mNumBones; ++i)
     {
-		XMMATRIX invBind = XMLoadFloat4x4(&this->mMesh->mSkeleton[i].invBindPose);
-		XMMATRIX currPose = XMLoadFloat4x4(&this->mCurrentGlobalPose[i]);
+		XMMATRIX invBind = XMLoadFloat4x4(&this->AnimController.Mesh.second->mSkeleton[i].invBindPose);
+		XMMATRIX currPose = XMLoadFloat4x4(&this->AnimController.CurrentGlobalPose[i]);
 		XMMATRIX total = invBind * currPose;
 		XMMATRIX invTotal = XMMatrixTranspose( total);
 		XMFLOAT4X4 inv;
@@ -133,60 +111,49 @@ void FBXObject::Draw()
 
 	pImmediateContext->RSSetState( this->pRastersizerState.second );
 
-    pImmediateContext->DrawIndexed( this->mMesh->mIndices.size(), 0, 0 );
+    pImmediateContext->DrawIndexed( this->AnimController.Mesh.second->mIndices.size(), 0, 0 );
 
 }
 
 void FBXObject::LoadMesh(std::string path)
 {
 	this->MeshKey = path;
-
 	MeshAnimationManager::getInstance()->LoadMesh(path);
-	
-	if(!MeshAnimationManager::getInstance()->GetMesh(path, this->mMesh))
-	{
-		throw std::exception("Failed to load mesh");
-	}
 }
 void FBXObject::AddAnimation(std::string path)
 {
 	this->AnimationKey.push_back(path);
-
-	this->mAnimation.push_back(NULL);
 	MeshAnimationManager::getInstance()->LoadAnimation(path);
-	if(!MeshAnimationManager::getInstance()->GetAnimation(path, this->mAnimation.back()))
-	{
-		throw std::exception("Failed to load Animation");
-	}
 }
 void FBXObject::PlayAnimation(std::size_t anim)
 {
-	if(anim < this->mAnimation.size())
+	if(anim < this->AnimationKey.size())
 	{
 		this->currAnimation = anim;
-		this->AnimationPlayer.Init(this->MeshKey, this->AnimationKey[this->currAnimation]);
+		this->AnimController.SetAnimation(this->AnimationKey[this->currAnimation]);
 	}
 }
 std::string FBXObject::GetPlayingAnimation() const
 {
-	if(this->currAnimation < this->mAnimation.size())
+	if(this->currAnimation < this->AnimationKey.size())
 	{
-        return(this->mAnimation[this->currAnimation]->mName);
+		return(this->AnimController.AnimationPlayerA.Animation.second->mName);
     }
     else
     {
         return("None");
     }
 }
-void FBXObject::SetAnimRate(float rate) { this->AnimationPlayer.AnimRate = rate; }
-float FBXObject::GetAnimRate() const { return(this->AnimationPlayer.AnimRate); }
+void FBXObject::SetAnimRate(float rate) { /*this->AnimationPlayer.AnimRate = rate;*/ }
+float FBXObject::GetAnimRate() const { /*return(this->AnimationPlayer.AnimRate);*/ return 0.0f; }
 float FBXObject::GetCurrentAnimTime() const
 {
-	return(this->AnimationPlayer.AnimTime);
+	/*return(this->AnimationPlayer.AnimTime);*/ return 0.0f;
 }
 std::size_t FBXObject::GetCurrentAnimFrame() const
 {
-    return(this->AnimationPlayer.CurrentFrame);
+    /*return(this->AnimationPlayer.CurrentFrame);*/
+	return 0;
 }
 
 void FBXObject::InitVertexBuffer(ID3D11Device* device)
@@ -196,7 +163,7 @@ void FBXObject::InitVertexBuffer(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->PlyBuffer.Exists(this->pMeshVertexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadVertexBuffer<cFBXBuffer::SimpleSkinnedVertex>(device, &(this->mMesh->mVerts.front()), this->mMesh->mVerts.size(), &(this->pMeshVertexBuffer.second), error ))
+		if(!DX11Helper::LoadVertexBuffer<cFBXBuffer::SimpleSkinnedVertex>(device, &(this->AnimController.Mesh.second->mVerts.front()), this->AnimController.Mesh.second->mVerts.size(), &(this->pMeshVertexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -208,7 +175,7 @@ void FBXObject::InitIndexBuffer(ID3D11Device* device)
 	if(!DX11ObjectManager::getInstance()->IndexBuffer.Exists(this->pMeshIndexBuffer.first))
 	{
 		std::wstring error;
-		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(this->mMesh->mIndices.front()), this->mMesh->mIndices.size(), &(this->pMeshIndexBuffer.second), error ))
+		if(!DX11Helper::LoadIndexBuffer<WORD>(device, &(this->AnimController.Mesh.second->mIndices.front()), this->AnimController.Mesh.second->mIndices.size(), &(this->pMeshIndexBuffer.second), error ))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}

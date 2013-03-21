@@ -7,6 +7,7 @@
 #include "Mesh.h"
 #include "SkeletalAnimation.h"
 #include "AnimationPlayer.h"
+#include "AnimationController.h"
 #include <map>
 
 class FBXObject : public iObjectDrawable
@@ -40,14 +41,11 @@ public:
 	void SetAnimRate(float rate);
     float GetAnimRate() const;
 
-	Mesh*										mMesh;
-	std::string									MeshKey;
-	AnimationPlayer								AnimationPlayer;
-    std::vector<XMFLOAT4X4>						mCurrentGlobalPose;
+	AnimationController			AnimController;
 
-	std::vector<std::string	>		AnimationKey;
-	std::vector<SkeletalAnimation*>	mAnimation;
-	std::size_t						currAnimation;
+	std::string					MeshKey;
+	std::vector<std::string	>	AnimationKey;
+	std::size_t					currAnimation;
 
 	std::pair<std::string, ID3D11Buffer*> 			pMeshVertexBuffer;
 	std::pair<std::string, ID3D11Buffer*>			pMeshIndexBuffer;
