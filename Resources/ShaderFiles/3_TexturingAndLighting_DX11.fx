@@ -89,7 +89,11 @@ float4 PS( PS_INPUT input ) : SV_Target
 
 	for ( int index = 0; index < 10; index++ )
 	{
-		if ( light[index].lightPowerRangeType.z == 0.0f ) // Parallel light
+		if ( light[index].lightPowerRangeType.z > 2.9f && light[index].lightPowerRangeType.z < 3.1f ) // Don't do light
+		{			
+			continue;
+		}
+		else if ( light[index].lightPowerRangeType.z == 0.0f ) // Parallel light
 		{
 			finalLightColour += ParallelLight( objectMaterial, light[index], 
 										 input.VertexPosWorld, 
@@ -101,13 +105,13 @@ float4 PS( PS_INPUT input ) : SV_Target
 									 input.VertexPosWorld, 
 									 input.VertexNormalWorld, eye );
 		}
-		else 
+		else if ( light[index].lightPowerRangeType.z > 1.0f ) // Point
 		{
 			finalLightColour += Spotlight( objectMaterial, light[index], 
 									 input.VertexPosWorld, 
 									 input.VertexNormalWorld, eye );
 		}
-	}	// for (int index = 0;....
+	}
 
 	float4 texColour0 = texture00.Sample( samLinear, input.tex0 );
 	float4 texColour1 = texture01.Sample( samAnisotropic, input.tex1 );
@@ -123,6 +127,6 @@ float4 PS( PS_INPUT input ) : SV_Target
 	
 	finalColour.w = objectMaterial.diffuse.w;
 
-	return finalLightColour;
+	return finalColour;
 }
 

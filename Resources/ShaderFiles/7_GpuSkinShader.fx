@@ -131,6 +131,6 @@ float4 PS( VS_OUTPUT input ) : SV_Target
 
 	finalLightColour.w = objectMaterial.diffuse.w;
 
-	return input.Normal;
+	return finalLightColour;
 
 }

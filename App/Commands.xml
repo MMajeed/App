@@ -90,8 +90,8 @@
     <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZDiffuse  X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZAmbent   X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZSpec     X="0.06f" Y="0.04f" Z="0.02f"/>
+    <XYZAmbent   X="0.8f" Y="0.8f" Z="0.8f"/>
+    <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
   </Object>
   <Light>
     <Type>Parallel</Type>
