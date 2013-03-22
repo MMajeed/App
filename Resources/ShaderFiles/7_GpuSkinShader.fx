@@ -76,7 +76,15 @@ VS_OUTPUT VS( VS_INPUT input )
 	output.PosWorld = mul( input.Pos, World);
 
 	// Set Normal
-	output.Normal = normalize( mul( input.Normal, World ));
+	float4 VertexNormalSkined = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	for(int i = 0; i < 4; ++i)
+	{
+		uint b1 = JoinIndexArray[i];	
+		matrix k1 = BoneTransforms[b1];
+		float w1 = JointWghtArray[i];
+		VertexNormalSkined += w1 * mul( input.Normal, k1);
+	}
+	output.Normal = normalize(VertexNormalSkined);
 
 	// Set Color
 	output.Color = input.Color;
@@ -123,6 +131,6 @@ float4 PS( VS_OUTPUT input ) : SV_Target
 
 	finalLightColour.w = objectMaterial.diffuse.w;
 
-	return finalLightColour;
+	return input.Normal;
 
 }

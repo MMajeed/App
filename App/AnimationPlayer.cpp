@@ -105,6 +105,9 @@ void AnimationPlayer::Play(float delta)
             XMStoreFloat3(&(this->CurrentBones[i].scale), lerpedScale);
         }
     }
+
+	CurrentBones[1].translation.x = Animation.second->mKeys[0].mBones[1].translation.x;
+	CurrentBones[1].translation.z = Animation.second->mKeys[0].mBones[1].translation.z;
 }
 
 bool AnimationPlayer::IsSet() const

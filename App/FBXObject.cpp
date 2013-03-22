@@ -133,6 +133,7 @@ void FBXObject::PlayAnimation(std::size_t anim)
 		this->AnimController.SetAnimation(this->AnimationKey[this->currAnimation]);
 	}
 }
+
 std::string FBXObject::GetPlayingAnimation() const
 {
 	if(this->currAnimation < this->AnimationKey.size())
@@ -144,16 +145,15 @@ std::string FBXObject::GetPlayingAnimation() const
         return("None");
     }
 }
-void FBXObject::SetAnimRate(float rate) { /*this->AnimationPlayer.AnimRate = rate;*/ }
-float FBXObject::GetAnimRate() const { /*return(this->AnimationPlayer.AnimRate);*/ return 0.0f; }
+void FBXObject::SetAnimRate(float rate) { this->AnimController.AnimationPlayerA.AnimRate = rate; }
+float FBXObject::GetAnimRate() const { return this->AnimController.AnimationPlayerA.AnimRate; }
 float FBXObject::GetCurrentAnimTime() const
 {
-	/*return(this->AnimationPlayer.AnimTime);*/ return 0.0f;
+	return this->AnimController.AnimationPlayerA.AnimTime;
 }
 std::size_t FBXObject::GetCurrentAnimFrame() const
 {
-    /*return(this->AnimationPlayer.CurrentFrame);*/
-	return 0;
+	return this->AnimController.AnimationPlayerA.CurrentFrame;
 }
 
 void FBXObject::InitVertexBuffer(ID3D11Device* device)
