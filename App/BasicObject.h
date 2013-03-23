@@ -1,7 +1,6 @@
 #ifndef __BasicObject__
 #define __BasicObject__
 
-#include "Object.h"
 #include "iObjectDrawable.h"
 #include "DX11Helper.h"
 #include "PlyBuffer.h"

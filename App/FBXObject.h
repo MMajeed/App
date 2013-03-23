@@ -31,9 +31,9 @@ public:
 
 	void LoadMesh(std::string path);
 
-	void AddAnimation(std::string path);
+	void AddAnimation(std::string name, std::string path);
 
-    void PlayAnimation(std::size_t anim);    
+	void PlayAnimation(std::string anim, AnimationController::AnimationState);    
     std::string GetPlayingAnimation() const;
     float GetCurrentAnimTime() const;
     std::size_t GetCurrentAnimFrame() const;
@@ -43,9 +43,8 @@ public:
 
 	AnimationController			AnimController;
 
-	std::string					MeshKey;
-	std::vector<std::string	>	AnimationKey;
-	std::size_t					currAnimation;
+	std::string							MeshKey;
+	std::map<std::string, std::string>	AnimationKey;
 
 	std::pair<std::string, ID3D11Buffer*> 			pMeshVertexBuffer;
 	std::pair<std::string, ID3D11Buffer*>			pMeshIndexBuffer;

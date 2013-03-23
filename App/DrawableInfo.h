@@ -6,7 +6,7 @@
 #include "App.h"
 #include "MathHelper.h"
 
-class Object
+class DrawableInfo
 {
 public:	
 	XMFLOAT4 Pos;
@@ -24,7 +24,7 @@ public:
 	void Update(float update);
 	XMFLOAT4X4 CalculateMatrix() const;
 
-	Object();
+	DrawableInfo();
 };
 
 

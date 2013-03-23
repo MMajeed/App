@@ -291,22 +291,81 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 					return 0;
 				case '1':
 					{
+						auto objectIter = this->objects.find("FBXObject1");
+						if(objectIter != this->objects.end())
+						{
+							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
+							if(fbx != 0)
+							{
+								fbx->PlayAnimation("Idle", AnimationController::CrossFade);
+							}
+						}
 					}
 					break;
 				case '2':
 					{
+						auto objectIter = this->objects.find("FBXObject1");
+						if(objectIter != this->objects.end())
+						{
+							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
+							if(fbx != 0)
+							{
+								fbx->PlayAnimation("Walk", AnimationController::CrossFade);
+							}
+						}
 					}
 					break;
 				case '3':
 					{
+						auto objectIter = this->objects.find("FBXObject1");
+						if(objectIter != this->objects.end())
+						{
+							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
+							if(fbx != 0)
+							{
+								fbx->PlayAnimation("Run", AnimationController::CrossFade);
+							}
+						}
+					}
+					break;
+				case '4':
+					{
+						auto objectIter = this->objects.find("FBXObject1");
+						if(objectIter != this->objects.end())
+						{
+							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
+							if(fbx != 0)
+							{
+								fbx->PlayAnimation("Walk", AnimationController::OneAnimation);
+								fbx->PlayAnimation("Idle", AnimationController::HalfAndHalf);
+							}
+						}
 					}
 					break;
 				case VK_SUBTRACT:
 					{
+						auto objectIter = this->objects.find("FBXObject1");
+						if(objectIter != this->objects.end())
+						{
+							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
+							if(fbx != 0)
+							{
+								fbx->SetAnimRate(fbx->GetAnimRate() - 0.05f);
+							}
+						}
 					}
 					break;
 				case VK_ADD:
 					{
+						auto objectIter = this->objects.find("FBXObject1");
+						if(objectIter != this->objects.end())
+						{
+							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
+							if(fbx != 0)
+							{
+								fbx->SetAnimRate(fbx->GetAnimRate() + 0.05f);
+							}
+						}
 					}
 					break;
 			}

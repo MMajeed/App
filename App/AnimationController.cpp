@@ -200,7 +200,7 @@ void AnimationController::UpdateHalfAndHalf(float delta)
 	{
 		XMMATRIX m;
 		
-		if(this->BonesToMove.find(i) != this->BonesToMove.end())
+		if(this->BonesToMove.find(static_cast<unsigned char>(i)) != this->BonesToMove.end())
 		{
 			m = this->AnimationPlayerA.CurrentBones[i].GetTransform();
 		}

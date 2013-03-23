@@ -2,7 +2,7 @@
 #define __iObjectDrawable__
 
 
-#include "Object.h"
+#include "DrawableInfo.h"
 #include <string>
 #include <vector>
 
@@ -15,7 +15,7 @@ public:
 	virtual void UpdateObject(float delta)	= 0;
 	virtual void Draw()					    = 0;
 	virtual float GetOrder(){return 100000.0f;};
-	Object object;
+	DrawableInfo object;
 
 	virtual ~iObjectDrawable(){}
 };

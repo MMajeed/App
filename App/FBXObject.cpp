@@ -11,8 +11,6 @@
 
 FBXObject::FBXObject()
 {
-	this->currAnimation					= 50000;
-
 	this->Shader.ShaderInput.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
 	this->Shader.ShaderInput.EntryPoint = "VS";
 	this->Shader.ShaderInput.Mode		= "vs_4_0";
@@ -41,7 +39,8 @@ FBXObject::~FBXObject()
 
 void FBXObject::Init()
 {
-	AnimController.Init(this->MeshKey);
+	if(!this->AnimController.AnimationPlayerA.IsSet())
+		this->AnimController.Init(this->MeshKey);
 
 	ID3D11Device* device = (dynamic_cast<DX11App*>(App::getInstance()))->direct3d.pd3dDevice;
 
@@ -84,7 +83,7 @@ void FBXObject::Draw()
 
 	cBuffer::cbChangeEveryFrame cb;
 	XMFLOAT4X4 world = this->object.CalculateMatrix();
-	cb.mWorld = XMMatrixTranspose(XMLoadFloat4x4(&world));
+	cb.mWorld = XMLoadFloat4x4(&world);
 	cb.colour.diffuse = this->object.Colour.Diffuse;
 	cb.colour.ambient = this->object.Colour.Ambient;
 	cb.colour.spec = this->object.Colour.Spec;
@@ -120,23 +119,23 @@ void FBXObject::LoadMesh(std::string path)
 	this->MeshKey = path;
 	MeshAnimationManager::getInstance()->LoadMesh(path);
 }
-void FBXObject::AddAnimation(std::string path)
+void FBXObject::AddAnimation(std::string name, std::string path)
 {
-	this->AnimationKey.push_back(path);
+	this->AnimationKey[name] = path;
 	MeshAnimationManager::getInstance()->LoadAnimation(path);
 }
-void FBXObject::PlayAnimation(std::size_t anim)
+void FBXObject::PlayAnimation(std::string anim, AnimationController::AnimationState state)
 {
-	if(anim < this->AnimationKey.size())
+	auto animIter = this->AnimationKey.find(anim);
+	if(animIter != this->AnimationKey.end())
 	{
-		this->currAnimation = anim;
-		this->AnimController.SetAnimation(this->AnimationKey[this->currAnimation]);
+		this->AnimController.SetAnimation(animIter->second, state);
 	}
 }
 
 std::string FBXObject::GetPlayingAnimation() const
 {
-	if(this->currAnimation < this->AnimationKey.size())
+	if(this->AnimController.AnimationPlayerA.Animation.second != NULL)
 	{
 		return(this->AnimController.AnimationPlayerA.Animation.second->mName);
     }
@@ -145,7 +144,7 @@ std::string FBXObject::GetPlayingAnimation() const
         return("None");
     }
 }
-void FBXObject::SetAnimRate(float rate) { this->AnimController.AnimationPlayerA.AnimRate = rate; }
+void FBXObject::SetAnimRate(float rate) { this->AnimController.AnimationPlayerA.AnimRate = rate; this->AnimController.AnimationPlayerB.AnimRate = rate; }
 float FBXObject::GetAnimRate() const { return this->AnimController.AnimationPlayerA.AnimRate; }
 float FBXObject::GetCurrentAnimTime() const
 {
@@ -285,16 +284,24 @@ FBXObject* FBXObject::Spawn(std::map<std::string, std::string> info)
 	auto iter = info.find("Mesh");
 	if(iter == info.end()){throw std::exception("No Mesh was included in the object");}
 	FBX->LoadMesh(iter->second);
+	FBX->AnimController.Init(iter->second);
 
-	iter = info.find("Animation1");
-	if(iter != info.end()){ FBX->AddAnimation(iter->second); }
 
-	iter = info.find("Animation2");
-	if(iter != info.end()){ FBX->AddAnimation(iter->second); }
+	for(auto infoIter = info.begin();
+		infoIter != info.end();
+		++infoIter)
+	{
+		std::string key = infoIter->first;
+		std::string AnimationKey = "Animation";
+		if(key.compare(0, AnimationKey.length(), AnimationKey) == 0)
+		{
+			key = key.erase(0, AnimationKey.size());
+			FBX->AddAnimation(key, infoIter->second);
+		}
+	}
 
-	iter = info.find("Animation3");
-	if(iter != info.end()){ FBX->AddAnimation(iter->second); }
-
+	iter = info.find("DefaultAnimation");
+	if(iter != info.end()) { FBX->PlayAnimation(iter->second, AnimationController::OneAnimation); }
 
 	iter = info.find("ShaderVertexEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Input Entry point Name was included in the object");}

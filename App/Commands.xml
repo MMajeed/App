@@ -78,12 +78,13 @@
     <UpdateEvery>0.012</UpdateEvery>
   </Object>
   <Object>
-    <ID>FBXObject</ID>
+    <ID>FBXObject1</ID>
     <Class>FBXFile</Class>
     <Mesh>../Resources/DefaultCharacter/DefaultAvatar.BakedFBX</Mesh>
-    <Animation1>../Resources/DefaultCharacter/Idles.Bakedfbx</Animation1>
-    <Animation2>../Resources/DefaultCharacter/WalkFWD_S25E55.Bakedfbx</Animation2>
-    <Animation3>../Resources/DefaultCharacter/RunForward_Loop_S223E239.Bakedfbx</Animation3>    
+    <AnimationIdle>../Resources/DefaultCharacter/Idles.Bakedfbx</AnimationIdle>
+    <AnimationWalk>../Resources/DefaultCharacter/WalkFWD_S25E55.Bakedfbx</AnimationWalk>
+    <AnimationRun>../Resources/DefaultCharacter/RunForward_Loop_S223E239.Bakedfbx</AnimationRun>
+    <DefaultAnimation>Idle</DefaultAnimation>
     <ShaderVertex FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
@@ -93,6 +94,24 @@
     <XYZAmbent   X="0.8f" Y="0.8f" Z="0.8f"/>
     <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
   </Object>
+  <Object>
+    <ID>FBXObject2</ID>
+    <Class>FBXFile</Class>
+    <Mesh>../Resources/DefaultCharacter/DefaultAvatar.BakedFBX</Mesh>
+    <AnimationIdle>../Resources/DefaultCharacter/Idles.Bakedfbx</AnimationIdle>
+    <AnimationWalk>../Resources/DefaultCharacter/WalkFWD_S25E55.Bakedfbx</AnimationWalk>
+    <AnimationRun>../Resources/DefaultCharacter/RunForward_Loop_S223E239.Bakedfbx</AnimationRun>
+    <DefaultAnimation>Walk</DefaultAnimation>
+    <ShaderVertex FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderPixel  FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="1.0f" Y="0.0f" Z="0.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZDiffuse  X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZAmbent   X="0.8f" Y="0.8f" Z="0.8f"/>
+    <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+  </Object>
+  
   <Light>
     <Type>Parallel</Type>
     <XYZDiffuse         X="0.005f" Y="0.005f" Z="0.005f"/>

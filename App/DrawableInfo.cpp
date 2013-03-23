@@ -1,6 +1,6 @@
-#include "Object.h"
+#include "DrawableInfo.h"
 
-XMFLOAT4X4 Object::CalculateMatrix() const
+XMFLOAT4X4 DrawableInfo::CalculateMatrix() const
 {
 	XMMATRIX matTranslate = XMMatrixIdentity();
 	XMMATRIX matRotateX = XMMatrixIdentity();	XMMATRIX matRotateY = XMMatrixIdentity();	XMMATRIX matRotateZ = XMMatrixIdentity();
@@ -32,12 +32,12 @@ XMFLOAT4X4 Object::CalculateMatrix() const
 	return returnValue;
 }
 
-void Object::Update(float delta)
+void DrawableInfo::Update(float delta)
 {
 	UNREFERENCED_PARAMETER(delta);
 }
 
-Object::Object()
+DrawableInfo::DrawableInfo()
 {
 	this->Pos				= XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	this->Rot				= XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);

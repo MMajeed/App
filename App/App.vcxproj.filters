@@ -27,9 +27,6 @@
     <ClCompile Include="PlyLib\rply.c">
       <Filter>Tools\Helper\PlyFile</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="PlyFile.cpp">
       <Filter>DX11ObjectDrawable\BasicObject\PlyFile</Filter>
     </ClCompile>
@@ -64,7 +61,7 @@
       <Filter>Tools\DX11Stuff\Buffer\cFBXBuffer</Filter>
     </ClCompile>
     <ClCompile Include="FBXObject.cpp">
-      <Filter>DX11ObjectDrawable\FBX Files</Filter>
+      <Filter>DX11ObjectDrawable\FBX Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Tools\Light Manager\Light</Filter>
@@ -76,13 +73,16 @@
       <Filter>Tools\Mesh &amp; Animation Manager</Filter>
     </ClCompile>
     <ClCompile Include="AnimationPlayer.cpp">
-      <Filter>Animation\AnimationPlayer</Filter>
+      <Filter>Tools\Animation\AnimationPlayer</Filter>
     </ClCompile>
     <ClCompile Include="AnimationController.cpp">
-      <Filter>Animation\AnimationController</Filter>
+      <Filter>Tools\Animation\AnimationController</Filter>
     </ClCompile>
     <ClCompile Include="ObjectInfo.cpp">
       <Filter>Object Info</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawableInfo.cpp">
+      <Filter>Tools\DrawableInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +94,6 @@
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>Tools\View\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="iObjectDrawable.h">
-      <Filter>DX11ObjectDrawable</Filter>
     </ClInclude>
     <ClInclude Include="Application.h" />
     <ClInclude Include="DX11ObjectManager.h">
@@ -113,9 +110,6 @@
     </ClInclude>
     <ClInclude Include="PlyLib\rply.h">
       <Filter>Tools\Helper\PlyFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="PlyFile.h">
       <Filter>DX11ObjectDrawable\BasicObject\PlyFile</Filter>
@@ -163,7 +157,7 @@
       <Filter>Tools\DX11Stuff\Buffer\cFBXBuffer</Filter>
     </ClInclude>
     <ClInclude Include="FBXObject.h">
-      <Filter>DX11ObjectDrawable\FBX Files</Filter>
+      <Filter>DX11ObjectDrawable\FBX Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Tools\Light Manager\Light</Filter>
@@ -175,13 +169,19 @@
       <Filter>Tools\Mesh &amp; Animation Manager</Filter>
     </ClInclude>
     <ClInclude Include="AnimationPlayer.h">
-      <Filter>Animation\AnimationPlayer</Filter>
+      <Filter>Tools\Animation\AnimationPlayer</Filter>
     </ClInclude>
     <ClInclude Include="AnimationController.h">
-      <Filter>Animation\AnimationController</Filter>
+      <Filter>Tools\Animation\AnimationController</Filter>
     </ClInclude>
     <ClInclude Include="ObjectInfo.h">
       <Filter>Object Info</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawableInfo.h">
+      <Filter>Tools\DrawableInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="iObjectDrawable.h">
+      <Filter>DX11ObjectDrawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +254,6 @@
     <Filter Include="Tools\DX11Stuff\DX11ObjectManager">
       <UniqueIdentifier>{24ca17f6-50ba-496e-a326-b9b065ed777a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX Files">
-      <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\DX11Stuff\ShaderFiles">
       <UniqueIdentifier>{d4fc4a8d-2ffd-4ce5-8a72-76471f42e366}</UniqueIdentifier>
     </Filter>
@@ -287,20 +284,23 @@
     <Filter Include="Tools\Mesh &amp; Animation Manager">
       <UniqueIdentifier>{a1df9569-961c-4f5e-810c-c6717a570e20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Animation">
-      <UniqueIdentifier>{58a1b361-6efd-4779-bd6c-8530814bc7ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Animation\AnimationPlayer">
-      <UniqueIdentifier>{2304cc8d-a9a5-416a-8b7a-c35b403999a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Animation\AnimationController">
-      <UniqueIdentifier>{0e750b11-c7bf-44c0-9949-eb0184c4eb3b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object Info">
       <UniqueIdentifier>{9a170821-31cf-441d-8119-946ca74e0bc3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object">
+    <Filter Include="Tools\DrawableInfo">
       <UniqueIdentifier>{c6230af0-f998-4319-8a83-78e76124ac86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Animation">
+      <UniqueIdentifier>{58a1b361-6efd-4779-bd6c-8530814bc7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Animation\AnimationPlayer">
+      <UniqueIdentifier>{2304cc8d-a9a5-416a-8b7a-c35b403999a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Animation\AnimationController">
+      <UniqueIdentifier>{0e750b11-c7bf-44c0-9949-eb0184c4eb3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\FBX Mesh">
+      <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

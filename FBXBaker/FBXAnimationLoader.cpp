@@ -157,7 +157,7 @@ SkeletalAnimation FBXAnimationLoader::LoadAnimation(std::string path, int orig, 
                 XMVECTOR det;
                 XMMATRIX invOrigin = XMMatrixInverse(&det, newOrigin);
 
-				for(int k = 0; k < pAnim.mKeys.size(); ++k)
+				for(std::size_t k = 0; k < pAnim.mKeys.size(); ++k)
                 {
                     for(int b = 0; b < numBones; ++b)
                     {
