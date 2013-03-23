@@ -15,6 +15,10 @@ AnimationPlayer::~AnimationPlayer()
 
 void AnimationPlayer::Init(std::string meshPath, std::string animationPath)
 {
+	this->AnimTime = 0.0f;
+	this->CurrentFrame = 0;
+	this->PreviousFrame = 0;
+
 	Mesh* mesh;
 
 	bool hr = MeshAnimationManager::getInstance()->GetMesh(meshPath, mesh);
@@ -23,9 +27,6 @@ void AnimationPlayer::Init(std::string meshPath, std::string animationPath)
 	this->Animation.first = animationPath;
 	hr = MeshAnimationManager::getInstance()->GetAnimation(animationPath, this->Animation.second);
 	if(!hr) { std::exception("Failed to load animation"); }
-
-	this->AnimTime = 0.0f;
-	this->CurrentFrame = 0;
 
 	this->ChannelMap.resize(mesh->mNumBones);
 	this->CurrentBones.resize(mesh->mNumBones);
@@ -36,7 +37,6 @@ void AnimationPlayer::Init(std::string meshPath, std::string animationPath)
 		for(std::size_t j = 0; j < this->Animation.second->mNumBones; ++j)
 		{
 			if(strcmp(mesh->mSkeleton[i].name, this->Animation.second->mSkeleton[j].name)  == 0)
-			//if(this->mMesh->mSkeleton[i].name == this->Animation->mSkeleton[j].name)
 			{
 				this->ChannelMap[i] = static_cast<unsigned char>(j);
 				break;
@@ -50,11 +50,6 @@ void AnimationPlayer::Play(float delta)
 	//find the appropriate frame
 	this->AnimTime += delta * this->AnimRate;
 	
-	if(this->AnimTime < 0)
-	{
-		return; // No time change so don't do anything
-	}
-
 	if(this->AnimTime >= this->Animation.second->mDuration)
     {
         this->AnimTime = 0.0f;
@@ -65,6 +60,11 @@ void AnimationPlayer::Play(float delta)
         this->AnimTime = this->Animation.second->mDuration;
 		this->CurrentFrame = this->Animation.second->mKeys.size() - 1;
     }
+
+	if(this->AnimTime < 0)
+	{
+		return; // No time change so don't do anything
+	}
 
 	std::size_t prevFrame = this->CurrentFrame;
 	if(this->AnimTime < this->Animation.second->mKeys[this->CurrentFrame].mTime)
@@ -87,24 +87,27 @@ void AnimationPlayer::Play(float delta)
 		this->PreviousFrame = prevFrame;
 	}
 
-	float ratio = (this->AnimTime - this->Animation.second->mKeys[this->PreviousFrame].mTime) / 
-					(this->Animation.second->mKeys[this->CurrentFrame].mTime - this->Animation.second->mKeys[this->PreviousFrame].mTime);
+	if(this->PreviousFrame != this->CurrentFrame)
+	{
+		float ratio = (this->AnimTime - this->Animation.second->mKeys[this->PreviousFrame].mTime) / 
+						(this->Animation.second->mKeys[this->CurrentFrame].mTime - this->Animation.second->mKeys[this->PreviousFrame].mTime);
 		
-	for(std::size_t i = 0; i < this->CurrentBones.size(); ++i)
-    {
-        if(this->ChannelMap[i] != -1)
-        {
-			const cFBXBuffer::JointPose& jntA = this->Animation.second->mKeys[this->PreviousFrame].mBones[this->ChannelMap[i]];
-			const cFBXBuffer::JointPose& jntB = this->Animation.second->mKeys[this->CurrentFrame].mBones[this->ChannelMap[i]];
+		for(std::size_t i = 0; i < this->CurrentBones.size(); ++i)
+		{
+			if(this->ChannelMap[i] != -1)
+			{
+				const cFBXBuffer::JointPose& jntA = this->Animation.second->mKeys[this->PreviousFrame].mBones[this->ChannelMap[i]];
+				const cFBXBuffer::JointPose& jntB = this->Animation.second->mKeys[this->CurrentFrame].mBones[this->ChannelMap[i]];
 
-			auto lerpedTranslation = XMVectorLerp(XMLoadFloat3(&jntA.translation), XMLoadFloat3(&jntB.translation), ratio);
-			XMStoreFloat3(&(this->CurrentBones[i].translation), lerpedTranslation);
-			auto slerpedRotation = XMQuaternionSlerp(XMLoadFloat4(&jntA.rotation), XMLoadFloat4(&jntB.rotation), ratio);
-            XMStoreFloat4(&(this->CurrentBones[i].rotation), slerpedRotation);
-			auto lerpedScale = XMVectorLerp(XMLoadFloat3(&jntA.scale), XMLoadFloat3(&jntB.scale), ratio);
-            XMStoreFloat3(&(this->CurrentBones[i].scale), lerpedScale);
-        }
-    }
+				auto lerpedTranslation = XMVectorLerp(XMLoadFloat3(&jntA.translation), XMLoadFloat3(&jntB.translation), ratio);
+				XMStoreFloat3(&(this->CurrentBones[i].translation), lerpedTranslation);
+				auto slerpedRotation = XMQuaternionSlerp(XMLoadFloat4(&jntA.rotation), XMLoadFloat4(&jntB.rotation), ratio);
+				XMStoreFloat4(&(this->CurrentBones[i].rotation), slerpedRotation);
+				auto lerpedScale = XMVectorLerp(XMLoadFloat3(&jntA.scale), XMLoadFloat3(&jntB.scale), ratio);
+				XMStoreFloat3(&(this->CurrentBones[i].scale), lerpedScale);
+			}
+		}
+	}
 
 	CurrentBones[1].translation.x = Animation.second->mKeys[0].mBones[1].translation.x;
 	CurrentBones[1].translation.z = Animation.second->mKeys[0].mBones[1].translation.z;

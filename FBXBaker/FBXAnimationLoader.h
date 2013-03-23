@@ -9,7 +9,7 @@ class FBXAnimationLoader
 public:
 	FbxManager* g_FbxSdkManager;
 
-	SkeletalAnimation LoadAnimation(std::string path);	
+	SkeletalAnimation LoadAnimation(std::string path, int orig, int start, int end);	
 	
 	FBXAnimationLoader();
 	virtual ~FBXAnimationLoader();

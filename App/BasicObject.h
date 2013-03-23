@@ -20,7 +20,6 @@ public:
 	virtual void SetupTexture();
 	virtual void DrawObject();
 	virtual void CleanupAfterDraw();
-	virtual float GetOrder();
 
 	PlyBuffer PlyBuffer;	
 

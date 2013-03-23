@@ -9,7 +9,7 @@
 #include "FBXObject.h"
 #include "SkeletalAnimation.h"
 #include "LightManager.h"
-
+#include "ObjectInfo.h"
 class Application : public DX11App
 {
 public:
@@ -27,7 +27,7 @@ public:
 	virtual void Present();
 
 	virtual void SortObject();
-	std::vector<iObjectDrawable*> objects;	
+	std::map<std::string, ObjectInfo> objects;	
 
 	Prespective Projection;
 protected:	

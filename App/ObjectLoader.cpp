@@ -145,9 +145,9 @@ bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object)
 	return true;
 }
 
-std::vector<iObjectDrawable*> ObjectLoader::SpawnAll()
+std::map<std::string, ObjectInfo> ObjectLoader::SpawnAll()
 {
-	std::vector<iObjectDrawable*> all;
+	std::map<std::string, ObjectInfo> all;
 
 	for(auto objectIter = this->objects.begin();
 		objectIter != this->objects.end();
@@ -155,7 +155,7 @@ std::vector<iObjectDrawable*> ObjectLoader::SpawnAll()
 	{
 		iObjectDrawable* newObject;
 		this->Spawn(objectIter->first, newObject);
-		all.push_back(newObject);
+		all[objectIter->first] = newObject;
 	}
 	return all;
 }

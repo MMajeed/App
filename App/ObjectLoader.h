@@ -5,6 +5,8 @@
 #include <map>
 #include "iObjectDrawable.h"
 #include "LightManager.h"
+#include "ObjectInfo.h"
+
 class ObjectLoader
 {
 public:
@@ -13,7 +15,7 @@ public:
 
 	void LoadXMLFile(std::string loc);
 	bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object);
-	std::vector<iObjectDrawable*> SpawnAll();
+	std::map<std::string, ObjectInfo> SpawnAll();
 	LightManager SetupLight();
 
 protected:

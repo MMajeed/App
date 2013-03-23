@@ -28,16 +28,16 @@ void Sniper::UpdateDrawing(float delta)
 	UNREFERENCED_PARAMETER(delta);
 
 	// Remove this object from the list that we don't want to see	
-	std::size_t counter = 0;
-	std::vector<iObjectDrawable*> removed;
-	std::vector<iObjectDrawable*>& applciationList = ((Application*)App::getInstance())->objects;
-	for(counter = 0; counter < applciationList.size(); ++counter)
+	std::vector<std::string> removed;
+	std::map<std::string, ObjectInfo>& applciationList = ((Application*)App::getInstance())->objects;
+	for(auto iter = applciationList.begin();
+		iter != applciationList.end();
+		++iter)
 	{
-		if( dynamic_cast<Sniper*>(applciationList[counter]) != 0)
+		if( dynamic_cast<Sniper*>(iter->second.ObjectDrawable) != 0)
 		{
-			removed.push_back(applciationList[counter]);
-			applciationList.erase(applciationList.begin() + counter);
-			--counter;
+			removed.push_back(iter->first);
+			iter->second.DrawNext = false;
 		}
 	}
 
@@ -49,7 +49,7 @@ void Sniper::UpdateDrawing(float delta)
 		removedIter != removed.end();
 		++removedIter)
 	{
-		applciationList.push_back(*removedIter);
+		applciationList[*removedIter].DrawNext = true;
 	}
 }
 void Sniper::UpdateObject(float delta)
@@ -208,13 +208,6 @@ void Sniper::Init()
 	}
 	if(!DX11ObjectManager::getInstance()->Textexture.Get(this->pTextureAlpha.first, this->pTextureAlpha.second)){ throw std::exception("Texture alpha not found"); }
 }
-
-
-float Sniper::GetOrder()
-{
-	return 100000.0f;
-}
-
 Sniper::Sniper()
 {
 	this->pColorMapSRV = NULL;

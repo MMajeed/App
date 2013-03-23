@@ -10,7 +10,6 @@ class PlyFile : public BasicObject
 public:	
 	PlyFile();
 	static PlyFile* Spawn(std::map<std::string, std::string> info);
-	virtual float GetOrder();
 };
 
 

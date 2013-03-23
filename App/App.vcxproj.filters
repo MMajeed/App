@@ -81,6 +81,9 @@
     <ClCompile Include="AnimationController.cpp">
       <Filter>Animation\AnimationController</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectInfo.cpp">
+      <Filter>Object Info</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -177,6 +180,9 @@
     <ClInclude Include="AnimationController.h">
       <Filter>Animation\AnimationController</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectInfo.h">
+      <Filter>Object Info</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -202,9 +208,6 @@
     </Filter>
     <Filter Include="Tools\Helper\PlyFile">
       <UniqueIdentifier>{6f790185-5944-457e-a17b-25c70b0935f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{c6230af0-f998-4319-8a83-78e76124ac86}</UniqueIdentifier>
     </Filter>
     <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile">
       <UniqueIdentifier>{8aeb324e-706f-4a8c-9194-ecee1fd332a8}</UniqueIdentifier>
@@ -292,6 +295,12 @@
     </Filter>
     <Filter Include="Animation\AnimationController">
       <UniqueIdentifier>{0e750b11-c7bf-44c0-9949-eb0184c4eb3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object Info">
+      <UniqueIdentifier>{9a170821-31cf-441d-8119-946ca74e0bc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{c6230af0-f998-4319-8a83-78e76124ac86}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

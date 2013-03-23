@@ -59,9 +59,23 @@ void Application::SetupDraw()
 }
 void Application::DrawObjects()
 {
-	for(std::size_t i = 0; i < this->objects.size(); ++i)
+	std::multimap<float, iObjectDrawable*, std::greater<float>> sortedObjects;
+
+	for(auto objectIter = this->objects.begin();
+		objectIter != this->objects.end();
+		++objectIter)
 	{
-		this->objects[i]->Draw();
+		if(objectIter->second.DrawNext)
+		{
+			sortedObjects.insert(std::pair<float, iObjectDrawable*>(objectIter->second.Sort, objectIter->second.ObjectDrawable));
+		}
+	}
+
+	for(auto iter = sortedObjects.begin();
+		iter != sortedObjects.end();
+		++iter)
+	{
+		iter->second->Draw();
 	}
 }
 void  Application::Present()
@@ -111,14 +125,18 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 						
 			//Sleep( 8 - timer._frameTime); // Used to lock the framerate. Turned off because I want to see how fast the program is going
 			
-			for(std::size_t i = 0; i < this->objects.size(); ++i)
+			for(auto iter = this->objects.begin();
+				iter != this->objects.end();
+				++iter)
 			{
-				objects[i]->UpdateDrawing(static_cast<float>(timer._frameTime));
+				iter->second.ObjectDrawable->UpdateDrawing(static_cast<float>(timer._frameTime));
 			}
 
-			for(std::size_t i = 0; i < this->objects.size(); ++i)
+			for(auto iter = this->objects.begin();
+				iter != this->objects.end();
+				++iter)
 			{
-				objects[i]->UpdateObject(static_cast<float>(timer._frameTime));
+				iter->second.ObjectDrawable->UpdateObject(static_cast<float>(timer._frameTime));
 			}
 			
 			this->SortObject();
@@ -258,92 +276,37 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 					return 0;
 				case 'Z': case 'z':
 					{
-						bool found = false;
-						for(auto objectIter = this->objects.begin();
-							objectIter != this->objects.end();
-							++objectIter)
-						{
-							if( dynamic_cast<Sniper*>(*objectIter) != 0)
-							{
-								found = true;
-								this->objects.erase(objectIter);
-								break;
-							}
-						}
-
-						if(found == false)
+						auto sniperIter = this->objects.find("Sniper");
+						if(sniperIter ==this->objects.end())
 						{
 							Sniper* sniper = new Sniper;
 							sniper->Init();
-							this->objects.push_back(sniper);
+							this->objects["Sniper"] = (sniper);
+						}
+						else
+						{
+							this->objects.erase(sniperIter);
 						}
 					}
 					return 0;
 				case '1':
 					{
-						for(auto objectIter = this->objects.begin();
-							objectIter != this->objects.end();
-							++objectIter)
-						{
-							if( dynamic_cast<FBXObject*>(*objectIter) != 0)
-							{
-								dynamic_cast<FBXObject*>(*objectIter)->PlayAnimation(0);
-							}
-						}
 					}
 					break;
 				case '2':
 					{
-						for(auto objectIter = this->objects.begin();
-							objectIter != this->objects.end();
-							++objectIter)
-						{
-							if( dynamic_cast<FBXObject*>(*objectIter) != 0)
-							{
-								dynamic_cast<FBXObject*>(*objectIter)->PlayAnimation(1);
-							}
-						}
 					}
 					break;
 				case '3':
 					{
-						for(auto objectIter = this->objects.begin();
-							objectIter != this->objects.end();
-							++objectIter)
-						{
-							if( dynamic_cast<FBXObject*>(*objectIter) != 0)
-							{
-								dynamic_cast<FBXObject*>(*objectIter)->PlayAnimation(2);
-							}
-						}
 					}
 					break;
 				case VK_SUBTRACT:
 					{
-						for(auto objectIter = this->objects.begin();
-							objectIter != this->objects.end();
-							++objectIter)
-						{
-							FBXObject* fbxObject = dynamic_cast<FBXObject*>(*objectIter);
-							if(fbxObject != 0)
-							{
-								fbxObject->SetAnimRate(fbxObject->GetAnimRate() - 0.1f);
-							}
-						}
 					}
 					break;
 				case VK_ADD:
 					{
-						for(auto objectIter = this->objects.begin();
-							objectIter != this->objects.end();
-							++objectIter)
-						{
-							FBXObject* fbxObject = dynamic_cast<FBXObject*>(*objectIter);
-							if(fbxObject != 0)
-							{
-								fbxObject->SetAnimRate(fbxObject->GetAnimRate() + 0.1f);
-							}
-						}
 					}
 					break;
 			}
@@ -373,11 +336,12 @@ void Application::CleanupDevices()
 {
 	DX11App::InitDevices();
 
-	while(this->objects.size() >= 0)
+	for(auto iter = this->objects.begin();
+		iter != this->objects.end();
+		++iter)
 	{
-		(*this->objects.begin())->Clean();
-		delete (*this->objects.begin());
-		this->objects.erase(this->objects.begin());		
+		iter->second.ObjectDrawable->Clean();
+		delete (iter->second.ObjectDrawable);	
 	}
 }
 void Application::LoadD3DStuff()
@@ -388,21 +352,13 @@ void Application::LoadD3DStuff()
 	if(!DX11ObjectManager::getInstance()->Sampler.Get(this->pSamplerAnisotropic.first, this->pSamplerAnisotropic.second)){ throw std::exception("Sampler Anisotropic not found"); }
 }
 void Application::SortObject()
-{	
-	struct SortFromCamera
+{
+	for(auto objectIter = this->objects.begin();
+		objectIter != this->objects.end();
+		++objectIter)
 	{
-		bool operator()(iObjectDrawable* v1, iObjectDrawable* v2)
-		{			
-			// Otherwise order them by how far away they are
-			float v1Distance = v1->GetOrder();
-			float v2Distance = v2->GetOrder();
-
-			return v1Distance > v2Distance;
-		}
-	};
-
-	std::sort(this->objects.begin(), this->objects.end(), SortFromCamera());
-
+		objectIter->second.Sort = objectIter->second.ObjectDrawable->GetOrder();
+	}
 }
 App* Application::getInstance()
 {

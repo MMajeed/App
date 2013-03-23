@@ -6,10 +6,10 @@
 #include <sstream>
 int main(int argc, char **argv)
 {
-	if(argc > 4)
+	if(argc <= 4)
 	{
 		std::cout << "Use Mesh [FileName] [FileOutput] " << std::endl
-				  << "OR Animation [FileName] [FileOutput] [T|F] [Start] [End]" << std::endl;
+				  << "OR Animation [FileName] [FileOutput] [Normal] [Start] [End]" << std::endl;
 				;
 		return 1;
 	}
@@ -26,12 +26,14 @@ int main(int argc, char **argv)
 	}
 	else if(type == "Animation")
 	{
-		bool normalize = false;
+		int normalize = -100;
 		int start = -1;
 		int end = -1;
-		if(argc <= 5)
+		if(argc >= 5)
 		{
-			normalize = argv[4] == "T" ? true : false;;
+			std::stringstream ss;
+			ss << argv[4];
+			ss >> normalize;
 		}
 		if(argc == 7)
 		{ 
@@ -44,7 +46,7 @@ int main(int argc, char **argv)
 			ss >> end;
 		}
 		FBXAnimationLoader animLoader;
-		animLoader.LoadAnimation(input);		
+		animLoader.LoadAnimation(input, normalize, start, end);		
 		animLoader.WriteToFile(output);
 	}
 }

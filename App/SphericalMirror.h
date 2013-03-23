@@ -16,8 +16,6 @@ public:
 
 	virtual void SetupTexture();
 
-	virtual float GetOrder();
-
 	ID3D11DepthStencilView*		pDynamicCubeMapDSV;
 	ID3D11RenderTargetView*		pDynamicCubeMapRTV[6];
 	ID3D11ShaderResourceView*	pDynamicCubeMapSRV;

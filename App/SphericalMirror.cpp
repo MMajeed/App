@@ -114,18 +114,18 @@ void SphericalMirror::UpdateDrawing(float delta)
 	this->Timer = 0.0f; // Reset the timer
 	
 
-	// Remove this object from the list that we don't want to see	
-	std::size_t counter = 0;
-	std::vector<iObjectDrawable*> removed;
-	std::vector<iObjectDrawable*>& applciationList = ((Application*)App::getInstance())->objects;
-	for(counter = 0; counter < applciationList.size(); ++counter)
+	// Remove this object from the list that we don't want to see
+	std::vector<std::string> removed;
+	std::map<std::string, ObjectInfo>& applciationList = ((Application*)App::getInstance())->objects;
+	for(auto iter = applciationList.begin();
+		iter != applciationList.end();
+		++iter)
 	{
-		if( dynamic_cast<SphericalMirror*>(applciationList[counter]) != 0
-			|| dynamic_cast<Sniper*>(applciationList[counter]) != 0)
+		if( dynamic_cast<SphericalMirror*>(iter->second.ObjectDrawable) != 0
+			|| dynamic_cast<Sniper*>(iter->second.ObjectDrawable) != 0)
 		{
-			removed.push_back(applciationList[counter]);
-			applciationList.erase(applciationList.begin() + counter);
-			--counter;
+			removed.push_back(iter->first);
+			iter->second.DrawNext = false;
 		}
 	}
 
@@ -137,7 +137,7 @@ void SphericalMirror::UpdateDrawing(float delta)
 		removedIter != removed.end();
 		++removedIter)
 	{
-		applciationList.push_back(*removedIter);
+		applciationList[*removedIter].DrawNext = true;
 	}
 }
 
@@ -149,11 +149,6 @@ void SphericalMirror::SetupTexture()
 	{
 		pImmediateContext->PSSetShaderResources( 0, 1, &pDynamicCubeMapSRV );
 	}
-}
-
-float SphericalMirror::GetOrder()
-{
-	return 10000.0f;
 }
 
 void SphericalMirror::Init()

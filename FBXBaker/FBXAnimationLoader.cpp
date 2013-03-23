@@ -59,7 +59,35 @@ void FBXAnimationLoader::WriteToFile(std::string path)
 	outfile.write(&binaryAnimation.front(), binaryAnimation.size());
 }
 
-SkeletalAnimation FBXAnimationLoader::LoadAnimation(std::string path)
+XMFLOAT3 GetRotationEuler(cFBXBuffer::JointPose pos)
+{
+    XMFLOAT3 euler;
+
+	float t = (pos.rotation.x * pos.rotation.y) + (pos.rotation.z * pos.rotation.w);
+
+    euler.x = asin(2*pos.rotation.x*pos.rotation.y + 2*pos.rotation.z*pos.rotation.w);
+
+    if(t >= 0.499999 && t <= 0.500001)
+    {
+        euler.y = 2 * atan2(pos.rotation.x, pos.rotation.w);
+        euler.z = 0.0f;
+    }
+    else if(t <= -0.499999 && t >= -0.500001)
+    {
+		euler.y = -2 * atan2(pos.rotation.x, pos.rotation.w);
+        euler.z = 0.0f;
+    }
+    else
+    {
+        euler.y = atan2(2*pos.rotation.y*pos.rotation.w - 2*pos.rotation.x*pos.rotation.z, 1 - 2*pos.rotation.y*pos.rotation.y - 2*pos.rotation.z*pos.rotation.z);
+        euler.z = atan2(2*pos.rotation.x*pos.rotation.w - 2*pos.rotation.y*pos.rotation.z, 1 - 2*pos.rotation.x*pos.rotation.x - 2*pos.rotation.z*pos.rotation.z);
+    }
+
+    return(euler);
+}
+
+
+SkeletalAnimation FBXAnimationLoader::LoadAnimation(std::string path, int orig, int start, int end)
 {
 	// Create the io settings object.
     FbxIOSettings *ios = FbxIOSettings::Create(g_FbxSdkManager, IOSROOT);
@@ -93,6 +121,69 @@ SkeletalAnimation FBXAnimationLoader::LoadAnimation(std::string path)
             for(int i = 0; i < lImporter->GetAnimStackCount(); ++i)
             {
                 LoadAnimationTake(lImporter->GetTakeInfo(i), lScene);
+            }
+
+			if(start > 0 && end > 0)
+			{
+				
+				float duration = pAnim.mKeys.at(start).mTime;
+
+				for(int i = start; i <= end; ++i)
+				{
+					pAnim.mKeys.at(i).mTime = pAnim.mKeys.at(i).mTime - duration;
+				}
+
+				pAnim.mDuration = pAnim.mKeys.at(end).mTime;
+
+				pAnim.mKeys.erase(pAnim.mKeys.begin() + (end + 1), pAnim.mKeys.end());
+				pAnim.mKeys.erase(pAnim.mKeys.begin(), pAnim.mKeys.begin() + (start));
+			}
+
+			if(orig >= 0 )
+            {
+                XMFLOAT3 zeroPos(0.0f, 0.0f, 0.0f);
+                XMFLOAT4 zeroRot;
+                XMStoreFloat4(&zeroRot, XMQuaternionRotationRollPitchYaw(0.0f, 0.0f, 0.0f));
+                        
+                auto o = pAnim.mKeys[0].mBones[1];
+                o.translation.y = 0.0f;
+
+                XMFLOAT3 euler = GetRotationEuler(o);
+                euler.x = 0.0f;
+                euler.z = 0.0f;
+                XMStoreFloat4(&o.rotation, XMQuaternionRotationRollPitchYaw(euler.x, euler.y, euler.z));
+
+                XMMATRIX newOrigin = o.GetTransform();
+                XMVECTOR det;
+                XMMATRIX invOrigin = XMMatrixInverse(&det, newOrigin);
+
+				for(int k = 0; k < pAnim.mKeys.size(); ++k)
+                {
+                    for(int b = 0; b < numBones; ++b)
+                    {
+                        if(b < orig)
+                        {
+                            pAnim.mKeys[k].mBones[b].rotation = zeroRot;
+                            pAnim.mKeys[k].mBones[b].translation = zeroPos;
+                        }
+                        else if(b == orig)
+                        {
+                            XMMATRIX m = pAnim.mKeys[k].mBones[b].GetTransform();
+
+                            m = m * invOrigin;
+
+                            XMVECTOR scale;
+                            XMVECTOR rotQuat;
+                            XMVECTOR trans;
+                            if(XMMatrixDecompose(&scale, &rotQuat, &trans, m))
+                            {
+                                XMStoreFloat3(&pAnim.mKeys[k].mBones[b].translation, trans);
+                                XMStoreFloat4(&pAnim.mKeys[k].mBones[b].rotation, rotQuat);
+                                XMStoreFloat3(&pAnim.mKeys[k].mBones[b].scale, scale);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -143,7 +143,3 @@ PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 
 	return newPlyFile;
 }
-float PlyFile::GetOrder()
-{
-	return 1000.0f;
-}

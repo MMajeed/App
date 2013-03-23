@@ -81,9 +81,9 @@
     <ID>FBXObject</ID>
     <Class>FBXFile</Class>
     <Mesh>../Resources/DefaultCharacter/DefaultAvatar.BakedFBX</Mesh>
-    <Animation1>../Resources/DefaultCharacter/DefaultAvatar_Idle_Neutral.Bakedfbx</Animation1>
-    <Animation2>../Resources/DefaultCharacter/DefaultAvatar_WalkForward_NtrlFaceFwd.Bakedfbx</Animation2>
-    <Animation3>../Resources/DefaultCharacter/DefaultAvatar_RunForward_NtrlFaceFwd.Bakedfbx</Animation3>    
+    <Animation1>../Resources/DefaultCharacter/Idles.Bakedfbx</Animation1>
+    <Animation2>../Resources/DefaultCharacter/WalkFWD_S25E55.Bakedfbx</Animation2>
+    <Animation3>../Resources/DefaultCharacter/RunForward_Loop_S223E239.Bakedfbx</Animation3>    
     <ShaderVertex FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>

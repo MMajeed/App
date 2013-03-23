@@ -9,13 +9,13 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 {
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(hPrevInstance);
-	#if defined(_DEBUG)
-		int dbgFlags = _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG );
-		dbgFlags |= _CRTDBG_CHECK_ALWAYS_DF;	// check block integrity on every memory call
-		/**	_CRTDBG_DELAY_FREE_MEM_DF will degrade the framerate over time (and kill it in the short term as well). */
-		dbgFlags |= _CRTDBG_LEAK_CHECK_DF;		// check for memory leak at process termination
-		_CrtSetDbgFlag( dbgFlags );
-	#endif
+	//#if defined(_DEBUG)
+	//	int dbgFlags = _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG );
+	//	dbgFlags |= _CRTDBG_CHECK_ALWAYS_DF;	// check block integrity on every memory call
+	//	/**	_CRTDBG_DELAY_FREE_MEM_DF will degrade the framerate over time (and kill it in the short term as well). */
+	//	dbgFlags |= _CRTDBG_LEAK_CHECK_DF;		// check for memory leak at process termination
+	//	_CrtSetDbgFlag( dbgFlags );
+	//#endif
 
 	try
 	{

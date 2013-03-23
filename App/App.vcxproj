@@ -162,6 +162,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="MeshAnimationManager.cpp" />
+    <ClCompile Include="ObjectInfo.cpp" />
     <ClCompile Include="Prespective.cpp" />
     <ClCompile Include="SphericalMirror.cpp" />
     <ClCompile Include="Helper.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="MeshAnimationManager.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ObjectInfo.h" />
     <ClInclude Include="Prespective.h" />
     <ClInclude Include="ShaderFiles.h" />
     <ClInclude Include="SkeletalAnimation.h" />

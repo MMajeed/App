@@ -131,10 +131,6 @@ void BasicObject::LoadD3DStuff()
 		if(!DX11ObjectManager::getInstance()->Textexture.Get(this->pCubeMap.first, this->pCubeMap.second)){ throw std::exception("Cube Map not found"); }	
 	}
 }
-float BasicObject::GetOrder()
-{
-	return 1000.0f;
-}
 
 void BasicObject::InitVertexBuffer(ID3D11Device* device)
 {
