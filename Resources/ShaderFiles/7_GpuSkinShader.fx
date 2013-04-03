@@ -58,7 +58,7 @@ VS_OUTPUT VS( VS_INPUT input )
 	uint JoinIndexArray[4] = { input.JointIndx.x, input.JointIndx.y, input.JointIndx.z, input.JointIndx.w } ;
 	float JointWghtArray[4] = { input.JointWght.x, input.JointWght.y, input.JointWght.z, input.JointWght.w } ;
 	
-	// Set pos MVP	
+	
 	float4 VertexPosSkined = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	for(int i = 0; i < 4; ++i)
 	{
@@ -69,12 +69,12 @@ VS_OUTPUT VS( VS_INPUT input )
 	}
 	output.PosMVP = VertexPosSkined;
 	output.PosMVP = mul( output.PosMVP, World );
+	// Set pos World
+	output.PosWorld = output.PosMVP;
+	// Set pos MVP	
 	output.PosMVP = mul( output.PosMVP, View );
 	output.PosMVP = mul( output.PosMVP, Projection );
-
-	// Set pos World
-	output.PosWorld = mul( input.Pos, World);
-
+	
 	// Set Normal
 	float4 VertexNormalSkined = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	for(int i = 0; i < 4; ++i)
