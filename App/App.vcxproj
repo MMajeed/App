@@ -167,6 +167,7 @@
     <ClCompile Include="MeshAnimationManager.cpp" />
     <ClCompile Include="ObjectInfo.cpp" />
     <ClCompile Include="Prespective.cpp" />
+    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="SphericalMirror.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="IPhysics.h" />
     <ClInclude Include="Prespective.h" />
     <ClInclude Include="ShaderFiles.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="SkeletalAnimation.h" />
     <ClInclude Include="SphericalMirror.h" />
     <ClInclude Include="Helper.h" />
@@ -230,6 +232,7 @@
     <None Include="..\Resources\ShaderFiles\6_Binoculars.fx" />
     <None Include="..\Resources\ShaderFiles\7_GpuSkinShader.fx" />
     <None Include="..\Resources\ShaderFiles\HLSL_4_BasicLightFunctions.fx" />
+    <None Include="..\Resources\ShaderFiles\Setup.fx" />
     <None Include="Commands.xml">
       <SubType>Designer</SubType>
     </None>

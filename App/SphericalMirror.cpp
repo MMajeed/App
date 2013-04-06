@@ -147,7 +147,7 @@ void SphericalMirror::SetupTexture()
 	
 	if(this->pDynamicCubeMapSRV != 0)
 	{
-		pImmediateContext->PSSetShaderResources( 0, 1, &pDynamicCubeMapSRV );
+		pImmediateContext->PSSetShaderResources( 5, 1, &pDynamicCubeMapSRV );
 	}
 }
 

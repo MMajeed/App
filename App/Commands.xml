@@ -4,27 +4,17 @@
     <ID>Floor</ID>
     <Class>PlyFile</Class>
     <PlyFile>../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
-    <ShaderInput  FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <ShaderInput  FileName="../Resources/ShaderFiles/3_TexturingAndLighting_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderVertex FileName="../Resources/ShaderFiles/3_TexturingAndLighting_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
+    <ShaderPixel  FileName="../Resources/ShaderFiles/3_TexturingAndLighting_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="20.0f" Y="20.0f" Z="20.0f"/>
     <XYZLocation X="0.0f" Y="0.0f" Z="1.57"/>
     <XYZRotation X="0.0f" Y="3.14f" Z="3.14f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <Texture0>../Resources/Texture/Tiles.png</Texture0>
-  </Object>
-  <Object>
-    <ID>Ball</ID>
-    <Class>PlyFile</Class>
-    <PlyFile>../Resources/PlyFiles/Sphere_Smooth_3.ply</PlyFile>
-    <ShaderInput  FileName="../Resources/ShaderFiles/1_LightingOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="../Resources/ShaderFiles/1_LightingOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="../Resources/ShaderFiles/1_LightingOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="0.0f" Y="5.0f" Z="0.0f"/>
-    <XYZDiffuse  X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZAmbent   X="0.5f" Y="0.5f" Z="0.5f"/>
-    <XYZSpec     X="0.06f" Y="0.04f" Z="0.02f"/>
+    <XYZDiffuse  X="0.01f" Y="0.01f" Z="0.01f"/>
+    <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+    <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
   </Object>
   <Object>
     <ID>TransparentPly</ID>
@@ -90,9 +80,9 @@
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
     <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZDiffuse  X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZAmbent   X="0.8f" Y="0.8f" Z="0.8f"/>
-    <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    <XYZDiffuse  X="0.4f" Y="0.4f" Z="0.4f"/>
+    <XYZAmbent   X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZSpec     X="0.0f" Y="0.0f" Z="0.0f"/>
   </Object>
   <Object>
     <ID>FBXObject2</ID>
@@ -107,17 +97,20 @@
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
     <XYZLocation X="1.0f" Y="0.0f" Z="0.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZDiffuse  X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZAmbent   X="0.8f" Y="0.8f" Z="0.8f"/>
-    <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    <XYZDiffuse  X="0.4f" Y="0.4f" Z="0.4f"/>
+    <XYZAmbent   X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZSpec     X="0.0f" Y="0.0f" Z="0.0f"/>
   </Object>
-  
   <Light>
-    <Type>Parallel</Type>
-    <XYZDiffuse         X="0.005f" Y="0.005f" Z="0.005f"/>
-    <XYZAmbient         X="0.26f" Y="0.24f" Z="0.22f"/>
+    <Type>Spot</Type>--><!--None, Parrallel, Point, Spot-->
+    <XYZDiffuse         X="0.8f" Y="0.8f" Z="0.8f"/>
+    <XYZAmbient         X="0.4f" Y="0.4f" Z="0.4f"/>
     <XYZSpec            X="0.01f" Y="0.01f" Z="0.01f"/>
-    <XYZDir             X="0.0f" Y="-200.0f" Z="0.0f"/>
+    <XYZPos             X="0.0f" Y="50.0f" Z="0.0f"/>
+    <XYZDir             X="0.0f" Y="-1.0f" Z="0.0f"/>
+    <XYZAttenuation     X="0.00015f" Y="0.00015f" Z="0.00015f"/>
+    <Power>15.0f</Power>
+    <Range>55.0f</Range>
   </Light>
 </Objects>
 <!--

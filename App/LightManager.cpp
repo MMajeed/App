@@ -38,6 +38,6 @@ cBuffer::CLightDesc LightManager::GetLightBuffer(std::size_t index)
 	returnObject.lightPowerRangeType.x = lightObject.power;
 	returnObject.lightPowerRangeType.y = lightObject.range;
 	returnObject.lightPowerRangeType.z = static_cast<float>(lightObject.type);
-
+	returnObject.lightPowerRangeType.w = 0.0f;
 	return returnObject;
 }

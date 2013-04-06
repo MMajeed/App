@@ -91,7 +91,7 @@ void BasicObject::SetupTexture()
 
 	if(this->pCubeMap.first != "")
 	{
-		pImmediateContext->PSSetShaderResources( counter, 1, &this->pCubeMap.second );	
+		pImmediateContext->PSSetShaderResources( 5, 1, &this->pCubeMap.second );	
 	}
 }
 void BasicObject::DrawObject()
@@ -105,9 +105,11 @@ void BasicObject::CleanupAfterDraw()
 	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	
 	ID3D11ShaderResourceView* tab = NULL;
-	pImmediateContext->PSSetShaderResources(0,1,&tab);
-	pImmediateContext->PSSetShaderResources(1,1,&tab);
-	pImmediateContext->PSSetShaderResources(2,1,&tab);
+
+	for(int i = 0; i < 15; ++i)
+	{
+		pImmediateContext->PSSetShaderResources(i,1,&tab);
+	}
 }
 void BasicObject::LoadD3DStuff()
 {

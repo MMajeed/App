@@ -1,33 +1,4 @@
-#include "HLSL_4_BasicLightFunctions.fx"
-
-
-//--------------------------------------------------------------------------------------
-// Constant Buffer Variables
-//--------------------------------------------------------------------------------------
-cbuffer cbNeverChanges : register( b0 )
-{
-    matrix View;
-	float4 eye;
-	float4 target;
-	LightDesc light[10];		// Light type now in light description
-};
-
-cbuffer cbChangeOnResize : register( b1 )
-{
-    matrix Projection;
-};
-
-cbuffer cbChangesEveryFrame : register( b2 )
-{
-    matrix World;
-	MaterialInfo objectMaterial;
-};
-
-cbuffer AnimMatrices : register( b3 )
-{
-	matrix BoneTransforms[128];
-};
-
+#include "Setup.fx"
 
 //--------------------------------------------------------------------------------------
 struct VS_OUTPUT

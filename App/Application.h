@@ -23,6 +23,7 @@ public:
 	virtual void Render();
 	virtual void ClearScreen();
 	virtual void SetupDraw();
+	virtual void SetupShadow();
 	virtual void DrawObjects();
 	virtual void Present();
 

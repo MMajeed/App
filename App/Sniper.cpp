@@ -8,14 +8,12 @@ void Sniper::GetNewDynamicTexture()
 	auto d3dStuff = DX11App::getInstance()->direct3d;
 
 	ID3D11RenderTargetView* renderTargets[1] = {this->pColorMapRTV};
-	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, this->pDepthMapDSV);
+	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
 
-	d3dStuff.pImmediateContext->RSSetViewports(1, &(this->pViewport));
-	
 	float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	d3dStuff.pImmediateContext->ClearRenderTargetView(this->pColorMapRTV, black);
 
-	d3dStuff.pImmediateContext->ClearDepthStencilView(this->pDepthMapDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	d3dStuff.pImmediateContext->ClearDepthStencilView(d3dStuff.pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	Application::getInstance()->DrawObjects();
 
@@ -77,59 +75,6 @@ void Sniper::SetupTexture()
 	pImmediateContext->PSSetShaderResources( 1, 1, &(this->pTextureAlpha.second) );
 }
 
-void Sniper::BuilDepthMap()
-{
-	auto d3dStuff = DX11App::getInstance()->direct3d;
-
-	ID3D11Texture2D* depthMap = 0;
-	D3D11_TEXTURE2D_DESC texDesc;
-
-	texDesc.Width = App::getInstance()->window.width;
-	texDesc.Height = App::getInstance()->window.height;
-	texDesc.MipLevels = 1;
-	texDesc.ArraySize = 1;
-	texDesc.Format = DXGI_FORMAT_R32_TYPELESS;
-	texDesc.SampleDesc.Count = 1;
-	texDesc.SampleDesc.Quality = 0;
-	texDesc.Usage = D3D11_USAGE_DEFAULT;
-	texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
-
-	texDesc.CPUAccessFlags = 0;
-	texDesc.MiscFlags = 0;
-
-	HRESULT hr = d3dStuff.pd3dDevice->CreateTexture2D(&texDesc, 0, &depthMap);
-	if(hr)
-	{
-		throw std::exception("Failed at creating the texture 2d for the Sniper");
-	}
-
-	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
-
-	ZeroMemory(&dsvDesc, sizeof(dsvDesc));
-    dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
-    dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-    dsvDesc.Texture2D.MipSlice = 0;
-	hr = d3dStuff.pd3dDevice->CreateDepthStencilView(depthMap,&dsvDesc, &(this->pDepthMapDSV));
-	if(hr)
-	{
-		throw std::exception("Failed at creating the Depth Stencil for sniper");
-	}
-
-    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-    srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
-    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-    srvDesc.Texture2D.MipLevels = texDesc.MipLevels;
-    srvDesc.Texture2D.MostDetailedMip = 0;
-	hr = d3dStuff.pd3dDevice->CreateShaderResourceView(depthMap, &srvDesc, &(this->pDepthMapSRV));
-	if(hr)
-	{
-		throw std::exception("Failed at creating a shader resource view for sniper");
-	}
-
-    // View saves a reference to the texture so we can
-    // release our reference.
-	depthMap->Release();
-}
 void Sniper::BuildColorMap()
 {
 	auto d3dStuff = DX11App::getInstance()->direct3d;
@@ -185,15 +130,7 @@ void Sniper::Init()
 {
 	BasicObject::Init();
 	
-	this->BuilDepthMap();
 	this->BuildColorMap();
-
-	this->pViewport.TopLeftX = 0.0f;
-    this->pViewport.TopLeftY = 0.0f;
-    this->pViewport.Width    = static_cast<float>(App::getInstance()->window.width);
-	this->pViewport.Height   = static_cast<float>(App::getInstance()->window.height);
-    this->pViewport.MinDepth = 0.0f;
-    this->pViewport.MaxDepth = 1.0f;
 
 	auto d3dStuff = DX11App::getInstance()->direct3d;
 
@@ -212,8 +149,6 @@ Sniper::Sniper()
 {
 	this->pColorMapSRV = NULL;
 	this->pColorMapRTV = NULL;
-	this->pDepthMapSRV = NULL;
-	this->pDepthMapDSV = NULL;
 
 	this->pTextureAlpha.first		 = "../Resources/Texture/Sniper2.png";
 	this->pVertexBuffer.first        = "../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply";

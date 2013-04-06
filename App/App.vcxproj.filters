@@ -93,6 +93,9 @@
     <ClCompile Include="HavokPhysics.cpp">
       <Filter>Physics\PhysicsManager\HavokPhysics</Filter>
     </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>DX11ObjectDrawable\Shadow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="HavokPhysics.h">
       <Filter>Physics\PhysicsManager\HavokPhysics</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>DX11ObjectDrawable\Shadow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +338,9 @@
     <Filter Include="Physics\PhysicsManager\HavokPhysics">
       <UniqueIdentifier>{1faeabc3-9435-4c2a-97e1-9e026a307618}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DX11ObjectDrawable\Shadow">
+      <UniqueIdentifier>{73c2b094-593c-4647-9ddd-3af81b292dcc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Commands.xml" />
@@ -360,6 +369,9 @@
       <Filter>Shader</Filter>
     </None>
     <None Include="..\Resources\ShaderFiles\HLSL_4_BasicLightFunctions.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\Resources\ShaderFiles\Setup.fx">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

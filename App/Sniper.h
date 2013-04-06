@@ -16,16 +16,10 @@ public:
 
 	virtual void SetupTexture();
 
-	virtual void BuilDepthMap();
 	virtual void BuildColorMap();
 
 	ID3D11ShaderResourceView*	pColorMapSRV;
 	ID3D11RenderTargetView*		pColorMapRTV;
-	
-	ID3D11ShaderResourceView*	pDepthMapSRV;
-	ID3D11DepthStencilView*		pDepthMapDSV;
-
-	D3D11_VIEWPORT				pViewport;
 
 	virtual iObjectDrawable* clone() const;
 	

@@ -1,30 +1,4 @@
-#include "HLSL_4_BasicLightFunctions.fx"
-
-//--------------------------------------------------------------------------------------
-// Constant Buffer Variables
-//--------------------------------------------------------------------------------------
-cbuffer cbNeverChanges : register( b0 )
-{
-    matrix mView;
-	float4 eye;
-	float4 target;
-	LightDesc light[10];		// Light type now in light description
-};
-
-cbuffer cbChangeOnResize : register( b1 )
-{
-    matrix mProjection;
-};
-
-cbuffer cbChangesEveryFrame : register( b2 )
-{
-    matrix mWorld;
-	MaterialInfo objectMaterial;
-};
-//************************************************/
-
-SamplerState samLinear : register( s0 );
-SamplerState samAnisotropic : register( s1 );
+#include "Setup.fx"
 
 struct VS_INPUT
 {
@@ -52,16 +26,16 @@ PS_INPUT VS( VS_INPUT input )
 	PS_INPUT output = (PS_INPUT)0;
 
 	// Combine the matrices first...
-	matrix matFinalMVP = mul( mWorld, mView );
-	matFinalMVP = mul( matFinalMVP, mProjection );
+	matrix matFinalMVP = mul( World, View );
+	matFinalMVP = mul( matFinalMVP, Projection );
 
 	output.VertexPosMVP = input.VertexPos;
 	// To place the vertex in the correct location on screen:
 	output.VertexPosMVP = mul( input.VertexPos, matFinalMVP );
 
 	// Passed to the pixel shader for correct lighting:
-	output.VertexPosWorld = mul( input.VertexPos, mWorld );
-	output.VertexNormalWorld = mul( input.VertexNorm, mWorld );;
+	output.VertexPosWorld = mul( input.VertexPos, World );
+	output.VertexNormalWorld = mul( input.VertexNorm, World );;
 
     return output;
 }

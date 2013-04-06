@@ -13,12 +13,14 @@
 #include <iomanip>
 #include "SphericalMirror.h"
 #include "HavokPhysics.h"
+#include "Shadow.h"
 
 void Application::Render()
 {
 	this->ClearScreen();
 	this->SetupDraw();
 	this->DrawObjects();
+	this->SetupShadow();
 	this->Present();	
 }
 void Application::ClearScreen()
@@ -57,6 +59,10 @@ void Application::SetupDraw()
 	pImmediateContext->VSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
 	pImmediateContext->PSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
 
+}
+void Application::SetupShadow()
+{
+	Shadow::CreateShadow();
 }
 void Application::DrawObjects()
 {
@@ -374,6 +380,14 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 								fbx->SetAnimRate(fbx->GetAnimRate() + 0.05f);
 							}
 						}
+					}
+					break;
+				case VK_F1:
+					{
+						ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
+
+						this->objects = ObjectLoader::getInstance()->SpawnAll();
+						this->lightManager = ObjectLoader::getInstance()->SetupLight();
 					}
 					break;
 			}

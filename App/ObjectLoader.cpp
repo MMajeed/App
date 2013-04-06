@@ -11,6 +11,9 @@ ObjectLoader* ObjectLoader::ObjectManager = 0;
 
 void ObjectLoader::LoadXMLFile(std::string loc)
 {
+	this->objects.clear();
+	this->Lights.clear();
+
 	tinyxml2::XMLDocument document;
 	document.LoadFile(loc.c_str());
 	if(document.Error() == true)
