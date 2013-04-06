@@ -7,7 +7,7 @@
 
 void SphericalMirror::GetNewDynamicTexture()
 {
-	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
+	auto d3dStuff = DX11App::getInstance()->direct3d;
 
 	// This call needs to be called six times, for each direction of the camera.
 	// You set the back buffer to be the particular direction in the cube map
@@ -27,13 +27,13 @@ void SphericalMirror::GetNewDynamicTexture()
 	
 	Camera oldCamera = App::getInstance()->camera;
 	
-	Prespective oldProjection = ((Application*)App::getInstance())->Projection;
+	Prespective oldProjection = Application::getInstance()->Projection;
 
 	Prespective newProjection;
 	newProjection.SetFovAngle(0.5f*XM_PI);
 	newProjection.SetHeight(static_cast<float>(this->CubeMapSize));
 	newProjection.SetWidth(static_cast<float>(this->CubeMapSize));
-	((Application*)App::getInstance())->Projection = newProjection;	
+	Application::getInstance()->Projection = newProjection;	
 
 	ID3D11RenderTargetView* renderTargets[1];
 	// Generate the cube map.
@@ -83,9 +83,9 @@ void SphericalMirror::GetNewDynamicTexture()
 		}
 
 		App::getInstance()->camera = newCamera;
-		((Application*)App::getInstance())->SetupDraw();
-		((Application*)App::getInstance())->SortObject();
-		((Application*)App::getInstance())->DrawObjects();
+		Application::getInstance()->SetupDraw();
+		Application::getInstance()->SortObject();
+		Application::getInstance()->DrawObjects();
 	}
 
 	// Generate the mip maps for the cube...
@@ -97,7 +97,7 @@ void SphericalMirror::GetNewDynamicTexture()
 	renderTargets[0] = d3dStuff.pRenderTargetView;
 	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
 
-	((Application*)App::getInstance())->Projection = oldProjection;	
+	Application::getInstance()->Projection = oldProjection;	
 	App::getInstance()->camera = oldCamera;
 
 }
@@ -116,7 +116,7 @@ void SphericalMirror::UpdateDrawing(float delta)
 
 	// Remove this object from the list that we don't want to see
 	std::vector<std::string> removed;
-	std::map<std::string, ObjectInfo>& applciationList = ((Application*)App::getInstance())->objects;
+	std::map<std::string, ObjectInfo>& applciationList = Application::getInstance()->objects;
 	for(auto iter = applciationList.begin();
 		iter != applciationList.end();
 		++iter)
@@ -143,7 +143,7 @@ void SphericalMirror::UpdateDrawing(float delta)
 
 void SphericalMirror::SetupTexture()
 {
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	
 	if(this->pDynamicCubeMapSRV != 0)
 	{
@@ -155,7 +155,7 @@ void SphericalMirror::Init()
 {
 	BasicObject::Init();
 
-	ID3D11Device* pDevice = ((DX11App*)App::getInstance())->direct3d.pd3dDevice;
+	ID3D11Device* pDevice = DX11App::getInstance()->direct3d.pd3dDevice;
 
 	// Cubemap is a special texture array with 6 elements.
 	D3D11_TEXTURE2D_DESC texDesc;
@@ -303,6 +303,11 @@ SphericalMirror::SphericalMirror()
 
 	pDynamicCubeMapSRV = NULL;
 	pDynamicCubeMapDSV = NULL;
+}
+
+iObjectDrawable* SphericalMirror::clone() const
+{
+	return new SphericalMirror(*this);
 }
 
 SphericalMirror* SphericalMirror::Spawn(std::map<std::string, std::string> info)

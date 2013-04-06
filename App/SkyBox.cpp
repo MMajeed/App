@@ -127,3 +127,8 @@ SkyBox* SkyBox::Spawn(std::map<std::string, std::string> info)
 
 	return newSkyBox;
 }
+
+iObjectDrawable* SkyBox::clone() const
+{
+	return new SkyBox(*this);
+}

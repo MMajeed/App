@@ -12,7 +12,7 @@ public:
 	virtual void InitDevices();
 	virtual void CleanupDevices();
 	virtual void Run( HINSTANCE hInstance, int nCmdShow );
-	static App* getInstance();
+	static DX11App* getInstance();
 	virtual ~DX11App();
 	virtual LRESULT CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 	void Render();

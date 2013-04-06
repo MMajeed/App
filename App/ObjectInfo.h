@@ -11,7 +11,9 @@ public:
 	float Sort;
 
 	ObjectInfo();
-	ObjectInfo(iObjectDrawable* object);
+	ObjectInfo(const ObjectInfo& obj);
+	ObjectInfo& operator=(const ObjectInfo& obj);
+	~ObjectInfo();
 };
 
 

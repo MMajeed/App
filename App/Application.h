@@ -15,7 +15,7 @@ class Application : public DX11App
 public:
 	virtual void InitDevices();
 	virtual void CleanupDevices();
-	static App* getInstance();
+	static Application* getInstance();
 	virtual LRESULT CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );	
 	virtual ~Application();
 	virtual void Run( HINSTANCE hInstance, int nCmdShow );

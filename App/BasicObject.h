@@ -45,6 +45,8 @@ public:
 
 	void LoadD3DStuff();
 	
+	virtual iObjectDrawable* clone() const;
+
 	BasicObject();
 };
 

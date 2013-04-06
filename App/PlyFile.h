@@ -9,6 +9,9 @@ class PlyFile : public BasicObject
 {
 public:	
 	PlyFile();
+
+	virtual iObjectDrawable* clone() const;
+
 	static PlyFile* Spawn(std::map<std::string, std::string> info);
 };
 

@@ -26,6 +26,8 @@ public:
 	float UpdateEvery;
 	float Timer;
 
+	virtual iObjectDrawable* clone() const;
+
 	static SphericalMirror* Spawn(std::map<std::string, std::string> info);
 };
 

@@ -107,7 +107,7 @@ void ObjectLoader::LoadXMLFile(std::string loc)
 	}	
 }
 
-bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object)
+bool ObjectLoader::Spawn(std::string name, ObjectInfo& object)
 {
 	auto objectIter = this->objects.find(name);
 
@@ -118,30 +118,30 @@ bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object)
 
 	if(objectIter->second["Class"] == "PlyFile")
 	{
-		object = PlyFile::Spawn(objectIter->second);
+		object.ObjectDrawable = PlyFile::Spawn(objectIter->second);
 	}
 	else if(objectIter->second["Class"] == "SkyBox")
 	{
-		object = SkyBox::Spawn(objectIter->second);
+		object.ObjectDrawable = SkyBox::Spawn(objectIter->second);
 	}
 	else if(objectIter->second["Class"] == "TransparentPly")
 	{
-		object = Transparent::Spawn(objectIter->second);
+		object.ObjectDrawable = Transparent::Spawn(objectIter->second);
 	}
 	else if(objectIter->second["Class"] == "SphericalMirror")
 	{
-		object = SphericalMirror::Spawn(objectIter->second);
+		object.ObjectDrawable = SphericalMirror::Spawn(objectIter->second);
 	}
 	else if(objectIter->second["Class"] == "FBXFile")
 	{
-		object = FBXObject::Spawn(objectIter->second);
+		object.ObjectDrawable = FBXObject::Spawn(objectIter->second);
 	}
 	else 
 	{
 		return false;
 	}
 
-	object->Init();
+	object.ObjectDrawable->Init();
 	return true;
 }
 
@@ -153,9 +153,8 @@ std::map<std::string, ObjectInfo> ObjectLoader::SpawnAll()
 		objectIter != this->objects.end();
 		++objectIter)
 	{
-		iObjectDrawable* newObject;
+		ObjectInfo& newObject = all[objectIter->first];
 		this->Spawn(objectIter->first, newObject);
-		all[objectIter->first] = newObject;
 	}
 	return all;
 }

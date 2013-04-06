@@ -61,6 +61,8 @@ public:
 
 	static FBXObject* Spawn(std::map<std::string, std::string> info);
 
+	virtual iObjectDrawable* clone() const;
+
     FBXObject();
     virtual ~FBXObject();
 };

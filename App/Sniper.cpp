@@ -5,7 +5,7 @@
 
 void Sniper::GetNewDynamicTexture()
 {
-	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
+	auto d3dStuff = DX11App::getInstance()->direct3d;
 
 	ID3D11RenderTargetView* renderTargets[1] = {this->pColorMapRTV};
 	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, this->pDepthMapDSV);
@@ -17,7 +17,7 @@ void Sniper::GetNewDynamicTexture()
 
 	d3dStuff.pImmediateContext->ClearDepthStencilView(this->pDepthMapDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	((Application*)App::getInstance())->DrawObjects();
+	Application::getInstance()->DrawObjects();
 
 	d3dStuff.pImmediateContext->GenerateMips(pColorMapSRV);
 
@@ -29,7 +29,7 @@ void Sniper::UpdateDrawing(float delta)
 
 	// Remove this object from the list that we don't want to see	
 	std::vector<std::string> removed;
-	std::map<std::string, ObjectInfo>& applciationList = ((Application*)App::getInstance())->objects;
+	std::map<std::string, ObjectInfo>& applciationList = Application::getInstance()->objects;
 	for(auto iter = applciationList.begin();
 		iter != applciationList.end();
 		++iter)
@@ -67,7 +67,7 @@ void Sniper::UpdateObject(float delta)
 
 void Sniper::SetupTexture()
 {
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
 	if(this->pColorMapSRV != 0)
 	{
@@ -79,7 +79,7 @@ void Sniper::SetupTexture()
 
 void Sniper::BuilDepthMap()
 {
-	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
+	auto d3dStuff = DX11App::getInstance()->direct3d;
 
 	ID3D11Texture2D* depthMap = 0;
 	D3D11_TEXTURE2D_DESC texDesc;
@@ -132,7 +132,7 @@ void Sniper::BuilDepthMap()
 }
 void Sniper::BuildColorMap()
 {
-	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
+	auto d3dStuff = DX11App::getInstance()->direct3d;
 
 	ID3D11Texture2D* colorMap = 0;
 
@@ -195,7 +195,7 @@ void Sniper::Init()
     this->pViewport.MinDepth = 0.0f;
     this->pViewport.MaxDepth = 1.0f;
 
-	auto d3dStuff = ((DX11App*)App::getInstance())->direct3d;
+	auto d3dStuff = DX11App::getInstance()->direct3d;
 
 	if(!DX11ObjectManager::getInstance()->Textexture.Exists(this->pTextureAlpha.first))
 	{
@@ -246,4 +246,9 @@ Sniper::Sniper()
 	{
 		throw std::exception("Error loading ply file");
 	}
+}
+
+iObjectDrawable* Sniper::clone() const
+{
+	return new Sniper(*this);
 }

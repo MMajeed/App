@@ -347,14 +347,21 @@ void DX11App::Run( HINSTANCE hInstance, int nCmdShow )
 
 	KillTimer( this->window.hWnd, FRAMERATE_UPDATE_TIMER );
 }
-App* DX11App::getInstance()
+DX11App* DX11App::getInstance()
 {
 	if(App::app == 0)
 	{
 		app = new DX11App;
 	}
 
-    return app;
+	DX11App* appCasted = dynamic_cast<DX11App*>(app);
+	
+	if(appCasted == 0)
+	{
+		throw std::exception("Error: app was not created as an DX11APP");
+	}
+
+    return appCasted;
 }	
 DX11App::~DX11App()
 {

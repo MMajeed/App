@@ -84,6 +84,15 @@
     <ClCompile Include="DrawableInfo.cpp">
       <Filter>Tools\DrawableInfo</Filter>
     </ClCompile>
+    <ClCompile Include="IPhysics.cpp">
+      <Filter>Physics\PhysicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="IPhysicsObject.cpp">
+      <Filter>Physics\PhysicsObject</Filter>
+    </ClCompile>
+    <ClCompile Include="HavokPhysics.cpp">
+      <Filter>Physics\PhysicsManager\HavokPhysics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -182,6 +191,15 @@
     </ClInclude>
     <ClInclude Include="iObjectDrawable.h">
       <Filter>DX11ObjectDrawable</Filter>
+    </ClInclude>
+    <ClInclude Include="IPhysics.h">
+      <Filter>Physics\PhysicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="IPhysicsObject.h">
+      <Filter>Physics\PhysicsObject</Filter>
+    </ClInclude>
+    <ClInclude Include="HavokPhysics.h">
+      <Filter>Physics\PhysicsManager\HavokPhysics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +319,18 @@
     </Filter>
     <Filter Include="DX11ObjectDrawable\FBX Mesh">
       <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{6585898d-abbc-4777-bdd4-8c42ac14ba07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsManager">
+      <UniqueIdentifier>{9fca9858-4242-43b2-acb5-62d12024feb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsObject">
+      <UniqueIdentifier>{0642408e-8efa-4b60-8b7a-2bb3cfd29bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsManager\HavokPhysics">
+      <UniqueIdentifier>{1faeabc3-9435-4c2a-97e1-9e026a307618}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

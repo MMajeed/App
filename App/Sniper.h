@@ -27,7 +27,7 @@ public:
 
 	D3D11_VIEWPORT				pViewport;
 
-
+	virtual iObjectDrawable* clone() const;
 	
 	std::pair<std::string, ID3D11ShaderResourceView*>				pTextureAlpha;
 };

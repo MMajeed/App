@@ -16,7 +16,7 @@ BasicObject::BasicObject( )
 }
 void BasicObject::Init()
 {
-	ID3D11Device* device = (dynamic_cast<DX11App*>(App::getInstance()))->direct3d.pd3dDevice;
+	ID3D11Device* device = DX11App::getInstance()->direct3d.pd3dDevice;
 
 	this->InitVertexBuffer(device);
 	this->InitIndexBuffer(device);
@@ -56,7 +56,7 @@ void BasicObject::SetupDraw()
 	cbCEF.colour.ambient = this->object.Colour.Ambient;
 	cbCEF.colour.spec = this->object.Colour.Spec;
 
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
 	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cbCEF, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
@@ -78,7 +78,7 @@ void BasicObject::SetupDraw()
 }
 void BasicObject::SetupTexture()
 {
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	
 	int counter = 0;
 	for(auto textureIter = pVecTexture.begin();
@@ -96,13 +96,13 @@ void BasicObject::SetupTexture()
 }
 void BasicObject::DrawObject()
 {
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	
 	pImmediateContext->DrawIndexed( this->PlyBuffer.indices.size(), 0, 0 );
 }
 void BasicObject::CleanupAfterDraw()
 {
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	
 	ID3D11ShaderResourceView* tab = NULL;
 	pImmediateContext->PSSetShaderResources(0,1,&tab);
@@ -130,6 +130,11 @@ void BasicObject::LoadD3DStuff()
 	{
 		if(!DX11ObjectManager::getInstance()->Textexture.Get(this->pCubeMap.first, this->pCubeMap.second)){ throw std::exception("Cube Map not found"); }	
 	}
+}
+
+iObjectDrawable* BasicObject::clone() const
+{
+	return new BasicObject(*this);
 }
 
 void BasicObject::InitVertexBuffer(ID3D11Device* device)

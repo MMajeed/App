@@ -11,3 +11,12 @@ App* App::getInstance()
 	}
     return app;
 }
+
+App::App()
+{
+	this->timer._absoluteTime  = 0.0;
+	this->timer._frameTime     = 0.0;
+	this->timer._frameCount    = 0;
+	this->timer._frameRate     = 0.0;
+	this->timer._sinceLastDraw = 0.0;
+}

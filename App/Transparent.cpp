@@ -6,7 +6,7 @@
 
 void Transparent::DrawObject()
 {
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 		
 	float blendFactor[] = {0.0f, 0.0f, 0.0f, 0.0f};
 	pImmediateContext->OMSetBlendState(this->pTransparent.second, blendFactor, 0xffffffff);
@@ -19,7 +19,7 @@ void Transparent::Init()
 {
 	PlyFile::Init();
 
-	ID3D11Device* device = (dynamic_cast<DX11App*>(App::getInstance()))->direct3d.pd3dDevice;
+	ID3D11Device* device = DX11App::getInstance()->direct3d.pd3dDevice;
 
 	this->LoadTransparency(device);
 
@@ -58,4 +58,9 @@ Transparent* Transparent::Spawn(std::map<std::string, std::string> info)
 	Transparent* newTransparent = new Transparent(*plyObject);
 	delete plyObject;
 	return newTransparent;
+}
+
+iObjectDrawable* Transparent::clone() const
+{
+	return new Transparent(*this);
 }

@@ -13,6 +13,8 @@ public:
 	virtual void UpdateObject(float delta);
 	virtual void InitRastersizerState(ID3D11Device* device);
 
+	virtual iObjectDrawable* clone() const;
+
 	static SkyBox* Spawn(std::map<std::string, std::string> info);
 };
 

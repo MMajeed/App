@@ -24,7 +24,8 @@ public:
 		double 	  	_absoluteTime;
 		double 	  	_frameTime;
 		long long	_frameCount;
-		double 	  	_frameRate;
+		double 	  	_frameRate;		
+		double 	  	_sinceLastDraw;
 	} timer;
 
 	// Windows stuff
@@ -35,9 +36,8 @@ public:
 		UINT		width;
 		UINT		height;
 	} window;
-
-
 protected:
+	App();
 	static App* app;
 };
 

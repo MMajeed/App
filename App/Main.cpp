@@ -25,7 +25,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	catch(std::exception ex)
 	{
 		std::wstringstream wss;
-		wss<< "Exception: Something went wrong" << std::endl
+		wss << "Exception: Something went wrong" << std::endl
 			<< ex.what();
 
 		OutputDebugStringA( Helper::WStringtoString(wss.str()).c_str() );

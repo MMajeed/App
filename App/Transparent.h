@@ -19,6 +19,8 @@ public:
 	virtual float GetOrder();
 
 	virtual void Init();
+
+	virtual iObjectDrawable* clone() const;
 };
 
 

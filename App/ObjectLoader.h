@@ -14,7 +14,7 @@ public:
 	static ObjectLoader* getInstance();
 
 	void LoadXMLFile(std::string loc);
-	bool ObjectLoader::Spawn(std::string name, iObjectDrawable*& object);
+	bool ObjectLoader::Spawn(std::string name, ObjectInfo& object);
 	std::map<std::string, ObjectInfo> SpawnAll();
 	LightManager SetupLight();
 

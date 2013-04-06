@@ -15,6 +15,7 @@ public:
 	virtual void UpdateObject(float delta)	= 0;
 	virtual void Draw()					    = 0;
 	virtual float GetOrder(){return 100000.0f;};
+	virtual iObjectDrawable* clone() const	= 0;
 	DrawableInfo object;
 
 	virtual ~iObjectDrawable(){}

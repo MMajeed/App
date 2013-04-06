@@ -42,7 +42,7 @@ void FBXObject::Init()
 	if(!this->AnimController.AnimationPlayerA.IsSet())
 		this->AnimController.Init(this->MeshKey);
 
-	ID3D11Device* device = (dynamic_cast<DX11App*>(App::getInstance()))->direct3d.pd3dDevice;
+	ID3D11Device* device = DX11App::getInstance()->direct3d.pd3dDevice;
 
 	this->InitVertexBuffer(device);
 	this->InitIndexBuffer(device);
@@ -88,7 +88,7 @@ void FBXObject::Draw()
 	cb.colour.ambient = this->object.Colour.Ambient;
 	cb.colour.spec = this->object.Colour.Spec;
 
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
 	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cb, 0, 0 );
 	pImmediateContext->UpdateSubresource( this->pAnimBonesBuffer.second, 0, NULL, &(mBoneTransforms.front()), 0, 0 );
@@ -275,6 +275,11 @@ void FBXObject::LoadD3DStuff()
 	if(!DX11ObjectManager::getInstance()->RastersizerState.Get(this->pRastersizerState.first, this->pRastersizerState.second)){ throw std::exception("Rastersizer State not found"); }
 	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pCBChangesEveryFrame.first, this->pCBChangesEveryFrame.second)){ throw std::exception("const buffer not found"); }	
 	if(!DX11ObjectManager::getInstance()->CBuffer.Get(this->pAnimBonesBuffer.first, this->pAnimBonesBuffer.second)){ throw std::exception("Anim Bone buffer not found"); }	
+}
+
+iObjectDrawable* FBXObject::clone() const
+{
+	return new FBXObject(*this);
 }
 
 FBXObject* FBXObject::Spawn(std::map<std::string, std::string> info)

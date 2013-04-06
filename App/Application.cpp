@@ -12,6 +12,7 @@
 #include <sstream>
 #include <iomanip>
 #include "SphericalMirror.h"
+#include "HavokPhysics.h"
 
 void Application::Render()
 {
@@ -29,7 +30,7 @@ void Application::ClearScreen()
 }
 void Application::SetupDraw()
 {
-	ID3D11DeviceContext* pImmediateContext = ((DX11App*)App::getInstance())->direct3d.pImmediateContext;
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
 	pImmediateContext->PSSetSamplers( 0, 1, &(this->pSamplerLinear.second) );
 	pImmediateContext->PSSetSamplers( 1, 1, &(this->pSamplerAnisotropic.second) );
@@ -122,6 +123,7 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			long long elapsedFrameCount = timerNow.QuadPart - timerLast.QuadPart;
 			timer._absoluteTime = elapsedCount / tickInterval;
 			timer._frameTime = elapsedFrameCount / tickInterval;
+			this->timer._sinceLastDraw += timer._frameTime;
 						
 			//Sleep( 8 - timer._frameTime); // Used to lock the framerate. Turned off because I want to see how fast the program is going
 			
@@ -141,9 +143,13 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			
 			this->SortObject();
 
-			// render
-			this->Render();
-			this->Present();
+			if(this->timer._sinceLastDraw > 0.012)
+			{
+				// render
+				this->Render();
+				this->Present();
+				this->timer._sinceLastDraw = 0.0;
+			}
 			// update fps
 			timerLast = timerNow;
 			++(timer._frameCount);
@@ -161,7 +167,7 @@ void Application::InitDevices()
 	this->pSamplerLinear.first			= "SamplerLinear";
 	this->pSamplerAnisotropic.first		= "SamplerAnisotropic";
 
-	ID3D11Device* device = ((DX11App*)App::getInstance())->direct3d.pd3dDevice;	
+	ID3D11Device* device = DX11App::getInstance()->direct3d.pd3dDevice;	
 	std::wstring error;
 
 	if(!DX11ObjectManager::getInstance()->CBuffer.Exists(this->pCBNeverChangesID.first))
@@ -218,6 +224,8 @@ void Application::InitDevices()
 	}
 
 	this->LoadD3DStuff();
+
+	//HavokPhysics::getInstance()->Init();
 	
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
@@ -281,7 +289,7 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 						{
 							Sniper* sniper = new Sniper;
 							sniper->Init();
-							this->objects["Sniper"] = (sniper);
+							this->objects["Sniper"].ObjectDrawable = (sniper);
 						}
 						else
 						{
@@ -419,14 +427,21 @@ void Application::SortObject()
 		objectIter->second.Sort = objectIter->second.ObjectDrawable->GetOrder();
 	}
 }
-App* Application::getInstance()
+Application* Application::getInstance()
 {
 	if(App::app == 0)
 	{
 		app = new Application;
 	}
 
-    return app;
+	Application* appCasted = dynamic_cast<Application*>(app);
+	
+	if(appCasted == 0)
+	{
+		throw std::exception("Error: app was not created as an application");
+	}
+
+    return appCasted;
 }
 Application::~Application()
 {

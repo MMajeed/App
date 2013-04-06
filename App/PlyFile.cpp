@@ -143,3 +143,8 @@ PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 
 	return newPlyFile;
 }
+
+iObjectDrawable* PlyFile::clone() const
+{
+	return new PlyFile(*this);
+}
