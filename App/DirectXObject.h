@@ -12,7 +12,16 @@ public:
 	virtual void Clean()				    = 0;
 	virtual void UpdateDrawing(float delta)	= 0;
 	virtual void UpdateObject(float delta)	= 0;
-	virtual void Draw()					    = 0;
+
+	virtual void Draw()							= 0;
+	virtual void SetupDrawConstantBuffer()		= 0;
+	virtual void SetupDrawVertexBuffer()		= 0;
+	virtual void SetupDrawInputVertexShader()	= 0;
+	virtual void SetupDrawPixelShader()			= 0;
+	virtual void SetupDrawRasterizeShader()		= 0;
+	virtual void SetupDrawTexture()				= 0;
+	virtual void DrawObject()					= 0;
+	virtual void CleanupAfterDraw()				= 0;
 
 	bool BoolDrawDepth;
 
@@ -20,17 +29,11 @@ public:
 
 	virtual void InitDepth();
 
-	virtual void InitDepthInputLayout(ID3D11Device* device);
-	virtual void InitDepthVertexShader(ID3D11Device* device);
-	virtual void InitDepthwPixelShader(ID3D11Device* device);
+	virtual void InitDepthPixelShader(ID3D11Device* device);
 	virtual void InitDepthRastersizerState(ID3D11Device* device);
-	virtual void InitDepthCBChangesEveryFrameBuffer(ID3D11Device* device);
 
-	std::pair<std::string, ID3D11InputLayout*>		pDepthInputLayout;
-	std::pair<std::string, ID3D11VertexShader*>		pDepthVertexShader;
 	std::pair<std::string, ID3D11PixelShader*>		pDepthPixelShader;
 	std::pair<std::string, ID3D11RasterizerState*>	pDepthRastersizerState;
-	std::pair<std::string, ID3D11Buffer*>			pDepthCBChangesEveryFrame;
 
 	DirectXObject();
 };

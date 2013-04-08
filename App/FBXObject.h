@@ -17,8 +17,18 @@ public:
 	virtual void Clean();
 	virtual void UpdateDrawing(float delta);
 	virtual void UpdateObject(float delta);
+
+
 	virtual void Draw();
-	virtual float GetOrder(){ return 1000.0f; }
+	virtual void SetupDrawConstantBuffer();
+	virtual void SetupDrawVertexBuffer();
+	virtual void SetupDrawInputVertexShader();
+	virtual void SetupDrawPixelShader();
+	virtual void SetupDrawRasterizeShader();
+	virtual void SetupDrawTexture();
+	virtual void DrawObject();
+	virtual void CleanupAfterDraw();
+
 
 	virtual void InitVertexBuffer(ID3D11Device* device);
 	virtual void InitIndexBuffer(ID3D11Device* device);

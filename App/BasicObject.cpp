@@ -44,12 +44,16 @@ void BasicObject::UpdateObject(float delta)
 }
 void BasicObject::Draw()
 {
-	this->SetupDraw();
-	this->SetupTexture();
+	this->SetupDrawConstantBuffer();
+	this->SetupDrawVertexBuffer();
+	this->SetupDrawInputVertexShader();
+	this->SetupDrawPixelShader();
+	this->SetupDrawRasterizeShader();
+	this->SetupDrawTexture();
 	this->DrawObject();
 	this->CleanupAfterDraw();
 }
-void BasicObject::SetupDraw()
+void BasicObject::SetupDrawConstantBuffer()
 {
 	cBuffer::cbChangeEveryFrame cbCEF ;
 	XMFLOAT4X4 world = this->object.CalculateMatrix();
@@ -64,6 +68,10 @@ void BasicObject::SetupDraw()
 	pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 	pImmediateContext->PSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 		
+}
+void BasicObject::SetupDrawVertexBuffer()
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	// Set vertex buffer 
 	UINT stride = sizeof( PlyBuffer::Vertex );
 	UINT offset = 0;
@@ -71,14 +79,29 @@ void BasicObject::SetupDraw()
 	pImmediateContext->IASetIndexBuffer( this->pIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
 	pImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
+}
+void BasicObject::SetupDrawInputVertexShader()
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	// Set the input layout
 	pImmediateContext->IASetInputLayout( this->pInputLayout.second );
 	pImmediateContext->VSSetShader( this->pVertexShader.second, NULL, 0 );	
+}
+void BasicObject::SetupDrawPixelShader()
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
+	// Set the input layout
 	pImmediateContext->PSSetShader( this->pPixelShader.second, NULL, 0 );
+	
+}
 
+void BasicObject::SetupDrawRasterizeShader()
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
+	
 	pImmediateContext->RSSetState(this->pRastersizerState.second);
 }
-void BasicObject::SetupTexture()
+void BasicObject::SetupDrawTexture()
 {
 	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	

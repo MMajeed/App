@@ -2,91 +2,110 @@
 #include "Application.h"
 
 bool						Shadow::IsInited		= false;
-ID3D11ShaderResourceView*	Shadow::pDepthMapSRV	= NULL;
-ID3D11DepthStencilView*		Shadow::pDepthMapDSV	= NULL;
+ID3D11ShaderResourceView*	Shadow::pColorMapSRV	= NULL;
+ID3D11RenderTargetView*		Shadow::pColorMapRTV	= NULL;
 
-
-void Shadow::Init()
-{
-	Shadow::BuildDepthMap();
-}
 
 void Shadow::CreateShadow()
 {
-	if(Shadow::IsInited == false)
-	{
-		Shadow::Init();
-		Shadow::IsInited = true;
-	}
-/*
-	auto d3dStuff = DX11App::getInstance()->direct3d;
+	//if(Shadow::IsInited == false)
+	//{
+	//	Shadow::Init();
+	//	Shadow::IsInited = true;
+	//}
+	//Application* app = Application::getInstance();
 
-	ID3D11RenderTargetView* renderTargets[1] = {Shadow::pColorMapRTV};
-	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, Shadow::pDepthMapDSV);
+	//app->SetupDraw();
 
-	float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	d3dStuff.pImmediateContext->ClearRenderTargetView(Shadow::pColorMapRTV, black);
+	//auto d3dStuff = app->direct3d;
 
-	d3dStuff.pImmediateContext->ClearDepthStencilView(Shadow::pDepthMapDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	//ID3D11RenderTargetView* renderTargets[1] = {Shadow::pColorMapRTV};
+	//d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
 
-	Application::getInstance()->DrawObjects();
+	//float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	//d3dStuff.pImmediateContext->ClearRenderTargetView(Shadow::pColorMapRTV, black);
 
-	d3dStuff.pImmediateContext->GenerateMips(Shadow::pDepthMapSRV);
+	//d3dStuff.pImmediateContext->ClearDepthStencilView(d3dStuff.pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	d3dStuff.pImmediateContext->OMSetRenderTargets(1, &(d3dStuff.pRenderTargetView), d3dStuff.pDepthStencilView);	
+	//std::map<std::string, ObjectInfo>& objects = app->objects;
 
-	d3dStuff.pImmediateContext->PSSetShaderResources( 0, 1, &(Shadow::pDepthMapSRV) );*/
+	//std::multimap<float, iObjectDrawable*, std::greater<float>> sortedObjects;
+
+	//for(auto objectIter = objects.begin();
+	//	objectIter != objects.end();
+	//	++objectIter)
+	//{
+	//	if(objectIter->second.DrawNext)
+	//	{
+	//		sortedObjects.insert(std::pair<float, iObjectDrawable*>(objectIter->second.Sort, objectIter->second.ObjectDrawable));
+	//	}
+	//}
+
+	//for(auto iter = sortedObjects.begin();
+	//	iter != sortedObjects.end();
+	//	++iter)
+	//{
+	//	iter->second->DrawDepth();
+	//}
+
+	//d3dStuff.pImmediateContext->GenerateMips(pColorMapSRV);
+
+	//d3dStuff.pImmediateContext->OMSetRenderTargets(1, &(d3dStuff.pRenderTargetView), d3dStuff.pDepthStencilView);	
+
+	//if(Shadow::pColorMapSRV != 0)
+	//{
+	//	//d3dStuff.pImmediateContext->PSSetShaderResources( 10, 1, &(Shadow::pColorMapSRV) );
+	//}
 }
 
-void Shadow::BuildDepthMap()
+void Shadow::Init()
 {
 	auto d3dStuff = DX11App::getInstance()->direct3d;
 
-	ID3D11Texture2D* depthMap = 0;
-	D3D11_TEXTURE2D_DESC texDesc;
+	ID3D11Texture2D* colorMap = 0;
 
-	texDesc.Width              = App::getInstance()->window.width;
+    D3D11_TEXTURE2D_DESC texDesc;
+	ZeroMemory(&texDesc, sizeof(texDesc));
+
+    texDesc.Width              = App::getInstance()->window.width;
 	texDesc.Height             = App::getInstance()->window.height;
-	texDesc.MipLevels          = 1;
-	texDesc.ArraySize          = 1;
-	texDesc.Format             = DXGI_FORMAT_R32_TYPELESS;
-	texDesc.SampleDesc.Count   = 1;
-	texDesc.SampleDesc.Quality = 0;
-	texDesc.Usage              = D3D11_USAGE_DEFAULT;
-	texDesc.BindFlags          = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE ;
-	texDesc.CPUAccessFlags     = 0;
-	texDesc.MiscFlags          = 0;
+    texDesc.MipLevels          = 0;
+    texDesc.ArraySize          = 1;
+    texDesc.Format             = DXGI_FORMAT_R8G8B8A8_UNORM;
+    texDesc.SampleDesc.Count   = 1;
+    texDesc.SampleDesc.Quality = 0;
+    texDesc.Usage              = D3D11_USAGE_DEFAULT;
+    texDesc.BindFlags          = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+    texDesc.CPUAccessFlags     = 0;
+    texDesc.MiscFlags          = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-	HRESULT hr = d3dStuff.pd3dDevice->CreateTexture2D(&texDesc, 0, &depthMap);
+	HRESULT hr = d3dStuff.pd3dDevice->CreateTexture2D(&texDesc, 0, &colorMap);
 	if(hr)
 	{
 		throw std::exception("Failed at creating the texture 2d for the Sniper");
 	}
 
-	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
-
-	ZeroMemory(&dsvDesc, sizeof(dsvDesc));
-    dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
-    dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-    dsvDesc.Texture2D.MipSlice = 0;
-	hr = d3dStuff.pd3dDevice->CreateDepthStencilView(depthMap,&dsvDesc, &(Shadow::pDepthMapDSV));
+	hr = d3dStuff.pd3dDevice->CreateTexture2D(&texDesc, 0, &colorMap);
 	if(hr)
 	{
-		throw std::exception("Failed at creating the Depth Stencil for sniper");
+		throw std::exception("Failed at creating the texture 2d for the Sniper");
 	}
 
-    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-    srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
-    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-    srvDesc.Texture2D.MipLevels = texDesc.MipLevels;
-    srvDesc.Texture2D.MostDetailedMip = 0;
-	hr = d3dStuff.pd3dDevice->CreateShaderResourceView(depthMap, &srvDesc, &(Shadow::pDepthMapSRV));
+    // Null description means to create a view to all mipmap levels
+    // using the format the texture was created with.
+	hr = d3dStuff.pd3dDevice->CreateRenderTargetView(colorMap, 0, &(Shadow::pColorMapRTV));
+    if(hr)
+	{
+		throw std::exception("Failed at creating render target view");
+	}
+
+	hr = d3dStuff.pd3dDevice->CreateShaderResourceView(colorMap, 0, &(Shadow::pColorMapSRV));
 	if(hr)
 	{
-		throw std::exception("Failed at creating a shader resource view for sniper");
+		throw std::exception("Failed at creating shader resource view");
 	}
 
     // View saves a reference to the texture so we can
     // release our reference.
-	depthMap->Release();
+	colorMap->Release();
 }

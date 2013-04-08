@@ -233,6 +233,7 @@
     <None Include="..\Resources\ShaderFiles\5_SkyMap.fx" />
     <None Include="..\Resources\ShaderFiles\6_Binoculars.fx" />
     <None Include="..\Resources\ShaderFiles\7_GpuSkinShader.fx" />
+    <None Include="..\Resources\ShaderFiles\8_Depth.fx" />
     <None Include="..\Resources\ShaderFiles\HLSL_4_BasicLightFunctions.fx" />
     <None Include="..\Resources\ShaderFiles\Setup.fx" />
     <None Include="Commands.xml">

@@ -14,9 +14,14 @@ public:
 	virtual void Clean();
 	virtual void UpdateDrawing(float delta);
 	virtual void UpdateObject(float delta);
+
 	virtual void Draw();
-	virtual void SetupDraw();
-	virtual void SetupTexture();
+	virtual void SetupDrawConstantBuffer();
+	virtual void SetupDrawVertexBuffer();
+	virtual void SetupDrawInputVertexShader();
+	virtual void SetupDrawPixelShader();
+	virtual void SetupDrawRasterizeShader();
+	virtual void SetupDrawTexture();
 	virtual void DrawObject();
 	virtual void CleanupAfterDraw();
 

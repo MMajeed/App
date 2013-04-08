@@ -16,11 +16,12 @@
 #include "Shadow.h"
 
 void Application::Render()
-{
+{	
+	//this->SetupShadow();
+
 	this->ClearScreen();
 	this->SetupDraw();
 	this->DrawObjects();
-	this->SetupShadow();
 	this->Present();	
 }
 void Application::ClearScreen()

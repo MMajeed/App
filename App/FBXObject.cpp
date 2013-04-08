@@ -68,7 +68,20 @@ void FBXObject::UpdateObject(float delta)
 {
 	this->object.Update(delta);
 }
+
+
 void FBXObject::Draw()
+{
+	this->SetupDrawConstantBuffer();
+	this->SetupDrawVertexBuffer();
+	this->SetupDrawInputVertexShader();
+	this->SetupDrawPixelShader();
+	this->SetupDrawRasterizeShader();
+	this->SetupDrawTexture();
+	this->DrawObject();
+	this->CleanupAfterDraw();
+}
+void FBXObject::SetupDrawConstantBuffer()
 {
 	static std::vector<XMFLOAT4X4> mBoneTransforms(128);
 	for(std::size_t i = 0; i < this->AnimController.Mesh.second->mNumBones; ++i)
@@ -96,24 +109,56 @@ void FBXObject::Draw()
 	pImmediateContext->UpdateSubresource( this->pAnimBonesBuffer.second, 0, NULL, &(mBoneTransforms.front()), 0, 0 );
     	
     pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
-	pImmediateContext->VSSetConstantBuffers( 3, 1, &(this->pAnimBonesBuffer.second) );
-
 	pImmediateContext->PSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 
-    UINT stride = sizeof( cFBXBuffer::SimpleSkinnedVertex );
+	pImmediateContext->VSSetConstantBuffers( 3, 1, &(this->pAnimBonesBuffer.second) );
+}
+void FBXObject::SetupDrawVertexBuffer()
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
+
+	UINT stride = sizeof( cFBXBuffer::SimpleSkinnedVertex );
     UINT offset = 0;
 	pImmediateContext->IASetVertexBuffers( 0, 1, &(this->pMeshVertexBuffer.second), &stride, &offset );
 	pImmediateContext->IASetIndexBuffer( this->pMeshIndexBuffer.second, DXGI_FORMAT_R16_UINT, 0 );
     pImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
+}
+void FBXObject::SetupDrawInputVertexShader()
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
+
 	pImmediateContext->IASetInputLayout( this->pInputLayout.second );
 	pImmediateContext->VSSetShader( this->pVertexShader.second, NULL, 0 );
+	
+}
+void FBXObject::SetupDrawPixelShader()
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
+	
 	pImmediateContext->PSSetShader( this->pPixelShader.second, NULL, 0 );
+}
+void FBXObject::SetupDrawRasterizeShader()
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
 	pImmediateContext->RSSetState( this->pRastersizerState.second );
+}
+void FBXObject::SetupDrawTexture()	
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
-    pImmediateContext->DrawIndexed( this->AnimController.Mesh.second->mIndices.size(), 0, 0 );
+}
+void FBXObject::DrawObject()	
+{
+	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
+	pImmediateContext->DrawIndexed( this->AnimController.Mesh.second->mIndices.size(), 0, 0 );
+
+}
+void FBXObject::CleanupAfterDraw()
+{
+	// Doing nothing for now
 }
 
 void FBXObject::LoadMesh(std::string path)

@@ -1,17 +1,6 @@
 #include "Setup.fx"
 
 //--------------------------------------------------------------------------------------
-struct PS_INPUT
-{
-    float4 PosMVP : SV_POSITION;
-	float4 PosWorld : POSITION;
-	float4 Normal : NORMAL;
-    float4 Color : COLOR0;
-	float2 tex0 : TEXCOORD0;		
-	float2 tex1 : TEXCOORD0;		
-};
-
-
 struct VS_INPUT
 {
 	float4 Pos : POSITION;
