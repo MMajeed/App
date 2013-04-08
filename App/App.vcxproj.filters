@@ -22,16 +22,16 @@
       <Filter>Tools\Helper\Helper</Filter>
     </ClCompile>
     <ClCompile Include="BasicObject.cpp">
-      <Filter>DX11ObjectDrawable\BasicObject</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject</Filter>
     </ClCompile>
     <ClCompile Include="PlyLib\rply.c">
       <Filter>Tools\Helper\PlyFile</Filter>
     </ClCompile>
     <ClCompile Include="PlyFile.cpp">
-      <Filter>DX11ObjectDrawable\BasicObject\PlyFile</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile</Filter>
     </ClCompile>
     <ClCompile Include="SkyBox.cpp">
-      <Filter>DX11ObjectDrawable\BasicObject\SkyBox</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="ObjectLoader.cpp">
       <Filter>Tools\Loader</Filter>
@@ -40,16 +40,16 @@
       <Filter>Tools\Helper\TinyXML</Filter>
     </ClCompile>
     <ClCompile Include="Transparent.cpp">
-      <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent</Filter>
     </ClCompile>
     <ClCompile Include="MathHelper.cpp">
       <Filter>Tools\Helper\MathHelper</Filter>
     </ClCompile>
     <ClCompile Include="Sniper.cpp">
-      <Filter>DX11ObjectDrawable\BasicObject\Sniper</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\Sniper</Filter>
     </ClCompile>
     <ClCompile Include="SphericalMirror.cpp">
-      <Filter>DX11ObjectDrawable\BasicObject\SphericalMirror</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror</Filter>
     </ClCompile>
     <ClCompile Include="Prespective.cpp">
       <Filter>Tools\View\Prespective</Filter>
@@ -61,7 +61,7 @@
       <Filter>Tools\DX11Stuff\Buffer\cFBXBuffer</Filter>
     </ClCompile>
     <ClCompile Include="FBXObject.cpp">
-      <Filter>DX11ObjectDrawable\FBX Mesh</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\FBX Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Tools\Light Manager\Light</Filter>
@@ -96,6 +96,9 @@
     <ClCompile Include="Shadow.cpp">
       <Filter>DX11ObjectDrawable\Shadow</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXObject.cpp">
+      <Filter>DX11ObjectDrawable\DirectX Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -115,7 +118,7 @@
       <Filter>Tools\Helper\Helper</Filter>
     </ClInclude>
     <ClInclude Include="BasicObject.h">
-      <Filter>DX11ObjectDrawable\BasicObject</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject</Filter>
     </ClInclude>
     <ClInclude Include="cBuffer.h">
       <Filter>Tools\DX11Stuff\Buffer</Filter>
@@ -124,10 +127,10 @@
       <Filter>Tools\Helper\PlyFile</Filter>
     </ClInclude>
     <ClInclude Include="PlyFile.h">
-      <Filter>DX11ObjectDrawable\BasicObject\PlyFile</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile</Filter>
     </ClInclude>
     <ClInclude Include="SkyBox.h">
-      <Filter>DX11ObjectDrawable\BasicObject\SkyBox</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="ObjectLoader.h">
       <Filter>Tools\Loader</Filter>
@@ -136,7 +139,7 @@
       <Filter>Tools\Helper\TinyXML</Filter>
     </ClInclude>
     <ClInclude Include="Transparent.h">
-      <Filter>DX11ObjectDrawable\BasicObject\PlyFile\Transparent</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent</Filter>
     </ClInclude>
     <ClInclude Include="DX11Helper.h">
       <Filter>Tools\DX11Stuff\DX11Helper</Filter>
@@ -145,10 +148,10 @@
       <Filter>Tools\Helper\MathHelper</Filter>
     </ClInclude>
     <ClInclude Include="Sniper.h">
-      <Filter>DX11ObjectDrawable\BasicObject\Sniper</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\Sniper</Filter>
     </ClInclude>
     <ClInclude Include="SphericalMirror.h">
-      <Filter>DX11ObjectDrawable\BasicObject\SphericalMirror</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror</Filter>
     </ClInclude>
     <ClInclude Include="Prespective.h">
       <Filter>Tools\View\Prespective</Filter>
@@ -169,7 +172,7 @@
       <Filter>Tools\DX11Stuff\Buffer\cFBXBuffer</Filter>
     </ClInclude>
     <ClInclude Include="FBXObject.h">
-      <Filter>DX11ObjectDrawable\FBX Mesh</Filter>
+      <Filter>DX11ObjectDrawable\DirectX Objects\FBX Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Tools\Light Manager\Light</Filter>
@@ -207,6 +210,9 @@
     <ClInclude Include="Shadow.h">
       <Filter>DX11ObjectDrawable\Shadow</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXObject.h">
+      <Filter>DX11ObjectDrawable\DirectX Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -227,32 +233,14 @@
     <Filter Include="Tools\Helper">
       <UniqueIdentifier>{f6e0bd46-4e65-46cb-ab21-7d4999615382}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject">
-      <UniqueIdentifier>{eaa3198d-0ed1-4ae7-a91a-2711d3e28ae8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\Helper\PlyFile">
       <UniqueIdentifier>{6f790185-5944-457e-a17b-25c70b0935f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile">
-      <UniqueIdentifier>{8aeb324e-706f-4a8c-9194-ecee1fd332a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject\SkyBox">
-      <UniqueIdentifier>{b6e007ae-fb76-445b-a805-b744dee49213}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools\Loader">
       <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject\PlyFile\Transparent">
-      <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\Helper\MathHelper">
       <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject\Sniper">
-      <UniqueIdentifier>{01de3689-034b-4538-84a3-9c21b4760d3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\BasicObject\SphericalMirror">
-      <UniqueIdentifier>{517d0841-3de0-4907-91e9-171d8ea6849a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools\View">
       <UniqueIdentifier>{3a400908-d7cc-411f-9122-1d533c835184}</UniqueIdentifier>
@@ -323,9 +311,6 @@
     <Filter Include="Tools\Animation\AnimationController">
       <UniqueIdentifier>{0e750b11-c7bf-44c0-9949-eb0184c4eb3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\FBX Mesh">
-      <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{6585898d-abbc-4777-bdd4-8c42ac14ba07}</UniqueIdentifier>
     </Filter>
@@ -340,6 +325,30 @@
     </Filter>
     <Filter Include="DX11ObjectDrawable\Shadow">
       <UniqueIdentifier>{73c2b094-593c-4647-9ddd-3af81b292dcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\DirectX Objects">
+      <UniqueIdentifier>{7d8a9685-df61-41bd-aab8-a1bd14d77663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\DirectX Objects\FBX Mesh">
+      <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject">
+      <UniqueIdentifier>{eaa3198d-0ed1-4ae7-a91a-2711d3e28ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile">
+      <UniqueIdentifier>{8aeb324e-706f-4a8c-9194-ecee1fd332a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent">
+      <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\SkyBox">
+      <UniqueIdentifier>{b6e007ae-fb76-445b-a805-b744dee49213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\Sniper">
+      <UniqueIdentifier>{01de3689-034b-4538-84a3-9c21b4760d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror">
+      <UniqueIdentifier>{517d0841-3de0-4907-91e9-171d8ea6849a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

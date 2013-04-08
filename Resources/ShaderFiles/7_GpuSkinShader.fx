@@ -1,13 +1,16 @@
 #include "Setup.fx"
 
 //--------------------------------------------------------------------------------------
-struct VS_OUTPUT
+struct PS_INPUT
 {
     float4 PosMVP : SV_POSITION;
 	float4 PosWorld : POSITION;
 	float4 Normal : NORMAL;
     float4 Color : COLOR0;
+	float2 tex0 : TEXCOORD0;		
+	float2 tex1 : TEXCOORD0;		
 };
+
 
 struct VS_INPUT
 {
@@ -22,9 +25,9 @@ struct VS_INPUT
 // Vertex Shader
 //--------------------------------------------------------------------------------------
 
-VS_OUTPUT VS( VS_INPUT input ) 
+PS_INPUT VS( VS_INPUT input ) 
 {
-    VS_OUTPUT output = (VS_OUTPUT)0;
+    PS_INPUT output = (PS_INPUT)0;
 	
 	uint JoinIndexArray[4] = { input.JointIndx.x, input.JointIndx.y, input.JointIndx.z, input.JointIndx.w } ;
 	float JointWghtArray[4] = { input.JointWght.x, input.JointWght.y, input.JointWght.z, input.JointWght.w } ;
@@ -67,7 +70,7 @@ VS_OUTPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 // Pixel Shader
 //--------------------------------------------------------------------------------------
-float4 PS( VS_OUTPUT input ) : SV_Target
+float4 PS( PS_INPUT input ) : SV_Target
 {
 	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
 

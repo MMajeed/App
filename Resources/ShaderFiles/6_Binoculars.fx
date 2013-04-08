@@ -42,7 +42,6 @@ PS_INPUT VS( VS_INPUT input )
 	// Pass the texture coordinates to the pixel shader
 	// (remember, if we don't pass them, the pixel shader is unaware of them)
 	output.tex0 = input.tex0;
-	//output.tex1 = input.tex1;
 
     return output;
 }
@@ -59,7 +58,7 @@ float4 PS( PS_INPUT input ) : SV_Target
 
 	if ( texColour1.x < 0.999 )	  // closer to 'black'
 	{
-		float2 x = input.tex1;
+		float2 x = input.tex0;
 		x.x *= -1;
 		x.y *= -1;
 		float4 texColour0 = texture00.Sample( samAnisotropic, x );

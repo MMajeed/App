@@ -1,13 +1,13 @@
 #ifndef __BasicObject__
 #define __BasicObject__
 
-#include "iObjectDrawable.h"
+#include "DirectXObject.h"
 #include "DX11Helper.h"
 #include "PlyBuffer.h"
 #include "ShaderFiles.h"
 #include <string>
 
-class BasicObject : public iObjectDrawable
+class BasicObject : public DirectXObject
 {
 public:
 	virtual void Init();

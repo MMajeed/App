@@ -39,6 +39,8 @@ FBXObject::~FBXObject()
 
 void FBXObject::Init()
 {
+	DirectXObject::InitDepth();
+
 	if(!this->AnimController.AnimationPlayerA.IsSet())
 		this->AnimController.Init(this->MeshKey);
 

@@ -2,7 +2,7 @@
 #define DISPLAY_MESH_GPU_H
 
 #include "cFBXBuffer.h"
-#include "iObjectDrawable.h"
+#include "DirectXObject.h"
 #include "ShaderFiles.h"
 #include "Mesh.h"
 #include "SkeletalAnimation.h"
@@ -10,7 +10,7 @@
 #include "AnimationController.h"
 #include <map>
 
-class FBXObject : public iObjectDrawable
+class FBXObject : public DirectXObject
 {
 public:
 	virtual void Init();

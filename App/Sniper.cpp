@@ -128,6 +128,7 @@ void Sniper::BuildColorMap()
 }
 void Sniper::Init()
 {
+	this->BoolDrawDepth = false;
 	BasicObject::Init();
 	
 	this->BuildColorMap();
@@ -162,7 +163,7 @@ Sniper::Sniper()
 	this->pPixelShader.first         = "../Resources/ShaderFiles/6_Binoculars.fx";
 
 	this->Shader.ShaderInput.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
-	this->Shader.ShaderInput.EntryPoint	 = "VS";	
+	this->Shader.ShaderInput.EntryPoint		 = "VS";	
 	this->Shader.ShaderInput.Mode			 = "vs_4_0";
 
 	this->Shader.ShaderVertex.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
@@ -170,7 +171,7 @@ Sniper::Sniper()
 	this->Shader.ShaderVertex.Mode			 = "vs_4_0";
 
 	this->Shader.ShaderPixel.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
-	this->Shader.ShaderPixel.EntryPoint	 = "PS";	
+	this->Shader.ShaderPixel.EntryPoint		 = "PS";	
 	this->Shader.ShaderPixel.Mode			 = "ps_4_0";
 
 
