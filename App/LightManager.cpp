@@ -41,3 +41,17 @@ cBuffer::CLightDesc LightManager::GetLightBuffer(std::size_t index)
 	returnObject.lightPowerRangeType.w = 0.0f;
 	return returnObject;
 }
+
+XMFLOAT4X4 LightManager::GetViewMatrix(std::size_t index)
+{
+	Light lightObject = this->operator[](index);
+
+	XMVECTOR Eye = XMVectorSet( lightObject.pos.x, lightObject.pos.y,  lightObject.pos.z, lightObject.pos.w );
+	XMVECTOR At = XMVectorSet( lightObject.dir.x, lightObject.dir.y, 1.0f, lightObject.dir.w );
+    XMVECTOR Up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
+
+	XMFLOAT4X4  view;
+	XMStoreFloat4x4(&view, XMMatrixLookAtLH( Eye, At, Up ));
+
+	return view;
+}

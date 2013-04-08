@@ -6,7 +6,8 @@
 //--------------------------------------------------------------------------------------
 cbuffer cbNeverChanges : register( b0 )
 {
-    matrix View;
+    matrix CameraView;
+	matrix LightView;
 	float4 eye;
 	float4 target;
 	LightDesc light[10];		// Light type now in light description
@@ -48,6 +49,7 @@ struct PS_INPUT
     float4 PosMVP : SV_POSITION;
 	float4 PosWorld : POSITION;
 	float4 Normal : NORMAL;
+	float4 LightMVP : LightMVP;
     float4 Color : COLOR0;
 	float2 tex0 : TEXCOORD0;		
 	float2 tex1 : TEXCOORD0;		

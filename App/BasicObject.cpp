@@ -131,7 +131,7 @@ void BasicObject::CleanupAfterDraw()
 	
 	ID3D11ShaderResourceView* tab = NULL;
 
-	for(int i = 0; i < 15; ++i)
+	for(int i = 0; i < 9; ++i)
 	{
 		pImmediateContext->PSSetShaderResources(i,1,&tab);
 	}

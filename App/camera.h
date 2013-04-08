@@ -31,9 +31,8 @@ public:
 	Camera();
 	virtual ~Camera();
 
-protected:	
 	XMFLOAT4 eye;	
-	XMFLOAT4 target; // Relative to the eye
+	XMFLOAT4 targetMagnitude; // Relative to the eye
 	XMFLOAT4 up;
 
 	float RadianRoll;

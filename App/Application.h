@@ -21,9 +21,9 @@ public:
 	virtual void Run( HINSTANCE hInstance, int nCmdShow );
 	
 	virtual void Render();
+	virtual void SetupDepthTexture();
 	virtual void ClearScreen();
 	virtual void SetupDraw();
-	virtual void SetupShadow();
 	virtual void DrawObjects();
 	virtual void Present();
 

@@ -6,7 +6,7 @@
 void DirectXObject::InitDepth()
 {
 	this->pDepthRastersizerState.first = "CullFrontFill";
-	this->pDepthPixelShader.first = "../Resources/ShaderFiles/3_TexturingAndLighting_DX11.fx";
+	this->pDepthPixelShader.first = "../Resources/ShaderFiles/8_Depth.fx";
 	ID3D11Device* device = DX11App::getInstance()->direct3d.pd3dDevice;
 	DirectXObject::InitDepthPixelShader(device);
 	DirectXObject::InitDepthRastersizerState(device);

@@ -63,13 +63,14 @@ void Sniper::UpdateObject(float delta)
 	this->object.Scale = XMFLOAT4(0.56f, 1.0f, 0.43f, 0.5f);
 }
 
-void Sniper::SetupTexture()
+void Sniper::SetupDrawTexture()
 {
 	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
 	if(this->pColorMapSRV != 0)
 	{
 		pImmediateContext->PSSetShaderResources( 0, 1, &(this->pColorMapSRV) );
+		pImmediateContext->PSSetShaderResources( 10, 1, &(this->pColorMapSRV) );
 	}
 	
 	pImmediateContext->PSSetShaderResources( 1, 1, &(this->pTextureAlpha.second) );

@@ -236,9 +236,6 @@
     <Filter Include="Tools\Helper\PlyFile">
       <UniqueIdentifier>{6f790185-5944-457e-a17b-25c70b0935f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\Loader">
-      <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\Helper\MathHelper">
       <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
     </Filter>
@@ -349,6 +346,9 @@
     </Filter>
     <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror">
       <UniqueIdentifier>{517d0841-3de0-4907-91e9-171d8ea6849a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Loader">
+      <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

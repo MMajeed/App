@@ -14,10 +14,12 @@
 #include "SphericalMirror.h"
 #include "HavokPhysics.h"
 #include "Shadow.h"
+#include <cmath>
 
 void Application::Render()
 {	
-	//this->SetupShadow();
+	this->SetupDepthTexture();
+
 
 	this->ClearScreen();
 	this->SetupDraw();
@@ -41,9 +43,10 @@ void Application::SetupDraw()
 	cBuffer::cbNeverChanges cbCNV ;
 
 	auto view = camera.GetViewMatrix();
-	cbCNV.mView = XMMatrixTranspose(XMLoadFloat4x4(&view));
+	cbCNV.mCameraView = XMMatrixTranspose(XMLoadFloat4x4(&view));
 	cbCNV.eye = App::getInstance()->camera.Eye();
 	cbCNV.target = App::getInstance()->camera.Target();
+	cbCNV.mLightView = XMMatrixTranspose(XMLoadFloat4x4(&this->lightManager.GetViewMatrix(0)));
 	for(int i = 0; i < 10; ++i)
 	{
 		cbCNV.lights[i] = this->lightManager.GetLightBuffer(i);
@@ -61,9 +64,25 @@ void Application::SetupDraw()
 	pImmediateContext->PSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
 
 }
-void Application::SetupShadow()
-{
+void Application::SetupDepthTexture()
+{	
+	Camera oldCamera = this->camera;
+		
+	cBuffer::cbNeverChanges cbCNV ;
+
+	cbCNV.mCameraView = XMMatrixTranspose(XMLoadFloat4x4(&this->lightManager.GetViewMatrix(0)));
+	cbCNV.eye = this->lightManager[0].pos;
+	cbCNV.target = this->lightManager[0].dir;
+	cbCNV.mLightView = XMMatrixTranspose(XMLoadFloat4x4(&this->lightManager.GetViewMatrix(0)));
+
+	this->direct3d.pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
+	this->direct3d.pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
+	this->direct3d.pImmediateContext->PSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
+
+
 	Shadow::CreateShadow();
+	
+	this->camera = oldCamera;
 }
 void Application::DrawObjects()
 {
@@ -238,6 +257,8 @@ void Application::InitDevices()
 
 	this->objects = ObjectLoader::getInstance()->SpawnAll();
 	this->lightManager = ObjectLoader::getInstance()->SetupLight();
+
+	
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
@@ -266,12 +287,12 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 					return 0;
 				case 'A': case 'a':
 					{
-						
+						this->lightManager[0].pos.x += 1.0f;	
 					}
 					return 0;
 				case 'D': case 'd':
 					{
-						
+						this->lightManager[0].pos.x -= 1.0f;	
 					}
 					return 0;
 				case 'W': case 'w':

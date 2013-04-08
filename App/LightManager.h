@@ -12,6 +12,9 @@ public:
 
 	Light& operator[](const int Index);
 	cBuffer::CLightDesc GetLightBuffer(std::size_t index);
+
+	XMFLOAT4X4 GetViewMatrix(std::size_t index);
+
 protected:
 	std::vector<Light> Lights;
 	std::size_t NumberOfLights;

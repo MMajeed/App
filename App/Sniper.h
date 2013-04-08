@@ -14,7 +14,7 @@ public:
 	virtual void UpdateDrawing(float delta);
 	virtual void UpdateObject(float delta);
 
-	virtual void SetupTexture();
+	virtual void SetupDrawTexture();
 
 	virtual void BuildColorMap();
 

@@ -17,7 +17,7 @@ PS_INPUT VS( VS_INPUT input )
 	PS_INPUT output = (PS_INPUT)0;
 
 	// Combine the matrices first...
-	matrix matFinalMVP = mul( World, View );
+	matrix matFinalMVP = mul( World, CameraView );
 	matFinalMVP = mul( matFinalMVP, Projection );
 
 	output.PosMVP = input.VertexPos;
@@ -29,6 +29,10 @@ PS_INPUT VS( VS_INPUT input )
 	output.Normal = mul( input.VertexNorm, World );
 
 	output.Normal = normalize( output.Normal );
+
+	output.LightMVP = mul( output.LightMVP, World );
+	output.LightMVP = mul( output.LightMVP, LightView );
+	output.LightMVP = mul( output.LightMVP, Projection );
 
 	// Pass the texture coordinates to the pixel shader
 	// (remember, if we don't pass them, the pixel shader is unaware of them)

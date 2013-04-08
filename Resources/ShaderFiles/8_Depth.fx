@@ -5,5 +5,5 @@
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input ) : SV_Target
 {
-	return float4(input.PosMVP.z, 0.0f, 0.0f, 0.0f);
+	return float4(input.LightMVP.z, 0.0f, 0.0f, 1.0f);
 }

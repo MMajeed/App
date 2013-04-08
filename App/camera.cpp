@@ -7,7 +7,7 @@ XMFLOAT4 Camera::Eye() const
 XMFLOAT4 Camera::Target() const
 {
 	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
-	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
+	XMVECTOR At = XMVectorSet(  this->targetMagnitude.x, this->targetMagnitude.y, this->targetMagnitude.z, this->targetMagnitude.w );
 
 	XMMATRIX RotationMatrix( XMMatrixRotationRollPitchYaw( this->RadianPitch, this->RadianYaw, this->RadianRoll ));
 
@@ -35,7 +35,7 @@ float Camera::Yaw() const
 XMFLOAT4X4 Camera::GetViewMatrix() const 
 {
 	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
-	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
+	XMVECTOR At = XMVectorSet(  this->targetMagnitude.x, this->targetMagnitude.y, this->targetMagnitude.z, this->targetMagnitude.w );
 	XMVECTOR Up = XMVectorSet(  this->up.x, this->up.y, this->up.z, this->up.w );
 
 	XMMATRIX RotationMatrix( XMMatrixRotationRollPitchYaw( this->RadianPitch, this->RadianYaw, this->RadianRoll ));
@@ -61,13 +61,13 @@ void Camera::SetUp(float x, float y, float z, float w)
 }
 void Camera::SetLook(float x, float y, float z, float w)
 {
-	this->target = XMFLOAT4(x, y, z, w);
+	this->targetMagnitude = XMFLOAT4(x, y, z, w);
 }
 
 void Camera::MoveForward(float delta)
 {
 	XMVECTOR Eye = XMVectorSet( this->eye.x, this->eye.y, this->eye.z, this->eye.w );
-	XMVECTOR At = XMVectorSet(  this->target.x, this->target.y, this->target.z, this->target.w );
+	XMVECTOR At = XMVectorSet(  this->targetMagnitude.x, this->targetMagnitude.y, this->targetMagnitude.z, this->targetMagnitude.w );
 	
 	XMMATRIX RotationMatrix( XMMatrixRotationRollPitchYaw( this->RadianPitch, this->RadianYaw, this->RadianRoll ));
 
@@ -93,7 +93,7 @@ void Camera::Yaw(float delta)
 
 Camera::Camera()
 		: eye( 0.0f, 2.0f, -7.0f, 0.0f )
-		, target( 0.0f, 0.0f, 1.0f, 0.0f )
+		, targetMagnitude( 0.0f, 0.0f, 1.0f, 0.0f )
 		, up( 0.0f, 1.0f, 0.0f, 0.0f )
 		, RadianRoll(0.0f), RadianPitch(0.0f), RadianYaw(0.0f)
 {

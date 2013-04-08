@@ -18,7 +18,7 @@ PS_INPUT VS( VS_INPUT input )
 	PS_INPUT output = (PS_INPUT)0;
 
 	// Combine the matrices first...
-	matrix matFinalMVP = mul( World, View );
+	matrix matFinalMVP = mul( World, CameraView );
 	matFinalMVP = mul( matFinalMVP, Projection );
 
 	output.PosMVP = input.VertexPos;

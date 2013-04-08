@@ -8,54 +8,40 @@ ID3D11RenderTargetView*		Shadow::pColorMapRTV	= NULL;
 
 void Shadow::CreateShadow()
 {
-	//if(Shadow::IsInited == false)
-	//{
-	//	Shadow::Init();
-	//	Shadow::IsInited = true;
-	//}
-	//Application* app = Application::getInstance();
+	if(Shadow::IsInited == false)
+	{
+		Shadow::Init();
+		Shadow::IsInited = true;
+	}
+	Application* app = Application::getInstance();
 
-	//app->SetupDraw();
+	auto d3dStuff = app->direct3d;
 
-	//auto d3dStuff = app->direct3d;
+	ID3D11RenderTargetView* renderTargets[1] = {Shadow::pColorMapRTV};
+	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
 
-	//ID3D11RenderTargetView* renderTargets[1] = {Shadow::pColorMapRTV};
-	//d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
+	float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	d3dStuff.pImmediateContext->ClearRenderTargetView(Shadow::pColorMapRTV, black);
 
-	//float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	//d3dStuff.pImmediateContext->ClearRenderTargetView(Shadow::pColorMapRTV, black);
+	d3dStuff.pImmediateContext->ClearDepthStencilView(d3dStuff.pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	//d3dStuff.pImmediateContext->ClearDepthStencilView(d3dStuff.pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	std::map<std::string, ObjectInfo>& objects = app->objects;
 
-	//std::map<std::string, ObjectInfo>& objects = app->objects;
+	for(auto iter = objects.begin();
+		iter != objects.end();
+		++iter)
+	{
+		iter->second.ObjectDrawable->DrawDepth();
+	}
 
-	//std::multimap<float, iObjectDrawable*, std::greater<float>> sortedObjects;
+	d3dStuff.pImmediateContext->GenerateMips(pColorMapSRV);
 
-	//for(auto objectIter = objects.begin();
-	//	objectIter != objects.end();
-	//	++objectIter)
-	//{
-	//	if(objectIter->second.DrawNext)
-	//	{
-	//		sortedObjects.insert(std::pair<float, iObjectDrawable*>(objectIter->second.Sort, objectIter->second.ObjectDrawable));
-	//	}
-	//}
+	d3dStuff.pImmediateContext->OMSetRenderTargets(1, &(d3dStuff.pRenderTargetView), d3dStuff.pDepthStencilView);	
 
-	//for(auto iter = sortedObjects.begin();
-	//	iter != sortedObjects.end();
-	//	++iter)
-	//{
-	//	iter->second->DrawDepth();
-	//}
-
-	//d3dStuff.pImmediateContext->GenerateMips(pColorMapSRV);
-
-	//d3dStuff.pImmediateContext->OMSetRenderTargets(1, &(d3dStuff.pRenderTargetView), d3dStuff.pDepthStencilView);	
-
-	//if(Shadow::pColorMapSRV != 0)
-	//{
-	//	//d3dStuff.pImmediateContext->PSSetShaderResources( 10, 1, &(Shadow::pColorMapSRV) );
-	//}
+	if(Shadow::pColorMapSRV != 0)
+	{
+		d3dStuff.pImmediateContext->PSSetShaderResources( 10, 1, &(Shadow::pColorMapSRV) );
+	}
 }
 
 void Shadow::Init()

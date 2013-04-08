@@ -35,7 +35,7 @@ PS_INPUT VS( VS_INPUT input )
 	// Set pos World
 	output.PosWorld = output.PosMVP;
 	// Set pos MVP	
-	output.PosMVP = mul( output.PosMVP, View );
+	output.PosMVP = mul( output.PosMVP, CameraView );
 	output.PosMVP = mul( output.PosMVP, Projection );
 	
 	// Set Normal
@@ -48,6 +48,14 @@ PS_INPUT VS( VS_INPUT input )
 		VertexNormalSkined += w1 * mul( input.Normal, k1);
 	}
 	output.Normal = normalize(VertexNormalSkined);
+
+	
+	// Set LightMVP	
+	output.LightMVP = VertexPosSkined;
+	output.LightMVP = mul( output.LightMVP, World );
+	output.LightMVP = mul( output.LightMVP, LightView );
+	output.LightMVP = mul( output.LightMVP, Projection );
+
 
 	// Set Color
 	output.Color = input.Color;

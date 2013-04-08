@@ -146,8 +146,6 @@ void FBXObject::SetupDrawRasterizeShader()
 }
 void FBXObject::SetupDrawTexture()	
 {
-	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
-
 }
 void FBXObject::DrawObject()	
 {
