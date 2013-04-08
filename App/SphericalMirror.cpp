@@ -141,7 +141,7 @@ void SphericalMirror::UpdateDrawing(float delta)
 	}
 }
 
-void SphericalMirror::SetupTexture()
+void SphericalMirror::SetupDrawTexture()
 {
 	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 	

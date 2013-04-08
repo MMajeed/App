@@ -14,7 +14,7 @@ public:
 	virtual void GetNewDynamicTexture();
 	virtual void UpdateDrawing(float delta);
 
-	virtual void SetupTexture();
+	virtual void SetupDrawTexture();
 
 	ID3D11DepthStencilView*		pDynamicCubeMapDSV;
 	ID3D11RenderTargetView*		pDynamicCubeMapRTV[6];
