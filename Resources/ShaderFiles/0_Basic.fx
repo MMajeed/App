@@ -8,11 +8,7 @@ struct VS_INPUT
 	float2 tex1 : TEXCOORD0;		
 };
 
-
-//--------------------------------------------------------------------------------------
 // Vertex Shader
-//--------------------------------------------------------------------------------------
-//VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR )
 PS_INPUT VS( VS_INPUT input )
 {
 	PS_INPUT output = (PS_INPUT)0;
@@ -33,6 +29,10 @@ PS_INPUT VS( VS_INPUT input )
 	output.LightMVP = mul( output.LightMVP, World );
 	output.LightMVP = mul( output.LightMVP, LightView );
 	output.LightMVP = mul( output.LightMVP, Projection );
+
+	// Pass the texture coordinates to the pixel shader
+	output.tex0 = input.tex0;
+	output.tex1 = input.tex1;
 
     return output;
 }

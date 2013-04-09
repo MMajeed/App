@@ -8,10 +8,7 @@ struct VS_INPUT
 	float2 tex1 : TEXCOORD0;		
 };
 
-//--------------------------------------------------------------------------------------
 // Vertex Shader
-//--------------------------------------------------------------------------------------
-//VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR )
 PS_INPUT VS( VS_INPUT input )
 {
 	PS_INPUT output = (PS_INPUT)0;

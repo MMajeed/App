@@ -10,10 +10,7 @@ struct VS_INPUT
 	float4 JointWght : JOINTWEIGHT;
 };
 
-//--------------------------------------------------------------------------------------
 // Vertex Shader
-//--------------------------------------------------------------------------------------
-
 PS_INPUT VS( VS_INPUT input ) 
 {
     PS_INPUT output = (PS_INPUT)0;
@@ -59,13 +56,12 @@ PS_INPUT VS( VS_INPUT input )
 	// Set Color
 	output.Color = input.Color;
 
+
     return output;
 }
 
 
-//--------------------------------------------------------------------------------------
 // Pixel Shader
-//--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input ) : SV_Target
 {
 	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
