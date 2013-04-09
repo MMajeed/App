@@ -99,11 +99,11 @@ void AnimationPlayer::Play(float delta)
 				const cFBXBuffer::JointPose& jntA = this->Animation.second->mKeys[this->PreviousFrame].mBones[this->ChannelMap[i]];
 				const cFBXBuffer::JointPose& jntB = this->Animation.second->mKeys[this->CurrentFrame].mBones[this->ChannelMap[i]];
 
-				auto lerpedTranslation = XMVectorLerp(XMLoadFloat3(&jntA.translation), XMLoadFloat3(&jntB.translation), ratio);
+				XMVECTOR lerpedTranslation = XMVectorLerp(XMLoadFloat3(&jntA.translation), XMLoadFloat3(&jntB.translation), ratio);
 				XMStoreFloat3(&(this->CurrentBones[i].translation), lerpedTranslation);
-				auto slerpedRotation = XMQuaternionSlerp(XMLoadFloat4(&jntA.rotation), XMLoadFloat4(&jntB.rotation), ratio);
+				XMVECTOR slerpedRotation = XMQuaternionSlerp(XMLoadFloat4(&jntA.rotation), XMLoadFloat4(&jntB.rotation), ratio);
 				XMStoreFloat4(&(this->CurrentBones[i].rotation), slerpedRotation);
-				auto lerpedScale = XMVectorLerp(XMLoadFloat3(&jntA.scale), XMLoadFloat3(&jntB.scale), ratio);
+				XMVECTOR lerpedScale = XMVectorLerp(XMLoadFloat3(&jntA.scale), XMLoadFloat3(&jntB.scale), ratio);
 				XMStoreFloat3(&(this->CurrentBones[i].scale), lerpedScale);
 			}
 		}

@@ -105,12 +105,11 @@ void FBXObject::SetupDrawConstantBuffer()
 
 	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
 
-	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cb, 0, 0 );
-	pImmediateContext->UpdateSubresource( this->pAnimBonesBuffer.second, 0, NULL, &(mBoneTransforms.front()), 0, 0 );
-    	
+	pImmediateContext->UpdateSubresource( this->pCBChangesEveryFrame.second, 0, NULL, &cb, 0, 0 );    	
     pImmediateContext->VSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 	pImmediateContext->PSSetConstantBuffers( 2, 1, &(this->pCBChangesEveryFrame.second) );
 
+	pImmediateContext->UpdateSubresource( this->pAnimBonesBuffer.second, 0, NULL, &(mBoneTransforms.front()), 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 3, 1, &(this->pAnimBonesBuffer.second) );
 }
 void FBXObject::SetupDrawVertexBuffer()
