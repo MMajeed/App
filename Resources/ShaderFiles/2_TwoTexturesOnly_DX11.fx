@@ -15,29 +15,26 @@ struct VS_INPUT
 PS_INPUT VS( VS_INPUT input )
 {
 	PS_INPUT output = (PS_INPUT)0;
-
-	// Combine the matrices first...
-	matrix matFinalMVP = mul( World, CameraView );
-	matFinalMVP = mul( matFinalMVP, Projection );
-
+	
 	output.PosMVP = input.VertexPos;
-	// To place the vertex in the correct location on screen:
-	output.PosMVP = mul( input.VertexPos, matFinalMVP );
+	output.PosMVP = mul( output.PosMVP, World );
+	output.PosMVP = mul( output.PosMVP, CameraView );
+	output.PosMVP = mul( output.PosMVP, Projection );
 
 	// Passed to the pixel shader for correct lighting:
 	output.PosWorld = mul( input.VertexPos, World );
-	output.Normal = mul( input.VertexNorm, World );
 
+	output.Normal = mul( input.VertexNorm, World );
 	output.Normal = normalize( output.Normal );
 
+	output.LightMVP = input.VertexPos;
 	output.LightMVP = mul( output.LightMVP, World );
 	output.LightMVP = mul( output.LightMVP, LightView );
 	output.LightMVP = mul( output.LightMVP, Projection );
 
 	// Pass the texture coordinates to the pixel shader
-	// (remember, if we don't pass them, the pixel shader is unaware of them)
 	output.tex0 = input.tex0;
-	//output.tex1 = input.tex1;
+	output.tex1 = input.tex1;
 
     return output;
 }

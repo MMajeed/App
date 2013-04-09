@@ -24,6 +24,9 @@ public:
 	virtual void SetupDepthTexture();
 	virtual void ClearScreen();
 	virtual void SetupDraw();
+	virtual void SetupSampler();
+	virtual void SetupCBNeverChanges();
+	virtual void SetupCBChangesOnResize();
 	virtual void DrawObjects();
 	virtual void Present();
 

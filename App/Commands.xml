@@ -84,23 +84,6 @@
     <XYZAmbent   X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZSpec     X="0.0f" Y="0.0f" Z="0.0f"/>
   </Object>
-  <Object>
-    <ID>FBXObject2</ID>
-    <Class>FBXFile</Class>
-    <Mesh>../Resources/DefaultCharacter/DefaultAvatar.BakedFBX</Mesh>
-    <AnimationIdle>../Resources/DefaultCharacter/Idles.Bakedfbx</AnimationIdle>
-    <AnimationWalk>../Resources/DefaultCharacter/WalkFWD_S25E55.Bakedfbx</AnimationWalk>
-    <AnimationRun>../Resources/DefaultCharacter/RunForward_Loop_S223E239.Bakedfbx</AnimationRun>
-    <DefaultAnimation>Walk</DefaultAnimation>
-    <ShaderVertex FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="../Resources/ShaderFiles/7_GpuSkinShader.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="1.0f" Y="0.0f" Z="0.0f"/>
-    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZDiffuse  X="0.4f" Y="0.4f" Z="0.4f"/>
-    <XYZAmbent   X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZSpec     X="0.0f" Y="0.0f" Z="0.0f"/>
-  </Object>
   <Light>
     <Type>Spot</Type>--><!--None, Parrallel, Point, Spot-->
     <XYZDiffuse         X="0.8f" Y="0.8f" Z="0.8f"/>

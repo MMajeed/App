@@ -31,8 +31,8 @@ public:
 	{
 		XMMATRIX mCameraView;			//matrix View;
 		XMMATRIX mLightView;			//matrix View;
-		XMFLOAT4 eye;			//float4 eye;
-		XMFLOAT4 target;		//float4 target;
+		XMFLOAT4 eye;					//float4 eye;
+		XMFLOAT4 target;				//float4 target;
 		CLightDesc lights[NUMBEROFLIGHTS];
 	};
 

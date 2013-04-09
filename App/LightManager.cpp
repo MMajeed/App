@@ -47,7 +47,7 @@ XMFLOAT4X4 LightManager::GetViewMatrix(std::size_t index)
 	Light lightObject = this->operator[](index);
 
 	XMVECTOR Eye = XMVectorSet( lightObject.pos.x, lightObject.pos.y,  lightObject.pos.z, lightObject.pos.w );
-	XMVECTOR At = XMVectorSet( lightObject.dir.x, lightObject.dir.y, 1.0f, lightObject.dir.w );
+	XMVECTOR At = XMVectorSet( lightObject.dir.x, lightObject.dir.y, lightObject.dir.z + 0.01f, lightObject.dir.w );
     XMVECTOR Up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
 
 	XMFLOAT4X4  view;

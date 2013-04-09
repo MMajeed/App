@@ -20,7 +20,6 @@ void Application::Render()
 {	
 	this->SetupDepthTexture();
 
-
 	this->ClearScreen();
 	this->SetupDraw();
 	this->DrawObjects();
@@ -35,54 +34,51 @@ void Application::ClearScreen()
 }
 void Application::SetupDraw()
 {
-	ID3D11DeviceContext* pImmediateContext = DX11App::getInstance()->direct3d.pImmediateContext;
+	this->SetupSampler();
+	this->SetupCBNeverChanges();
+	this->SetupCBChangesOnResize();
+}
+void Application::SetupSampler()
+{
+	ID3D11DeviceContext* pImmediateContext = this->direct3d.pImmediateContext;
 
 	pImmediateContext->PSSetSamplers( 0, 1, &(this->pSamplerLinear.second) );
 	pImmediateContext->PSSetSamplers( 1, 1, &(this->pSamplerAnisotropic.second) );
-	
-	cBuffer::cbNeverChanges cbCNV ;
+}
+void Application::SetupCBNeverChanges()
+{
+	ID3D11DeviceContext* pImmediateContext = this->direct3d.pImmediateContext;
+	XMFLOAT4X4 cameraView = this->camera.GetViewMatrix();	
+	XMFLOAT4X4 lightView  = this->lightManager.GetViewMatrix(0);
 
-	auto view = camera.GetViewMatrix();
-	cbCNV.mCameraView = XMMatrixTranspose(XMLoadFloat4x4(&view));
-	cbCNV.eye = App::getInstance()->camera.Eye();
-	cbCNV.target = App::getInstance()->camera.Target();
-	cbCNV.mLightView = XMMatrixTranspose(XMLoadFloat4x4(&this->lightManager.GetViewMatrix(0)));
+	cBuffer::cbNeverChanges cbCNV ;
+	cbCNV.mCameraView = XMMatrixTranspose(XMLoadFloat4x4(&cameraView));
+	cbCNV.mLightView  = XMMatrixTranspose(XMLoadFloat4x4(&lightView));
+	cbCNV.eye         = App::getInstance()->camera.Eye();
+	cbCNV.target      = App::getInstance()->camera.Target();
 	for(int i = 0; i < 10; ++i)
 	{
 		cbCNV.lights[i] = this->lightManager.GetLightBuffer(i);
 	}
-
-	auto projection = Projection.GetPrespective();
-	cBuffer::cbChangeOnResize cbCOR ;
-	cbCOR.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&projection));
-
 	pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
 	pImmediateContext->PSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
+}
+void Application::SetupCBChangesOnResize()
+{
+	ID3D11DeviceContext* pImmediateContext = this->direct3d.pImmediateContext;
+	
+	auto projection = Projection.GetPrespective();
+	cBuffer::cbChangeOnResize cbCOR ;
+	cbCOR.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&projection));
 	pImmediateContext->UpdateSubresource( this->pCBChangesOnResizeID.second, 0, NULL, &cbCOR, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
 	pImmediateContext->PSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
-
 }
 void Application::SetupDepthTexture()
 {	
-	Camera oldCamera = this->camera;
-		
-	cBuffer::cbNeverChanges cbCNV ;
-
-	cbCNV.mCameraView = XMMatrixTranspose(XMLoadFloat4x4(&this->lightManager.GetViewMatrix(0)));
-	cbCNV.eye = this->lightManager[0].pos;
-	cbCNV.target = this->lightManager[0].dir;
-	cbCNV.mLightView = XMMatrixTranspose(XMLoadFloat4x4(&this->lightManager.GetViewMatrix(0)));
-
-	this->direct3d.pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
-	this->direct3d.pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
-	this->direct3d.pImmediateContext->PSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
-
-
+	this->SetupDraw();
 	Shadow::CreateShadow();
-	
-	this->camera = oldCamera;
 }
 void Application::DrawObjects()
 {

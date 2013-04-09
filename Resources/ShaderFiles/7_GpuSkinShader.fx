@@ -56,7 +56,6 @@ PS_INPUT VS( VS_INPUT input )
 	output.LightMVP = mul( output.LightMVP, LightView );
 	output.LightMVP = mul( output.LightMVP, Projection );
 
-
 	// Set Color
 	output.Color = input.Color;
 

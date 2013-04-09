@@ -15,13 +15,14 @@ PS_INPUT VS( VS_INPUT input )
 {
 	PS_INPUT output = (PS_INPUT)0;
 
-	// Combine the matrices first...
-	matrix matFinalMVP = mul( World, CameraView );
-	matFinalMVP = mul( matFinalMVP, Projection );
-	output.PosMVP = mul( input.VertexPos, matFinalMVP );
+	output.PosMVP = input.VertexPos;
+	output.PosMVP = mul( output.PosMVP, World );
+	output.PosMVP = mul( output.PosMVP, CameraView );
+	output.PosMVP = mul( output.PosMVP, Projection );
 
 	output.Normal = input.VertexNorm;
 
+	output.LightMVP = input.VertexPos;
 	output.LightMVP = mul( output.LightMVP, World );
 	output.LightMVP = mul( output.LightMVP, LightView );
 	output.LightMVP = mul( output.LightMVP, Projection );
