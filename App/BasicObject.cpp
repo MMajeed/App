@@ -16,8 +16,6 @@ BasicObject::BasicObject( )
 }
 void BasicObject::Init()
 {
-	DirectXObject::InitDepth();
-
 	ID3D11Device* device = DX11App::getInstance()->direct3d.pd3dDevice;
 
 	this->InitVertexBuffer(device);

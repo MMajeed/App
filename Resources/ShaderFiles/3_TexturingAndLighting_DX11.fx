@@ -36,58 +36,50 @@ PS_INPUT VS( VS_INPUT input )
     return output;
 }
 
-
 //--------------------------------------------------------------------------------------
 // Pixel Shader
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input ) : SV_Target
 {
-	float4 lighPosNormalized = input.LightMVP;
-	lighPosNormalized /= input.LightMVP.w;
 
-	float4 finalLightColour = Shadow.Sample( samAnisotropic, input.tex1 );
+	float4 texColour0 = texture00.Sample( samLinear, input.tex0 );
+	float4 texColour1 = texture01.Sample( samAnisotropic, input.tex1 );
 
+	float4 finalTexColour = texColour0 + texColour1;
+
+	MaterialInfo colorInfo = objectMaterial;
+	colorInfo.diffuse = finalTexColour;
+
+	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
+
+	for ( int index = 0; index < 10; index++ )
+	{
+		if ( light[index].lightPowerRangeType.z > 2.9f && light[index].lightPowerRangeType.z < 3.1f ) // Don't do light
+		{			
+			continue;
+		}
+		else if ( light[index].lightPowerRangeType.z == 0.0f ) // Parallel light
+		{
+			finalLightColour += ParallelLight( colorInfo, light[index], 
+										 input.PosWorld, 
+										 input.Normal, eye );	
+		}
+		else if ( light[index].lightPowerRangeType.z == 1.0f ) // Point
+		{
+			finalLightColour += PointLight(colorInfo, light[index], 
+									 input.PosWorld, 
+									 input.Normal, eye );
+		}
+		else if ( light[index].lightPowerRangeType.z > 1.0f ) // Point
+		{
+			finalLightColour += Spotlight( colorInfo, light[index], 
+									 input.PosWorld, 
+									 input.Normal, eye );
+		}
+	}
+
+	finalLightColour.w = objectMaterial.diffuse.w;
 
 	return finalLightColour;
-
-	//float4 texColour0 = texture00.Sample( samLinear, input.tex0 );
-	//float4 texColour1 = texture01.Sample( samAnisotropic, input.tex1 );
-
-	//float4 finalTexColour = texColour0 + texColour1;
-
-	//MaterialInfo colorInfo = objectMaterial;
-	//colorInfo.diffuse = finalTexColour;
-
-	//float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
-
-	//for ( int index = 0; index < 10; index++ )
-	//{
-	//	if ( light[index].lightPowerRangeType.z > 2.9f && light[index].lightPowerRangeType.z < 3.1f ) // Don't do light
-	//	{			
-	//		continue;
-	//	}
-	//	else if ( light[index].lightPowerRangeType.z == 0.0f ) // Parallel light
-	//	{
-	//		finalLightColour += ParallelLight( colorInfo, light[index], 
-	//									 input.PosWorld, 
-	//									 input.Normal, eye );	
-	//	}
-	//	else if ( light[index].lightPowerRangeType.z == 1.0f ) // Point
-	//	{
-	//		finalLightColour += PointLight(colorInfo, light[index], 
-	//								 input.PosWorld, 
-	//								 input.Normal, eye );
-	//	}
-	//	else if ( light[index].lightPowerRangeType.z > 1.0f ) // Point
-	//	{
-	//		finalLightColour += Spotlight( colorInfo, light[index], 
-	//								 input.PosWorld, 
-	//								 input.Normal, eye );
-	//	}
-	//}
-
-	//finalLightColour.w = objectMaterial.diffuse.w;
-
-	//return finalLightColour;
 }
 

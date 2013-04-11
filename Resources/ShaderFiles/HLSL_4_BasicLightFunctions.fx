@@ -115,9 +115,9 @@ float4 Spotlight( MaterialInfo material, LightDesc light, float4 pos, float4 nor
 	float4 litColor = PointLight(material, light, pos, normal, eyePos);
 			
 	// The vector from the surface to the light.
-	float3 lightVec = normalize(light.pos.xyz - pos.xyz);
+	float3 lightVec = normalize(light.pos - pos);
 	
-	float s = pow(max(dot(-lightVec, light.dir.xyz), 0.0f), light.lightPowerRangeType.x);
+	float s = pow(max(dot(-lightVec, light.dir), 0.0f), light.lightPowerRangeType.x);
 	
 	// Scale color by spotlight factor.
 	return litColor*s;

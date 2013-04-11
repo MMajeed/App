@@ -42,6 +42,10 @@ PS_INPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input ) : SV_Target
 {
+	float4 depthTexture = Shadow.Sample( samLinear, input.tex0 ).r;
+	
+	return float4(depthTexture.rrr, 1);
+
 	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
 
 	float4 texColour0 = texture00.Sample( samLinear, input.tex0 );

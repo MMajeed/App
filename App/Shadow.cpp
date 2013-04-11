@@ -2,8 +2,11 @@
 #include "Application.h"
 
 bool						Shadow::IsInited		= false;
-ID3D11ShaderResourceView*	Shadow::pColorMapSRV	= NULL;
-ID3D11RenderTargetView*		Shadow::pColorMapRTV	= NULL;
+
+ID3D11ShaderResourceView*   Shadow::mDepthMapSRV	= NULL;
+ID3D11DepthStencilView*     Shadow::mDepthMapDSV	= NULL;
+
+D3D11_VIEWPORT              Shadow::mViewport;
 
 
 void Shadow::CreateShadow()
@@ -15,15 +18,17 @@ void Shadow::CreateShadow()
 	}
 	Application* app = Application::getInstance();
 
+
 	auto d3dStuff = app->direct3d;
 
-	ID3D11RenderTargetView* renderTargets[1] = {Shadow::pColorMapRTV};
-	d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, d3dStuff.pDepthStencilView);
+	d3dStuff.pImmediateContext->RSSetViewports(1, &mViewport);
 
-	float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	d3dStuff.pImmediateContext->ClearRenderTargetView(Shadow::pColorMapRTV, black);
-
-	d3dStuff.pImmediateContext->ClearDepthStencilView(d3dStuff.pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	// Set null render target because we are only going to draw to depth buffer.
+	// Setting a null render target will disable color writes.
+    ID3D11RenderTargetView* renderTargets[1] = {0};
+    d3dStuff.pImmediateContext->OMSetRenderTargets(1, renderTargets, mDepthMapDSV);
+    
+    d3dStuff.pImmediateContext->ClearDepthStencilView(mDepthMapDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	std::map<std::string, ObjectInfo>& objects = app->objects;
 
@@ -31,67 +36,70 @@ void Shadow::CreateShadow()
 		iter != objects.end();
 		++iter)
 	{
-		iter->second.ObjectDrawable->DrawDepth();
+		iter->second.ObjectDrawable->Draw();
 	}
-
-	d3dStuff.pImmediateContext->GenerateMips(pColorMapSRV);
 
 	d3dStuff.pImmediateContext->OMSetRenderTargets(1, &(d3dStuff.pRenderTargetView), d3dStuff.pDepthStencilView);	
+	d3dStuff.pImmediateContext->RSSetViewports(1, &d3dStuff.vp);
 
-	if(Shadow::pColorMapSRV != 0)
-	{
-		d3dStuff.pImmediateContext->PSSetShaderResources( 10, 1, &(Shadow::pColorMapSRV) );
-	}
+	d3dStuff.pImmediateContext->PSSetShaderResources( 10, 1, &(Shadow::mDepthMapSRV) );
 }
 
 void Shadow::Init()
 {
 	auto d3dStuff = DX11App::getInstance()->direct3d;
 
-	ID3D11Texture2D* colorMap = 0;
+	mViewport.TopLeftX = 0.0f;
+    mViewport.TopLeftY = 0.0f;
+    mViewport.Width    = 2048;
+    mViewport.Height   = 2048;
+    mViewport.MinDepth = 0.0f;
+    mViewport.MaxDepth = 1.0f;
 
-    D3D11_TEXTURE2D_DESC texDesc;
-	ZeroMemory(&texDesc, sizeof(texDesc));
+	// Use typeless format because the DSV is going to interpret
+	// the bits as DXGI_FORMAT_D24_UNORM_S8_UINT, whereas the SRV is going to interpret
+	// the bits as DXGI_FORMAT_R24_UNORM_X8_TYPELESS.
+	D3D11_TEXTURE2D_DESC texDesc;
+    texDesc.Width     = 2048;
+    texDesc.Height    = 2048;
+    texDesc.MipLevels = 1;
+    texDesc.ArraySize = 1;
+    texDesc.Format    = DXGI_FORMAT_R24G8_TYPELESS;
+    texDesc.SampleDesc.Count   = 1;  
+    texDesc.SampleDesc.Quality = 0;  
+    texDesc.Usage          = D3D11_USAGE_DEFAULT;
+    texDesc.BindFlags      = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+    texDesc.CPUAccessFlags = 0; 
+    texDesc.MiscFlags      = 0;
 
-    texDesc.Width              = App::getInstance()->window.width;
-	texDesc.Height             = App::getInstance()->window.height;
-    texDesc.MipLevels          = 0;
-    texDesc.ArraySize          = 1;
-    texDesc.Format             = DXGI_FORMAT_R8G8B8A8_UNORM;
-    texDesc.SampleDesc.Count   = 1;
-    texDesc.SampleDesc.Quality = 0;
-    texDesc.Usage              = D3D11_USAGE_DEFAULT;
-    texDesc.BindFlags          = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-    texDesc.CPUAccessFlags     = 0;
-    texDesc.MiscFlags          = D3D11_RESOURCE_MISC_GENERATE_MIPS;
-
-	HRESULT hr = d3dStuff.pd3dDevice->CreateTexture2D(&texDesc, 0, &colorMap);
+    ID3D11Texture2D* depthMap = 0;
+	HRESULT hr = d3dStuff.pd3dDevice->CreateTexture2D(&texDesc, 0, &depthMap);
 	if(hr)
 	{
-		throw std::exception("Failed at creating the texture 2d for the Sniper");
+		throw std::exception("Error creating 2d texture for shadow");
 	}
 
-	hr = d3dStuff.pd3dDevice->CreateTexture2D(&texDesc, 0, &colorMap);
+    D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+	dsvDesc.Flags = 0;
+    dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    dsvDesc.Texture2D.MipSlice = 0;
+    hr = d3dStuff.pd3dDevice->CreateDepthStencilView(depthMap, &dsvDesc, &mDepthMapDSV);
 	if(hr)
 	{
-		throw std::exception("Failed at creating the texture 2d for the Sniper");
+		throw std::exception("Error creating 2d texture for shadow");
 	}
 
-    // Null description means to create a view to all mipmap levels
-    // using the format the texture was created with.
-	hr = d3dStuff.pd3dDevice->CreateRenderTargetView(colorMap, 0, &(Shadow::pColorMapRTV));
-    if(hr)
-	{
-		throw std::exception("Failed at creating render target view");
-	}
-
-	hr = d3dStuff.pd3dDevice->CreateShaderResourceView(colorMap, 0, &(Shadow::pColorMapSRV));
+    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+    srvDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    srvDesc.Texture2D.MipLevels = texDesc.MipLevels;
+    srvDesc.Texture2D.MostDetailedMip = 0;
+    hr = d3dStuff.pd3dDevice->CreateShaderResourceView(depthMap, &srvDesc, &mDepthMapSRV);
 	if(hr)
 	{
-		throw std::exception("Failed at creating shader resource view");
+		throw std::exception("Error creating 2d texture for shadow");
 	}
-
-    // View saves a reference to the texture so we can
-    // release our reference.
-	colorMap->Release();
+    // View saves a reference to the texture so we can release our reference.
+	depthMap->Release();
 }

@@ -41,7 +41,7 @@ protected:
 	std::pair<std::string, ID3D11SamplerState*>		pSamplerAnisotropic;
 	
 	void LoadD3DStuff();
-
+	bool DrawingShadow;
 	LightManager lightManager;
 };
 

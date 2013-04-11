@@ -383,8 +383,5 @@
     <None Include="..\Resources\ShaderFiles\Setup.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\Resources\ShaderFiles\8_Depth.fx">
-      <Filter>Shader</Filter>
-    </None>
   </ItemGroup>
 </Project>

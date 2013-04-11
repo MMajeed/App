@@ -86,13 +86,13 @@
   </Object>
   <Light>
     <Type>Spot</Type>--><!--None, Parrallel, Point, Spot-->
-    <XYZDiffuse         X="0.8f" Y="0.8f" Z="0.8f"/>
-    <XYZAmbient         X="0.4f" Y="0.4f" Z="0.4f"/>
+    <XYZDiffuse         X="0.2f" Y="0.2f" Z="0.2f"/>
+    <XYZAmbient         X="0.09f" Y="0.09f" Z="0.09f"/>
     <XYZSpec            X="0.01f" Y="0.01f" Z="0.01f"/>
-    <XYZPos             X="0.0f" Y="50.0f" Z="0.0f"/>
-    <XYZDir             X="0.0f" Y="-1.0f" Z="0.0f"/>
+    <XYZPos             X="15.0f" Y="15.0f" Z="-15.0f"/>
+    <XYZDir             X="-0.57734591" Y="-0.57735002" Z="0.57735413"/>
     <XYZAttenuation     X="0.00015f" Y="0.00015f" Z="0.00015f"/>
-    <Power>15.0f</Power>
+    <Power>5.0f</Power>
     <Range>55.0f</Range>
   </Light>
 </Objects>

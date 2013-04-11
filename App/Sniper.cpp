@@ -129,7 +129,6 @@ void Sniper::BuildColorMap()
 }
 void Sniper::Init()
 {
-	this->BoolDrawDepth = false;
 	BasicObject::Init();
 	
 	this->BuildColorMap();
