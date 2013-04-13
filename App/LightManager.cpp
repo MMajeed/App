@@ -45,20 +45,14 @@ cBuffer::CLightDesc LightManager::GetLightBuffer(std::size_t index)
 
 XMFLOAT4X4 LightManager::GetViewMatrix(std::size_t index)
 {
-	float radius = sqrtf(10.0f*10.0f + 15.0f*15.0f);;
-	XMFLOAT4 center = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-
-
 	Light lightObject = this->operator[](index);
 
-	// Only the first "main" light casts a shadow.
-	XMVECTOR lightDir = XMLoadFloat4(&lightObject.dir);
-	XMVECTOR lightPos = -2.0f*radius*lightDir;
-	XMVECTOR targetPos = XMLoadFloat4(&center);
-	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	XMVECTOR Eye = XMVectorSet( lightObject.pos.x, lightObject.pos.y,  lightObject.pos.z, lightObject.pos.w );
+	XMVECTOR At = XMVectorSet( lightObject.dir.x, lightObject.dir.y, lightObject.dir.z + 0.01f, lightObject.dir.w );
+    XMVECTOR Up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
 
 	XMFLOAT4X4  view;
-	XMStoreFloat4x4(&view, XMMatrixLookAtLH(lightPos, targetPos, up));
+	XMStoreFloat4x4(&view, XMMatrixLookAtLH( Eye, At, Up ));
 
 	return view;
 }

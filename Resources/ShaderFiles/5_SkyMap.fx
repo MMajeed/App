@@ -24,11 +24,6 @@ PS_INPUT VS( VS_INPUT input )
 	output.Normal = mul( input.VertexNorm, World );
 	output.Normal = normalize( output.Normal );
 
-	output.LightMVP = input.VertexPos;
-	output.LightMVP = mul( output.LightMVP, World );
-	output.LightMVP = mul( output.LightMVP, LightView );
-	output.LightMVP = mul( output.LightMVP, Projection );
-
 	// Pass the texture coordinates to the pixel shader
 	output.tex0 = input.tex0;
 	output.tex1 = input.tex1;

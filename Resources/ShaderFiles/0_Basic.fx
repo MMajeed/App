@@ -28,7 +28,8 @@ PS_INPUT VS( VS_INPUT input )
 	output.LightMVP = input.VertexPos;
 	output.LightMVP = mul( output.LightMVP, World );
 	output.LightMVP = mul( output.LightMVP, LightView );
-	output.LightMVP = mul( output.LightMVP, Projection );
+	output.LightMVP = mul( output.LightMVP, lightProject );
+	output.LightMVP = mul( output.LightMVP, specialMatrix );
 
 	// Pass the texture coordinates to the pixel shader
 	output.tex0 = input.tex0;
@@ -43,6 +44,19 @@ PS_INPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input ) : SV_Target
 {
+	float4 lightPos = input.LightMVP;
+	lightPos.xyz /= lightPos.w;
+
+	lightPos.xy += 0.5f;
+
+	float4 depthTexture = Shadow.Sample( samShadow, lightPos.xy);
+
+	bool depthWithin = (lightPos.z - depthTexture.x) >= 0.0001;
+	if(depthWithin && lightPos.z < 1.0f)
+	{
+		return float4(0.1f, 0.1f, 0.1f, 1.0f);
+	}
+
 	float4 finalLightColour = objectMaterial.diffuse;
 
 	return finalLightColour;

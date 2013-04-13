@@ -61,6 +61,13 @@ void Application::SetupCBNeverChanges()
 	{
 		cbCNV.lights[i] = this->lightManager.GetLightBuffer(i);
 	}
+	XMMATRIX T(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+	cbCNV.mSpecialMatrix = T;
+
 	pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
 	pImmediateContext->PSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
@@ -71,8 +78,18 @@ void Application::SetupCBChangesOnResize()
 	
 	XMFLOAT4X4 projection = Projection.GetPrespective();
 
+	auto old = Projection;
+	Projection.SetMinViewable(10.0f);
+	Projection.SetMaxViewable(5000.0f);
+	Projection.SetFovAngle(XM_PIDIV2);
+	XMFLOAT4X4 lightProjection = Projection.GetPrespective();
+	Projection = old;
+	
 	cBuffer::cbChangeOnResize cbCOR ;
-	cbCOR.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&projection));
+	if(this->DrawingShadow) { cbCOR.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&lightProjection)); }
+	else					{ cbCOR.mProjection = XMMatrixTranspose(XMLoadFloat4x4(&projection)); }	
+	
+	cbCOR.mLightProjection = XMMatrixTranspose(XMLoadFloat4x4(&lightProjection));
 
 	pImmediateContext->UpdateSubresource( this->pCBChangesOnResizeID.second, 0, NULL, &cbCOR, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 1, 1, &this->pCBChangesOnResizeID.second );
@@ -81,8 +98,13 @@ void Application::SetupCBChangesOnResize()
 void Application::SetupDepthTexture()
 {	
 	this->DrawingShadow = true;
+
+	this->objects["Floor"].DrawNext = false;
+
 	this->SetupDraw();
 	Shadow::CreateShadow();
+
+	this->objects["Floor"].DrawNext = true;
 	this->DrawingShadow = false;
 }
 void Application::DrawObjects()
@@ -298,12 +320,12 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 					return 0;
 				case 'W': case 'w':
 					{
-						
+						this->lightManager[0].pos.z += 1.0f;	
 					}
 					return 0;
 				case 'S': case 's':
 					{
-						
+						this->lightManager[0].pos.z -= 1.0f;	
 					}
 					return 0;
 				case 'X': case 'x':
@@ -407,6 +429,24 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 					break;
 				case VK_F1:
 					{
+						ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
+
+						this->objects = ObjectLoader::getInstance()->SpawnAll();
+						this->lightManager = ObjectLoader::getInstance()->SetupLight();
+					}
+				case VK_F2:
+					{
+						DX11ObjectManager::getInstance()->PlyBuffer.mapObject.clear();
+						DX11ObjectManager::getInstance()->IndexBuffer.mapObject.clear();
+						DX11ObjectManager::getInstance()->CBuffer.mapObject.clear();
+						DX11ObjectManager::getInstance()->InputLayout.mapObject.clear();
+						DX11ObjectManager::getInstance()->VertexShader.mapObject.clear();
+						DX11ObjectManager::getInstance()->PixelShader.mapObject.clear();
+						DX11ObjectManager::getInstance()->RastersizerState.mapObject.clear();
+						DX11ObjectManager::getInstance()->Textexture.mapObject.clear();
+						DX11ObjectManager::getInstance()->Sampler.mapObject.clear();
+						DX11ObjectManager::getInstance()->BelnderState.mapObject.clear();
+
 						ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
 						this->objects = ObjectLoader::getInstance()->SpawnAll();

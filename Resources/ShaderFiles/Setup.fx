@@ -8,6 +8,7 @@ cbuffer cbNeverChanges : register( b0 )
 {
     matrix CameraView;
 	matrix LightView;
+	matrix specialMatrix;
 	float4 eye;
 	float4 target;
 	LightDesc light[10];		// Light type now in light description
@@ -16,6 +17,7 @@ cbuffer cbNeverChanges : register( b0 )
 cbuffer cbChangeOnResize : register( b1 )
 {
     matrix Projection;
+	matrix lightProject;
 };
 
 cbuffer cbChangesEveryFrame : register( b2 )
@@ -31,6 +33,17 @@ cbuffer AnimMatrices : register( b3 )
 
 SamplerState samLinear : register( s0 );
 SamplerState samAnisotropic : register( s1 );
+
+
+SamplerState samShadow
+{
+	Filter   = COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
+	AddressU = BORDER;
+	AddressV = BORDER;
+	AddressW = BORDER;
+	BorderColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+};
+
 
 
 Texture2D texture00 : register( t0 );

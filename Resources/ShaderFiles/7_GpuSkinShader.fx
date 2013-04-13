@@ -51,7 +51,8 @@ PS_INPUT VS( VS_INPUT input )
 	output.LightMVP = VertexPosSkined;
 	output.LightMVP = mul( output.LightMVP, World );
 	output.LightMVP = mul( output.LightMVP, LightView );
-	output.LightMVP = mul( output.LightMVP, Projection );
+	output.LightMVP = mul( output.LightMVP, lightProject );
+	output.LightMVP = mul( output.LightMVP, specialMatrix );
 
 	// Set Color
 	output.Color = input.Color;
@@ -64,6 +65,20 @@ PS_INPUT VS( VS_INPUT input )
 // Pixel Shader
 float4 PS( PS_INPUT input ) : SV_Target
 {
+
+	float4 lightPos = input.LightMVP;
+	lightPos.xyz /= lightPos.w;
+
+	lightPos.xy += 0.5f;
+
+	float4 depthTexture = Shadow.Sample( samShadow, lightPos.xy);
+
+	bool depthWithin = (lightPos.z - depthTexture.x) >= 0.0001;
+	if(depthWithin && lightPos.z < 1.0f)
+	{
+		return objectMaterial.ambient;
+	}
+
 	float4 finalLightColour = float4( 0.0f, 0.0f, 0.0f, 1.0f );
 
 	for ( int index = 0; index < 10; index++ )

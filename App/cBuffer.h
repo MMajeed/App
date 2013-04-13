@@ -31,6 +31,7 @@ public:
 	{
 		XMMATRIX mCameraView;			//matrix View;
 		XMMATRIX mLightView;			//matrix View;
+		XMMATRIX mSpecialMatrix;			//matrix View;
 		XMFLOAT4 eye;					//float4 eye;
 		XMFLOAT4 target;				//float4 target;
 		CLightDesc lights[NUMBEROFLIGHTS];
@@ -39,6 +40,7 @@ public:
 	struct cbChangeOnResize
 	{
 		XMMATRIX mProjection;
+		XMMATRIX mLightProjection;
 	};
 
 	struct cbChangeEveryFrame

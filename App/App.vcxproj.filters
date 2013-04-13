@@ -153,9 +153,6 @@
     <ClInclude Include="SphericalMirror.h">
       <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror</Filter>
     </ClInclude>
-    <ClInclude Include="Prespective.h">
-      <Filter>Tools\View\Prespective</Filter>
-    </ClInclude>
     <ClInclude Include="SkeletalAnimation.h">
       <Filter>Tools\DX11Stuff\Buffer\Mesh &amp; Animation\SkeletalAnimation</Filter>
     </ClInclude>
@@ -212,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="DirectXObject.h">
       <Filter>DX11ObjectDrawable\DirectX Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Prespective.h">
+      <Filter>Tools\View\Prespective</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

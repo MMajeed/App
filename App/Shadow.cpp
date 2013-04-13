@@ -30,14 +30,7 @@ void Shadow::CreateShadow()
     
     d3dStuff.pImmediateContext->ClearDepthStencilView(mDepthMapDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	std::map<std::string, ObjectInfo>& objects = app->objects;
-
-	for(auto iter = objects.begin();
-		iter != objects.end();
-		++iter)
-	{
-		iter->second.ObjectDrawable->Draw();
-	}
+	app->DrawObjects();
 
 	d3dStuff.pImmediateContext->OMSetRenderTargets(1, &(d3dStuff.pRenderTargetView), d3dStuff.pDepthStencilView);	
 	d3dStuff.pImmediateContext->RSSetViewports(1, &d3dStuff.vp);
@@ -51,8 +44,8 @@ void Shadow::Init()
 
 	mViewport.TopLeftX = 0.0f;
     mViewport.TopLeftY = 0.0f;
-    mViewport.Width    = 2048;
-    mViewport.Height   = 2048;
+    mViewport.Width    = 8192;
+    mViewport.Height   = 8192;
     mViewport.MinDepth = 0.0f;
     mViewport.MaxDepth = 1.0f;
 
@@ -60,8 +53,8 @@ void Shadow::Init()
 	// the bits as DXGI_FORMAT_D24_UNORM_S8_UINT, whereas the SRV is going to interpret
 	// the bits as DXGI_FORMAT_R24_UNORM_X8_TYPELESS.
 	D3D11_TEXTURE2D_DESC texDesc;
-    texDesc.Width     = 2048;
-    texDesc.Height    = 2048;
+    texDesc.Width     = 8192;
+    texDesc.Height    = 8192;
     texDesc.MipLevels = 1;
     texDesc.ArraySize = 1;
     texDesc.Format    = DXGI_FORMAT_R24G8_TYPELESS;

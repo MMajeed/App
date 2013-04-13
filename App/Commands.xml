@@ -17,30 +17,30 @@
     <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
   </Object>
   <Object>
-    <ID>TransparentPly</ID>
-    <Class>TransparentPly</Class>
+    <ID>Wall</ID>
+    <Class>PlyFile</Class>
     <PlyFile>../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
     <ShaderInput  FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderVertex FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="../Resources/ShaderFiles/2_TwoTexturesOnly_DX11.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="2.0f" Y="1.0f" Z="2.0f"/>
+    <XYZLocation X="-2.0f" Y="1.0f" Z="3.0f"/>
     <XYZRotation X="1.57f" Y="0.0f" Z="1.57f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZDiffuse  X="1.0f" Y="0.0f" Z="1.0f" W="0.5f"/>
-    <XYZAmbent   X="1.0f" Y="0.0f" Z="0.0f"/>
+    <XYZAmbent   X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZSpec     X="1.0f" Y="0.0f" Z="0.0f"/>
     <Texture0>../Resources/Texture/flat_wood_texture.jpg</Texture0>
   </Object>
   <Object>
-    <ID>Cube</ID>
+    <ID>Bunny</ID>
     <Class>TransparentPly</Class>
     <PlyFile>../Resources/PlyFiles/bun_zipper_res3.ply</PlyFile>
     <ShaderInput  FileName="../Resources/ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderVertex FileName="../Resources/ShaderFiles/0_Basic.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="../Resources/ShaderFiles/0_Basic.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="5.0f" Y="5.0f" Z="5.0f"/>
-    <XYZLocation X="2.0f" Y="1.0f" Z="3.0f"/>
+    <XYZLocation X="-2.5f" Y="1.0f" Z="2.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZDiffuse  X="0.5f" Y="0.5f" Z="0.5f" W="0.7f"/>
@@ -62,7 +62,7 @@
     <ID>SphericalMirror</ID>
     <Class>SphericalMirror</Class>
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="0.0f" Y="1.0f" Z="8.0f"/>
+    <XYZLocation X="0.0f" Y="1.0f" Z="5.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <UpdateEvery>0.012</UpdateEvery>
@@ -80,16 +80,16 @@
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
     <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZDiffuse  X="0.4f" Y="0.4f" Z="0.4f"/>
+    <XYZDiffuse  X="0.15f" Y="0.15f" Z="0.15f"/>
     <XYZAmbent   X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZSpec     X="0.0f" Y="0.0f" Z="0.0f"/>
   </Object>
   <Light>
     <Type>Spot</Type>--><!--None, Parrallel, Point, Spot-->
-    <XYZDiffuse         X="0.2f" Y="0.2f" Z="0.2f"/>
+    <XYZDiffuse         X="0.3f" Y="0.3f" Z="0.3f"/>
     <XYZAmbient         X="0.09f" Y="0.09f" Z="0.09f"/>
     <XYZSpec            X="0.01f" Y="0.01f" Z="0.01f"/>
-    <XYZPos             X="15.0f" Y="15.0f" Z="-15.0f"/>
+    <XYZPos             X="10.0f" Y="10.0f" Z="-10.0f"/>
     <XYZDir             X="-0.57734591" Y="-0.57735002" Z="0.57735413"/>
     <XYZAttenuation     X="0.00015f" Y="0.00015f" Z="0.00015f"/>
     <Power>5.0f</Power>
