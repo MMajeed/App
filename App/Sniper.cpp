@@ -158,19 +158,19 @@ Sniper::Sniper()
 	this->pCBChangesEveryFrame.first = "CBChangeEveryFrame";
 	this->pRastersizerState.first	 = "FillSolid";
 
-	this->pInputLayout.first         = "../Resources/ShaderFiles/6_Binoculars.fx";
-	this->pVertexShader.first        = "../Resources/ShaderFiles/6_Binoculars.fx";
-	this->pPixelShader.first         = "../Resources/ShaderFiles/6_Binoculars.fx";
+	this->pInputLayout.first         = "../Resources/ShaderFiles/VS_0_Regular.fx";
+	this->pVertexShader.first        = "../Resources/ShaderFiles/VS_0_Regular.fx";
+	this->pPixelShader.first         = "../Resources/ShaderFiles/PS_6_Binoculars.fx";
 
-	this->Shader.ShaderInput.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderInput.FileName		 = "../Resources/ShaderFiles/VS_0_Regular.fx";
 	this->Shader.ShaderInput.EntryPoint		 = "VS";	
 	this->Shader.ShaderInput.Mode			 = "vs_4_0";
 
-	this->Shader.ShaderVertex.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderVertex.FileName		 = "../Resources/ShaderFiles/VS_0_Regular.fx";
 	this->Shader.ShaderVertex.EntryPoint	 = "VS";	
 	this->Shader.ShaderVertex.Mode			 = "vs_4_0";
 
-	this->Shader.ShaderPixel.FileName		 = "../Resources/ShaderFiles/6_Binoculars.fx";
+	this->Shader.ShaderPixel.FileName		 = "../Resources/ShaderFiles/PS_6_Binoculars.fx";
 	this->Shader.ShaderPixel.EntryPoint		 = "PS";	
 	this->Shader.ShaderPixel.Mode			 = "ps_4_0";
 

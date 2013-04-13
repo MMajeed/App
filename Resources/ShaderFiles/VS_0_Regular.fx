@@ -22,8 +22,10 @@ PS_INPUT VS( VS_INPUT input )
 	// Passed to the pixel shader for correct lighting:
 	output.PosWorld = mul( input.VertexPos, World );
 
-	output.Normal = mul( input.VertexNorm, World );
-	output.Normal = normalize( output.Normal );
+	output.Normal = input.VertexNorm;
+
+	output.NormalWorld = mul( input.VertexNorm, World );
+	output.NormalWorld = normalize( output.NormalWorld );
 
 	output.LightMVP = input.VertexPos;
 	output.LightMVP = mul( output.LightMVP, World );
@@ -36,29 +38,5 @@ PS_INPUT VS( VS_INPUT input )
 	output.tex1 = input.tex1;
 
     return output;
-}
-
-
-//--------------------------------------------------------------------------------------
-// Pixel Shader
-//--------------------------------------------------------------------------------------
-float4 PS( PS_INPUT input ) : SV_Target
-{
-	float4 lightPos = input.LightMVP;
-	lightPos.xyz /= lightPos.w;
-
-	lightPos.xy += 0.5f;
-
-	float4 depthTexture = Shadow.Sample( samShadow, lightPos.xy);
-
-	bool depthWithin = (lightPos.z - depthTexture.x) >= 0.0001;
-	if(depthWithin && lightPos.z < 1.0f)
-	{
-		return float4(0.1f, 0.1f, 0.1f, 1.0f);
-	}
-
-	float4 finalLightColour = objectMaterial.diffuse;
-
-	return finalLightColour;
 }
 

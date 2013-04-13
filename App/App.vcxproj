@@ -225,16 +225,17 @@
     <ClInclude Include="PlyBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\ShaderFiles\0_Basic.fx" />
-    <None Include="..\Resources\ShaderFiles\1_LightingOnly_DX11.fx" />
-    <None Include="..\Resources\ShaderFiles\2_TwoTexturesOnly_DX11.fx" />
-    <None Include="..\Resources\ShaderFiles\3_TexturingAndLighting_DX11.fx" />
-    <None Include="..\Resources\ShaderFiles\4_CubeMapping.fx" />
-    <None Include="..\Resources\ShaderFiles\5_SkyMap.fx" />
-    <None Include="..\Resources\ShaderFiles\6_Binoculars.fx" />
-    <None Include="..\Resources\ShaderFiles\7_GpuSkinShader.fx" />
     <None Include="..\Resources\ShaderFiles\HLSL_4_BasicLightFunctions.fx" />
+    <None Include="..\Resources\ShaderFiles\PS_0_Basic.fx" />
+    <None Include="..\Resources\ShaderFiles\PS_1_LightingOnly.fx" />
+    <None Include="..\Resources\ShaderFiles\PS_2_Texture.fx" />
+    <None Include="..\Resources\ShaderFiles\PS_3_TextureAndLighting.fx" />
+    <None Include="..\Resources\ShaderFiles\PS_4_CubeMapping.fx" />
+    <None Include="..\Resources\ShaderFiles\PS_5_SkyMap.fx" />
+    <None Include="..\Resources\ShaderFiles\PS_6_Binoculars.fx" />
     <None Include="..\Resources\ShaderFiles\Setup.fx" />
+    <None Include="..\Resources\ShaderFiles\VS_0_Regular.fx" />
+    <None Include="..\Resources\ShaderFiles\VS_1_GPUSkinning.fx" />
     <None Include="Commands.xml">
       <SubType>Designer</SubType>
     </None>

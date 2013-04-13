@@ -40,12 +40,13 @@ void Shadow::CreateShadow()
 
 void Shadow::Init()
 {
+	static const int imageSize = 4096;
 	auto d3dStuff = DX11App::getInstance()->direct3d;
 
 	mViewport.TopLeftX = 0.0f;
     mViewport.TopLeftY = 0.0f;
-    mViewport.Width    = 8192;
-    mViewport.Height   = 8192;
+    mViewport.Width    = imageSize;
+    mViewport.Height   = imageSize;
     mViewport.MinDepth = 0.0f;
     mViewport.MaxDepth = 1.0f;
 
@@ -53,8 +54,8 @@ void Shadow::Init()
 	// the bits as DXGI_FORMAT_D24_UNORM_S8_UINT, whereas the SRV is going to interpret
 	// the bits as DXGI_FORMAT_R24_UNORM_X8_TYPELESS.
 	D3D11_TEXTURE2D_DESC texDesc;
-    texDesc.Width     = 8192;
-    texDesc.Height    = 8192;
+    texDesc.Width     = imageSize;
+    texDesc.Height    = imageSize;
     texDesc.MipLevels = 1;
     texDesc.ArraySize = 1;
     texDesc.Format    = DXGI_FORMAT_R24G8_TYPELESS;

@@ -350,37 +350,46 @@
     <Filter Include="Tools\Loader">
       <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\Pixel Shader">
+      <UniqueIdentifier>{c23c7198-ea92-42f9-9401-5ee95e63dd35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Vertex Shader">
+      <UniqueIdentifier>{d6bc04a1-b334-4be7-b977-f230d2640ccb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Commands.xml" />
-    <None Include="..\Resources\ShaderFiles\0_Basic.fx">
-      <Filter>Shader</Filter>
+    <None Include="..\Resources\ShaderFiles\PS_0_Basic.fx">
+      <Filter>Shader\Pixel Shader</Filter>
     </None>
-    <None Include="..\Resources\ShaderFiles\1_LightingOnly_DX11.fx">
-      <Filter>Shader</Filter>
+    <None Include="..\Resources\ShaderFiles\PS_6_Binoculars.fx">
+      <Filter>Shader\Pixel Shader</Filter>
     </None>
-    <None Include="..\Resources\ShaderFiles\2_TwoTexturesOnly_DX11.fx">
-      <Filter>Shader</Filter>
+    <None Include="..\Resources\ShaderFiles\PS_1_LightingOnly.fx">
+      <Filter>Shader\Pixel Shader</Filter>
     </None>
-    <None Include="..\Resources\ShaderFiles\3_TexturingAndLighting_DX11.fx">
-      <Filter>Shader</Filter>
+    <None Include="..\Resources\ShaderFiles\PS_2_Texture.fx">
+      <Filter>Shader\Pixel Shader</Filter>
     </None>
-    <None Include="..\Resources\ShaderFiles\4_CubeMapping.fx">
-      <Filter>Shader</Filter>
+    <None Include="..\Resources\ShaderFiles\PS_3_TextureAndLighting.fx">
+      <Filter>Shader\Pixel Shader</Filter>
     </None>
-    <None Include="..\Resources\ShaderFiles\5_SkyMap.fx">
-      <Filter>Shader</Filter>
+    <None Include="..\Resources\ShaderFiles\PS_4_CubeMapping.fx">
+      <Filter>Shader\Pixel Shader</Filter>
     </None>
-    <None Include="..\Resources\ShaderFiles\6_Binoculars.fx">
-      <Filter>Shader</Filter>
+    <None Include="..\Resources\ShaderFiles\PS_5_SkyMap.fx">
+      <Filter>Shader\Pixel Shader</Filter>
     </None>
-    <None Include="..\Resources\ShaderFiles\7_GpuSkinShader.fx">
+    <None Include="..\Resources\ShaderFiles\VS_0_Regular.fx">
+      <Filter>Shader\Vertex Shader</Filter>
+    </None>
+    <None Include="..\Resources\ShaderFiles\VS_1_GPUSkinning.fx">
+      <Filter>Shader\Vertex Shader</Filter>
+    </None>
+    <None Include="..\Resources\ShaderFiles\Setup.fx">
       <Filter>Shader</Filter>
     </None>
     <None Include="..\Resources\ShaderFiles\HLSL_4_BasicLightFunctions.fx">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="..\Resources\ShaderFiles\Setup.fx">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

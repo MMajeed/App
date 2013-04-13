@@ -59,11 +59,12 @@ Texture2D Shadow : register( t10 );
 //--------------------------------------------------------------------------------------
 struct PS_INPUT
 {
-    float4 PosMVP : SV_POSITION;
-	float4 PosWorld : POSITION;
-	float4 Normal : NORMAL;
-	float4 LightMVP : LightMVP;
-    float4 Color : COLOR0;
-	float2 tex0 : TEXCOORD0;		
-	float2 tex1 : TEXCOORD0;		
+    float4 PosMVP      : SV_POSITION;
+	float4 PosWorld    : POSITION;
+	float4 Normal      : NORMAL1;
+	float4 NormalWorld : NORMAL2;
+	float4 LightMVP    : LightMVP;
+    float4 Color       : COLOR0;
+	float2 tex0        : TEXCOORD0;		
+	float2 tex1        : TEXCOORD0;		
 };
