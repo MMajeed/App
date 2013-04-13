@@ -392,5 +392,8 @@
     <None Include="..\Resources\ShaderFiles\HLSL_4_BasicLightFunctions.fx">
       <Filter>Shader</Filter>
     </None>
+    <None Include="..\Resources\ShaderFiles\Shadow.fx">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

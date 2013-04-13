@@ -234,6 +234,7 @@
     <None Include="..\Resources\ShaderFiles\PS_5_SkyMap.fx" />
     <None Include="..\Resources\ShaderFiles\PS_6_Binoculars.fx" />
     <None Include="..\Resources\ShaderFiles\Setup.fx" />
+    <None Include="..\Resources\ShaderFiles\Shadow.fx" />
     <None Include="..\Resources\ShaderFiles\VS_0_Regular.fx" />
     <None Include="..\Resources\ShaderFiles\VS_1_GPUSkinning.fx" />
     <None Include="Commands.xml">

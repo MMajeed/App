@@ -40,7 +40,7 @@ void Shadow::CreateShadow()
 
 void Shadow::Init()
 {
-	static const int imageSize = 4096;
+	static const int imageSize = 8192;
 	auto d3dStuff = DX11App::getInstance()->direct3d;
 
 	mViewport.TopLeftX = 0.0f;
