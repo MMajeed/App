@@ -31,7 +31,11 @@ PS_INPUT VS( VS_INPUT input )
 	output.LightMVP = mul( output.LightMVP, World );
 	output.LightMVP = mul( output.LightMVP, LightView );
 	output.LightMVP = mul( output.LightMVP, lightProject );
-	output.LightMVP = mul( output.LightMVP, specialMatrix );
+	static const matrix T = matrix(0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+	output.LightMVP = mul( output.LightMVP, T );
 
 	// Pass the texture coordinates to the pixel shader
 	output.tex0 = input.tex0;

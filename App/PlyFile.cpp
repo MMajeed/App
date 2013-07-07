@@ -21,25 +21,12 @@ PlyFile* PlyFile::Spawn(std::map<std::string, std::string> info)
 	newPlyFile->pVertexBuffer.first = iter->second;
 	newPlyFile->pIndexBuffer.first = iter->second;
 
-	// Shader Input
-	iter = info.find("ShaderInputFileName");
-	if(iter == info.end()){throw std::exception("No Shader Input File Name was included in the object");}
-	newPlyFile->Shader.ShaderInput.FileName = iter->second;
-	newPlyFile->pInputLayout.first = iter->second;
-
-	iter = info.find("ShaderInputEntryPoint");
-	if(iter == info.end()){throw std::exception("No Shader Input Entry point Name was included in the object");}
-	newPlyFile->Shader.ShaderInput.EntryPoint = iter->second;
-
-	iter = info.find("ShaderInputModel");
-	if(iter == info.end()){throw std::exception("No Shader Input Model point Name was included in the object");}
-	newPlyFile->Shader.ShaderInput.Mode = iter->second;
-
 	// Shader Vertex
 	iter = info.find("ShaderVertexFileName");
 	if(iter == info.end()){throw std::exception("No Shader Vertex File Name was included in the object");}
 	newPlyFile->Shader.ShaderVertex.FileName = iter->second;	
 	newPlyFile->pVertexShader.first = iter->second;
+	newPlyFile->pInputLayout.first = iter->second;
 
 	iter = info.find("ShaderVertexEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Vertex Entry point Name was included in the object");}

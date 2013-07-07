@@ -12,8 +12,6 @@ public:
 		std::string EntryPoint;
 		std::string Mode;
 	};
-
-	ShaderFile ShaderInput;
 	ShaderFile ShaderVertex;
 	ShaderFile ShaderPixel;
 };

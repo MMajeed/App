@@ -16,6 +16,8 @@ BasicObject::BasicObject( )
 }
 void BasicObject::Init()
 {
+	DirectXObject::Init();
+
 	ID3D11Device* device = DX11App::getInstance()->direct3d.pd3dDevice;
 
 	this->InitVertexBuffer(device);
@@ -202,7 +204,7 @@ void BasicObject::InitInputLayout(ID3D11Device* device)
 		};
 		UINT numElements = ARRAYSIZE( layout );
 
-		if(!DX11Helper::LoadInputLayoutFile(Shader.ShaderInput.FileName, Shader.ShaderInput.EntryPoint, Shader.ShaderInput.Mode, device, layout, numElements, &(this->pInputLayout.second), error))
+		if(!DX11Helper::LoadInputLayoutFile(Shader.ShaderVertex.FileName, Shader.ShaderVertex.EntryPoint, Shader.ShaderVertex.Mode, device, layout, numElements, &(this->pInputLayout.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}

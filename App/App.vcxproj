@@ -127,7 +127,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\FBX\FBX SDK\2013.3\lib\vs2010\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fbxsdk-2013.3.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;hkpCollide.lib;hkpConstraintSolver.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkpVehicle.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>fbxsdk-2013.3.lib;d3d11.lib;d3dcompiler.lib;d3dx11d.lib;d3dx9d.lib;dxerr.lib;dxguid.lib;winmm.lib;comctl32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;hkpCollide.lib;hkpConstraintSolver.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkpVehicle.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,24 +151,32 @@
   <ItemGroup>
     <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AnimationPlayer.cpp" />
+    <ClCompile Include="AnimationState.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BallConstraint.cpp" />
     <ClCompile Include="BasicObject.cpp" />
+    <ClCompile Include="BoxHavok.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="CarInput.cpp" />
     <ClCompile Include="DirectXObject.cpp" />
     <ClCompile Include="FBXObject.cpp" />
     <ClCompile Include="DX11App.cpp" />
     <ClCompile Include="DX11Helper.cpp" />
     <ClCompile Include="cFBXBuffer.cpp" />
+    <ClCompile Include="HavokError.cpp" />
+    <ClCompile Include="HavokObject.cpp" />
     <ClCompile Include="HavokPhysics.cpp" />
+    <ClCompile Include="HingeConstraint.cpp" />
     <ClCompile Include="IPhysics.cpp" />
-    <ClCompile Include="IPhysicsObject.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="MeshAnimationManager.cpp" />
     <ClCompile Include="ObjectInfo.cpp" />
+    <ClCompile Include="PlayerInput.cpp" />
     <ClCompile Include="Prespective.cpp" />
     <ClCompile Include="Shadow.cpp" />
+    <ClCompile Include="SphereHavok.cpp" />
     <ClCompile Include="SphericalMirror.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -183,21 +191,32 @@
     <ClCompile Include="tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="Transparent.cpp" />
     <ClCompile Include="PlyBuffer.cpp" />
+    <ClCompile Include="VertexHavok.cpp" />
+    <ClCompile Include="WheelConstraint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
     <ClInclude Include="AnimationPlayer.h" />
+    <ClInclude Include="AnimationState.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BallConstraint.h" />
     <ClInclude Include="BasicObject.h" />
+    <ClInclude Include="BoxHavok.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="CarInput.h" />
     <ClInclude Include="cBuffer.h" />
     <ClInclude Include="DirectXObject.h" />
     <ClInclude Include="FBXObject.h" />
     <ClInclude Include="DX11App.h" />
     <ClInclude Include="DX11Helper.h" />
     <ClInclude Include="cFBXBuffer.h" />
+    <ClInclude Include="HavokError.h" />
+    <ClInclude Include="HavokInclude.h" />
+    <ClInclude Include="HavokObject.h" />
     <ClInclude Include="HavokPhysics.h" />
+    <ClInclude Include="HingeConstraint.h" />
+    <ClInclude Include="InputObject.h" />
     <ClInclude Include="IPhysicsObject.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
@@ -205,10 +224,14 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ObjectInfo.h" />
     <ClInclude Include="IPhysics.h" />
+    <ClInclude Include="HavokConstraint.h" />
+    <ClInclude Include="IPhyscisConstraint.h" />
+    <ClInclude Include="PlayerInput.h" />
     <ClInclude Include="Prespective.h" />
     <ClInclude Include="ShaderFiles.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="SkeletalAnimation.h" />
+    <ClInclude Include="SphereHavok.h" />
     <ClInclude Include="SphericalMirror.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="iObjectDrawable.h" />
@@ -223,6 +246,8 @@
     <ClInclude Include="tinyxml2\tinyxml2.h" />
     <ClInclude Include="Transparent.h" />
     <ClInclude Include="PlyBuffer.h" />
+    <ClInclude Include="VertexHavok.h" />
+    <ClInclude Include="WheelConstraint.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\ShaderFiles\HLSL_4_BasicLightFunctions.fx" />

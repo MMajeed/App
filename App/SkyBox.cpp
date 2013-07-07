@@ -44,26 +44,13 @@ SkyBox* SkyBox::Spawn(std::map<std::string, std::string> info)
 	if(!hr){ throw std::exception("Error loading ply file"); }	
 	newSkyBox->pVertexBuffer.first = iter->second;
 	newSkyBox->pIndexBuffer.first = iter->second;
-
-	// Shader Input
-	iter = info.find("ShaderInputFileName");
-	if(iter == info.end()){throw std::exception("No Shader Input File Name was included in the object");}
-	newSkyBox->Shader.ShaderInput.FileName = iter->second;
-	newSkyBox->pInputLayout.first = iter->second;
-
-	iter = info.find("ShaderInputEntryPoint");
-	if(iter == info.end()){throw std::exception("No Shader Input Entry point Name was included in the object");}
-	newSkyBox->Shader.ShaderInput.EntryPoint = iter->second;
-
-	iter = info.find("ShaderInputModel");
-	if(iter == info.end()){throw std::exception("No Shader Input Model point Name was included in the object");}
-	newSkyBox->Shader.ShaderInput.Mode = iter->second;
-
+	
 	// Shader Vertex
 	iter = info.find("ShaderVertexFileName");
 	if(iter == info.end()){throw std::exception("No Shader Vertex File Name was included in the object");}
 	newSkyBox->Shader.ShaderVertex.FileName = iter->second;	
 	newSkyBox->pVertexShader.first = iter->second;
+	newSkyBox->pInputLayout.first = iter->second;
 
 	iter = info.find("ShaderVertexEntryPoint");
 	if(iter == info.end()){throw std::exception("No Shader Vertex Entry point Name was included in the object");}

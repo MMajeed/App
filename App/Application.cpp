@@ -14,7 +14,12 @@
 #include "SphericalMirror.h"
 #include "HavokPhysics.h"
 #include "Shadow.h"
+#include "IPhysicsObject.h"
+#include "HavokInclude.h"
+#include "BoxHavok.h"
+#include "WheelConstraint.h"
 #include <cmath>
+#include <TlHelp32.h>
 
 void Application::Render()
 {	
@@ -34,7 +39,6 @@ void Application::ClearScreen()
 }
 void Application::SetupDraw()
 {
-	this->SetupSampler();
 	this->SetupCBNeverChanges();
 	this->SetupCBChangesOnResize();
 }
@@ -61,12 +65,6 @@ void Application::SetupCBNeverChanges()
 	{
 		cbCNV.lights[i] = this->lightManager.GetLightBuffer(i);
 	}
-	XMMATRIX T(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f, 1.0f);
-	cbCNV.mSpecialMatrix = T;
 
 	pImmediateContext->UpdateSubresource( this->pCBNeverChangesID.second, 0, NULL, &cbCNV, 0, 0 );
 	pImmediateContext->VSSetConstantBuffers( 0, 1, &this->pCBNeverChangesID.second );
@@ -79,7 +77,7 @@ void Application::SetupCBChangesOnResize()
 	XMFLOAT4X4 projection = Projection.GetPrespective();
 
 	auto old = Projection;
-	Projection.SetMinViewable(10.0f);
+	Projection.SetMinViewable(1.0f);
 	Projection.SetMaxViewable(5000.0f);
 	Projection.SetFovAngle(XM_PIDIV2);
 	XMFLOAT4X4 lightProjection = Projection.GetPrespective();
@@ -98,13 +96,8 @@ void Application::SetupCBChangesOnResize()
 void Application::SetupDepthTexture()
 {	
 	this->DrawingShadow = true;
-
-	this->objects["Floor"].DrawNext = false;
-
 	this->SetupDraw();
 	Shadow::CreateShadow();
-
-	this->objects["Floor"].DrawNext = true;
 	this->DrawingShadow = false;
 }
 void Application::DrawObjects()
@@ -125,7 +118,8 @@ void Application::DrawObjects()
 		iter != sortedObjects.end();
 		++iter)
 	{
-		iter->second->Draw();
+		if(this->DrawingShadow == false)		{ iter->second->Draw(); }
+		else if(this->DrawingShadow == true)	{ iter->second->DrawDepth(); }
 	}
 }
 void  Application::Present()
@@ -173,23 +167,25 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 			timer._absoluteTime = elapsedCount / tickInterval;
 			timer._frameTime = elapsedFrameCount / tickInterval;
 			this->timer._sinceLastDraw += timer._frameTime;
-						
-			//Sleep( 8 - timer._frameTime); // Used to lock the framerate. Turned off because I want to see how fast the program is going
-			
-			for(auto iter = this->objects.begin();
-				iter != this->objects.end();
-				++iter)
+			this->timer._sinceLastPhysicUpdate += timer._frameTime;
+			this->timer._sinceLastInputUpdate += timer._frameTime;
+
+			if(this->timer._sinceLastPhysicUpdate > 0.001)
 			{
-				iter->second.ObjectDrawable->UpdateDrawing(static_cast<float>(timer._frameTime));
+				HavokPhysics::getInstance()->Update(0.001f);
+				this->timer._sinceLastPhysicUpdate = 0.0;
 			}
 
-			for(auto iter = this->objects.begin();
-				iter != this->objects.end();
-				++iter)
+			if(this->timer._sinceLastInputUpdate > 0.001)
 			{
-				iter->second.ObjectDrawable->UpdateObject(static_cast<float>(timer._frameTime));
+				for(auto iter = this->objects.begin();
+					iter != this->objects.end();
+					++iter)
+				{
+					iter->second.Update(static_cast<float>(0.001f));
+				}
+				this->timer._sinceLastInputUpdate = 0.0;
 			}
-			
 			this->SortObject();
 
 			if(this->timer._sinceLastDraw > 0.012)
@@ -199,6 +195,25 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 				this->Present();
 				this->timer._sinceLastDraw = 0.0;
 			}
+
+			std::vector<std::string> toDelete;
+
+			for(auto iter = this->objects.begin();
+				iter != this->objects.end();
+				++iter)
+			{
+				if(iter->second.Delete == true)
+				{
+					toDelete.push_back(iter->first);
+				}
+			}
+
+			for(std::size_t i = 0; i < toDelete.size(); ++i)
+			{
+				auto loc = this->objects.find(toDelete[i]);
+				this->objects.erase(loc);
+			}
+
 			// update fps
 			timerLast = timerNow;
 			++(timer._frameCount);
@@ -210,6 +225,8 @@ void Application::Run( HINSTANCE hInstance, int nCmdShow )
 void Application::InitDevices()
 {
 	DX11App::InitDevices();
+		
+	this->DrawingShadow = false;
 		
 	this->pCBNeverChangesID.first		= "CBNeverChange";
 	this->pCBChangesOnResizeID.first	= "CBChangesOnResize";
@@ -271,23 +288,49 @@ void Application::InitDevices()
 		}
 		DX11ObjectManager::getInstance()->Sampler.Add(this->pSamplerAnisotropic.first, this->pSamplerAnisotropic.second);
 	}
+	this->LoadD3DStuff();	
+	this->SetupSampler();
 
-	this->LoadD3DStuff();
-
-	//HavokPhysics::getInstance()->Init();
+	HavokPhysics::getInstance()->Init();
 	
 	ObjectLoader::getInstance()->LoadXMLFile("Commands.xml");
 
 	this->objects = ObjectLoader::getInstance()->SpawnAll();
 	this->lightManager = ObjectLoader::getInstance()->SetupLight();
-
-	
+	ObjectLoader::getInstance()->SetupConstraint();
 }
 LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
+	static XMFLOAT4 rotationA = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	static XMFLOAT4 rotationB = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	switch( message )
     {
+
+		case WM_KEYUP:
+		{
+			for(auto iter = this->objects.begin();
+				iter != this->objects.end();
+				++iter)
+			{
+				if(iter->second.InputObject != 0)
+				{
+					iter->second.InputObject->KeyChange(wParam, false);
+				}
+			}
+			break;
+		}
 		case WM_KEYDOWN: 
+		{
+			for(auto iter = this->objects.begin();
+				iter != this->objects.end();
+				++iter)
+			{
+				if(iter->second.InputObject != 0)
+				{
+					iter->second.InputObject->KeyChange(wParam, true);
+				}
+			}
+
             switch (wParam) 
             { 
                 case VK_LEFT: 
@@ -308,29 +351,131 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				case VK_PRIOR:
 					camera.Pitch(-0.1f);
 					return 0;
-				case 'A': case 'a':
+				case VK_NUMPAD8:
 					{
 						this->lightManager[0].pos.x += 1.0f;	
 					}
 					return 0;
-				case 'D': case 'd':
+				case VK_NUMPAD5:
 					{
 						this->lightManager[0].pos.x -= 1.0f;	
 					}
 					return 0;
-				case 'W': case 'w':
-					{
-						this->lightManager[0].pos.z += 1.0f;	
-					}
-					return 0;
-				case 'S': case 's':
+				case VK_NUMPAD4:
 					{
 						this->lightManager[0].pos.z -= 1.0f;	
 					}
 					return 0;
-				case 'X': case 'x':
+				case VK_NUMPAD6:
 					{
-						
+						this->lightManager[0].pos.z += 1.0f;	
+					}
+					return 0;
+				case VK_NUMPAD7:
+					{
+						this->lightManager[0].pos.y += 1.0f;	
+					}
+					return 0;
+				case VK_NUMPAD9:
+					{
+						this->lightManager[0].pos.y -= 1.0f;	
+					}
+					return 0;
+				case 'W':
+					{
+						auto objectIter = this->objects.find("Wheel1");
+						if(objectIter != this->objects.end())
+						{
+							hkVector4 torque;
+
+							auto wheelConstraint = dynamic_cast<WheelConstraint*>(HavokPhysics::getInstance()->ConstraintList["ConstraintWheel1"]);
+
+							auto m_wheelRigidBody = dynamic_cast<HavokObject*>(objectIter->second.Physics)->m_RigidBody;
+
+							auto m_wheelConstraint = wheelConstraint->m_wheelConstraint;
+
+							torque.setRotatedDir( m_wheelRigidBody->getRotation(), m_wheelConstraint->m_atoms.m_steeringBase.m_rotationA.getColumn(hkpWheelConstraintData::Atoms::AXIS_AXLE) ); 
+							torque.setMul4( -20.0f, torque ); 
+							torque.mul4( 10.0f );
+							m_wheelRigidBody->applyAngularImpulse( torque );
+						}
+
+						objectIter = this->objects.find("Wheel2");
+						if(objectIter != this->objects.end())
+						{
+							hkVector4 torque;
+
+							auto wheelConstraint = dynamic_cast<WheelConstraint*>(HavokPhysics::getInstance()->ConstraintList["ConstraintWheel2"]);
+
+							auto m_wheelRigidBody = dynamic_cast<HavokObject*>(objectIter->second.Physics)->m_RigidBody;
+
+							auto m_wheelConstraint = wheelConstraint->m_wheelConstraint;
+
+							torque.setRotatedDir( m_wheelRigidBody->getRotation(), m_wheelConstraint->m_atoms.m_steeringBase.m_rotationA.getColumn(hkpWheelConstraintData::Atoms::AXIS_AXLE) ); 
+							torque.setMul4( -20.0f, torque ); 
+							torque.mul4( 10.0f );
+							m_wheelRigidBody->applyAngularImpulse( torque );
+						}
+
+						objectIter = this->objects.find("Wheel3");
+						if(objectIter != this->objects.end())
+						{
+							hkVector4 torque;
+
+							auto wheelConstraint = dynamic_cast<WheelConstraint*>(HavokPhysics::getInstance()->ConstraintList["ConstraintWheel3"]);
+
+							auto m_wheelRigidBody = dynamic_cast<HavokObject*>(objectIter->second.Physics)->m_RigidBody;
+
+							auto m_wheelConstraint = wheelConstraint->m_wheelConstraint;
+
+							torque.setRotatedDir( m_wheelRigidBody->getRotation(), m_wheelConstraint->m_atoms.m_steeringBase.m_rotationA.getColumn(hkpWheelConstraintData::Atoms::AXIS_AXLE) ); 
+							torque.setMul4( -20.0f, torque ); 
+							torque.mul4( 10.0f );
+							m_wheelRigidBody->applyAngularImpulse( torque );
+						}
+
+						objectIter = this->objects.find("Wheel4");
+						if(objectIter != this->objects.end())
+						{
+							hkVector4 torque;
+
+							auto wheelConstraint = dynamic_cast<WheelConstraint*>(HavokPhysics::getInstance()->ConstraintList["ConstraintWheel4"]);
+
+							auto m_wheelRigidBody = dynamic_cast<HavokObject*>(objectIter->second.Physics)->m_RigidBody;
+
+							auto m_wheelConstraint = wheelConstraint->m_wheelConstraint;
+
+							torque.setRotatedDir( m_wheelRigidBody->getRotation(), m_wheelConstraint->m_atoms.m_steeringBase.m_rotationA.getColumn(hkpWheelConstraintData::Atoms::AXIS_AXLE) ); 
+							torque.setMul4( -20.0f, torque ); 
+							torque.mul4( 10.0f );
+							m_wheelRigidBody->applyAngularImpulse( torque );
+						}
+					}
+					return 0;
+				case 'Q':
+					{
+						auto objectIter = this->objects.find("Box2");
+						if(objectIter != this->objects.end())
+						{
+							rotationA.x += 0.1f;
+							hkQuaternion h;
+							h.setFromEulerAngles(rotationA.x, rotationA.y, rotationA.z);
+							BoxHavok* box = dynamic_cast<BoxHavok*>(objectIter->second.Physics);
+							box->m_RigidBody->setRotation(h);
+						}
+					}
+					return 0;
+				case 'E':
+					{
+						auto objectIter = this->objects.find("Box2");
+						if(objectIter != this->objects.end())
+						{
+							rotationA.x -= 0.1f;
+							hkQuaternion h;
+							h.setFromEulerAngles(rotationA.x, rotationA.y, rotationA.z);
+							BoxHavok* box = dynamic_cast<BoxHavok*>(objectIter->second.Physics);
+							box->m_RigidBody->setRotation(h);
+						}
 					}
 					return 0;
 				case 'Z': case 'z':
@@ -356,7 +501,7 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
 							if(fbx != 0)
 							{
-								fbx->PlayAnimation("Idle", AnimationController::CrossFade);
+								fbx->PlayPartialAnimation("Idle");
 							}
 						}
 					}
@@ -369,34 +514,7 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
 							if(fbx != 0)
 							{
-								fbx->PlayAnimation("Walk", AnimationController::CrossFade);
-							}
-						}
-					}
-					break;
-				case '3':
-					{
-						auto objectIter = this->objects.find("FBXObject1");
-						if(objectIter != this->objects.end())
-						{
-							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
-							if(fbx != 0)
-							{
-								fbx->PlayAnimation("Run", AnimationController::CrossFade);
-							}
-						}
-					}
-					break;
-				case '4':
-					{
-						auto objectIter = this->objects.find("FBXObject1");
-						if(objectIter != this->objects.end())
-						{
-							FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
-							if(fbx != 0)
-							{
-								fbx->PlayAnimation("Walk", AnimationController::OneAnimation);
-								fbx->PlayAnimation("Idle", AnimationController::HalfAndHalf);
+								fbx->AnimController.partialAnim.play = false;
 							}
 						}
 					}
@@ -433,6 +551,7 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 						this->objects = ObjectLoader::getInstance()->SpawnAll();
 						this->lightManager = ObjectLoader::getInstance()->SetupLight();
+						ObjectLoader::getInstance()->SetupConstraint();
 					}
 				case VK_F2:
 					{
@@ -451,9 +570,50 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 						this->objects = ObjectLoader::getInstance()->SpawnAll();
 						this->lightManager = ObjectLoader::getInstance()->SetupLight();
+						ObjectLoader::getInstance()->SetupConstraint();
 					}
 					break;
+				case VK_F3:
+					{
+						HavokPhysics::getInstance()->SetupVisualDebugger();
+
+						HANDLE SnapShot = CreateToolhelp32Snapshot( TH32CS_SNAPPROCESS, 0 );
+
+						if( SnapShot == INVALID_HANDLE_VALUE )
+							return 0;
+
+						PROCESSENTRY32 procEntry;
+						procEntry.dwSize = sizeof( PROCESSENTRY32 );
+
+						if( !Process32First( SnapShot, &procEntry ) )
+							return 0;
+
+						do
+						{
+							if( std::wstring(procEntry.szExeFile) == L"hkVisualDebugger.exe" )
+							{
+								return 0;
+							}
+						}
+						while( Process32Next( SnapShot, &procEntry ) );
+
+
+						STARTUPINFO info={sizeof(info)};
+						PROCESS_INFORMATION processInfo;
+						LPTSTR applicationName = L"D:\\hk2012_1_0_r1\\Tools\\VisualDebugger\\hkVisualDebugger.exe";
+						LPTSTR cmd = L"localhost";
+						CreateProcessW(applicationName, cmd, NULL, NULL, TRUE, 0, NULL, NULL, &info, &processInfo);
+						
+						applicationName = L"C:\\hk2012_1_0_r1\\Tools\\VisualDebugger\\hkVisualDebugger.exe";
+						CreateProcessW(applicationName, cmd, NULL, NULL, TRUE, 0, NULL, NULL, &info, &processInfo);
+					}
+					break;
+				case VK_ESCAPE:
+					
+					DestroyWindow(this->window.hWnd);
+					break;
 			}
+		}
 		case WM_TIMER:
 		{
 			switch( wParam )
@@ -467,12 +627,48 @@ LRESULT Application::CB_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 					std::wostringstream caption;
 					caption << "Framerate: " << fr.str() << " ";
+
+					/*auto objectIter = this->objects.find("FBXObject1");
+					if(objectIter != this->objects.end())
+					{
+						FBXObject* fbx = dynamic_cast<FBXObject*>(objectIter->second.ObjectDrawable);
+						if(fbx != 0)
+						{
+							caption << fbx->GetCurrentAnimFrame();
+						}
+					}*/
+
 					SetWindowTextW( hWnd, caption.str().c_str() );
 					break;
 				}
 			}
 			return 0;
 		}
+		case WM_DESTROY:
+		{
+			HANDLE SnapShot = CreateToolhelp32Snapshot( TH32CS_SNAPPROCESS, 0 );
+
+			if( SnapShot == INVALID_HANDLE_VALUE )
+				break;
+
+			PROCESSENTRY32 procEntry;
+			procEntry.dwSize = sizeof( PROCESSENTRY32 );
+
+			if( !Process32First( SnapShot, &procEntry ) )
+				break;
+
+			do
+			{
+				if( std::wstring(procEntry.szExeFile) == L"hkVisualDebugger.exe" )
+				{
+					HANDLE h =  OpenProcess( PROCESS_ALL_ACCESS, false,  _In_  procEntry.th32ProcessID);
+					TerminateProcess(h, 0);
+				}
+			}
+			while( Process32Next( SnapShot, &procEntry ) );
+
+		}
+		break;
 	}
 	return DX11App::CB_WndProc(hWnd, message, wParam, lParam);
 }	

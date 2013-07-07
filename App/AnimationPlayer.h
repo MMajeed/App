@@ -16,9 +16,18 @@ public:
 
 	bool IsSet() const;
 
+	float ClipLength() const;
+
 	std::pair<std::string, SkeletalAnimation*>	Animation;	
     std::vector<unsigned char>					ChannelMap;
     std::vector<cFBXBuffer::JointPose>			CurrentBones;
+
+	XMFLOAT4X4				mPrevRoot;	
+    XMFLOAT3                mRootTranslation;
+    XMFLOAT4                mRootRotation;
+
+	float GetCurrentPhase();
+	void SetCurrentPhase(float);
 
 	float                   AnimTime;
     float                   AnimRate;

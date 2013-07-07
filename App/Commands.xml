@@ -2,87 +2,1444 @@
 <Objects>
   <Object>
     <ID>Floor</ID>
-    <Class>PlyFile</Class>
-    <PlyFile>../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
-    <ShaderInput  FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="../Resources/ShaderFiles/PS_3_TextureAndLighting.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="20.0f" Y="20.0f" Z="20.0f"/>
-    <XYZLocation X="0.0f" Y="0.0f" Z="1.57"/>
-    <XYZRotation X="0.0f" Y="3.14f" Z="3.14f"/>
+    <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
-    <Texture0>../Resources/Texture/Tiles.png</Texture0>
-    <XYZDiffuse  X="0.01f" Y="0.01f" Z="0.01f"/>
-    <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
-    <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    <Draw>
+      <Class>PlyFile</Class>
+      <PlyFile>../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_3_TextureAndLighting.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.01f" Y="0.01f" Z="0.01f"/>
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="20.0f" Y="0.2f" Z="20.0f"/>
+      <Moveable>false</Moveable>
+    </Physics>
+  </Object>
+
+  <Object>
+    <ID>Box1</ID>
+    <XYZScale    X="2.0f" Y="1.0f" Z="2.0f"/>
+    <XYZLocation X="2.0f" Y="1.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" W="0.7f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Moveable>false</Moveable>
+    </Physics>
   </Object>
   <Object>
-    <ID>Wall</ID>
-    <Class>PlyFile</Class>
-    <PlyFile>../Resources/PlyFiles/1x1_2Tri_Quad_2_Sided.ply</PlyFile>
-    <ShaderInput  FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="../Resources/ShaderFiles/PS_3_TextureAndLighting.fx" EntryPoint="PS" Model="ps_4_0"/>
+    <ID>Box2</ID>
+    <XYZScale    X="1.0f" Y="9.0f" Z="1.0f"/>
+    <XYZLocation X="4.0f" Y="5.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" W="0.7f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Moveable>false</Moveable>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Box3</ID>
+    <XYZScale    X="5.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="2.0f" Y="10.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" W="0.7f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>50000.0f</Mass>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Sphere1</ID>
+    <XYZScale    X="0.25f" Y="0.25f" Z="0.25f"/>
+    <XYZLocation X="0.0f" Y="9.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Sphere_Smooth_2.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Sphere</Class>
+      <Radius>1.0f</Radius>
+      <Scale>True</Scale>
+      <Mass>2000.0f</Mass>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Sphere2</ID>
+    <XYZScale    X="0.25f" Y="0.25ff" Z="0.25ff"/>
+    <XYZLocation X="0.0f" Y="8.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Sphere_Smooth_2.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Sphere</Class>
+      <Radius>1.0f</Radius>
+      <Scale>True</Scale>
+      <Mass>2000.0f</Mass>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Sphere3</ID>
+    <XYZScale    X="0.25f" Y="0.25ff" Z="0.25ff"/>
+    <XYZLocation X="0.0f" Y="7.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Sphere_Smooth_2.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Sphere</Class>
+      <Radius>1.0f</Radius>
+      <Scale>True</Scale>
+      <Mass>2000.0f</Mass>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Sphere4</ID>
+    <XYZScale    X="0.25f" Y="0.25ff" Z="0.25ff"/>
+    <XYZLocation X="0.0f" Y="6.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Sphere_Smooth_2.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Sphere</Class>
+      <Radius>1.0f</Radius>
+      <Scale>True</Scale>
+      <Mass>2000.0f</Mass>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Sphere5</ID>
+    <XYZScale    X="0.25f" Y="0.25ff" Z="0.25ff"/>
+    <XYZLocation X="0.0f" Y="5.0f" Z="5.0f"/>
+    <Object>
+      <ID>Tower1Level1</ID>
+      <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+      <XYZLocation X="0.0f" Y="1.0f" Z="8.0f"/>
+      <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+      <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+      <Draw>
+        <Class>TransparentPly</Class>c
+        <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+        <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+        <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+        <Texture0>../Resources/Texture/Tiles.png</Texture0>
+        <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+        <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+        <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+      </Draw>
+      <Physics>
+        <Class>Box</Class>
+        <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+        <Scale>True</Scale>
+        <Mass>5.0f</Mass>
+      </Physics>
+    </Object>
+    <Object>
+      <ID>Tower2Level1</ID>
+      <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+      <XYZLocation X="2.0f" Y="1.0f" Z="8.0f"/>
+      <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+      <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+      <Draw>
+        <Class>TransparentPly</Class>c
+        <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+        <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+        <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+        <Texture0>../Resources/Texture/Tiles.png</Texture0>
+        <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+        <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+        <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+      </Draw>
+      <Physics>
+        <Class>Box</Class>
+        <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+        <Scale>True</Scale>
+        <Mass>5.0f</Mass>
+      </Physics>
+    </Object>
+    <Object>
+      <ID>Tower3Level1</ID>
+      <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+      <XYZLocation X="4.0f" Y="1.0f" Z="8.0f"/>
+      <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+      <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+      <Draw>
+        <Class>TransparentPly</Class>c
+        <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+        <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+        <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+        <Texture0>../Resources/Texture/Tiles.png</Texture0>
+        <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+        <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+        <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+      </Draw>
+      <Physics>
+        <Class>Box</Class>
+        <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+        <Scale>True</Scale>
+        <Mass>5.0f</Mass>
+      </Physics>
+    </Object>
+    <Object>
+      <ID>Tower4Level1</ID>
+      <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+      <XYZLocation X="6.0f" Y="1.0f" Z="8.0f"/>
+      <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+      <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+      <Draw>
+        <Class>TransparentPly</Class>c
+        <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+        <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+        <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+        <Texture0>../Resources/Texture/Tiles.png</Texture0>
+        <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+        <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+        <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+      </Draw>
+      <Physics>
+        <Class>Box</Class>
+        <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+        <Scale>True</Scale>
+        <Mass>5.0f</Mass>
+      </Physics>
+    </Object>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Sphere_Smooth_2.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Sphere</Class>
+      <Radius>1.0f</Radius>
+      <Scale>True</Scale>
+      <Mass>2000.0f</Mass>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Sphere6</ID>
+    <XYZScale    X="0.25f" Y="0.25ff" Z="0.25ff"/>
+    <XYZLocation X="0.0f" Y="4.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Sphere_Smooth_2.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Sphere</Class>
+      <Radius>1.0f</Radius>
+      <Scale>True</Scale>
+      <Mass>2000.0f</Mass>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Sphere7</ID>
     <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="-2.0f" Y="1.0f" Z="3.0f"/>
-    <XYZRotation X="1.57f" Y="0.0f" Z="1.57f"/>
+    <XYZLocation X="0.0f" Y="2.0f" Z="5.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZDiffuse  X="1.0f" Y="0.0f" Z="1.0f" W="0.5f"/>
-    <XYZAmbent   X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZSpec     X="1.0f" Y="0.0f" Z="0.0f"/>
-    <Texture0>../Resources/Texture/flat_wood_texture.jpg</Texture0>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Sphere_Smooth_2.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Sphere</Class>
+      <Radius>1.0f</Radius>
+      <Scale>True</Scale>
+      <Mass>1000000.0f</Mass>
+    </Physics>
+  </Object>
+
+  <Object>
+    <ID>Tower1Level1</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="1.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
   </Object>
   <Object>
+    <ID>Tower2Level1</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="2.0f" Y="1.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level1</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="4.0f" Y="1.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level1</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="6.0f" Y="1.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level2</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="2.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level2</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="2.0f" Y="2.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level2</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="4.0f" Y="2.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level2</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="6.0f" Y="2.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level3</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="3.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level3</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="2.0f" Y="3.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level3</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="4.0f" Y="3.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level3</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="6.0f" Y="3.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level4</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="4.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level4</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="2.0f" Y="4.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level4</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="4.0f" Y="4.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level4</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="6.0f" Y="4.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level5</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="5.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level5</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="2.0f" Y="5.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level5</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="4.0f" Y="5.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level5</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="6.0f" Y="5.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level6</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="6.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level6</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="2.0f" Y="6.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level6</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="4.0f" Y="6.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level6</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="6.0f" Y="6.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level7</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="0.0f" Y="7.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level7</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="2.0f" Y="7.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level7</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="4.0f" Y="7.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level7</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="6.0f" Y="7.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level8</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="1.0f" Z="2.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level8</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="1.0f" Z="4.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level8</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="1.0f" Z="6.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level8</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="1.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level9</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="2.0f" Z="2.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level9</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="2.0f" Z="4.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level9</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="2.0f" Z="6.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level9</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="2.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower1Level10</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="3.0f" Z="2.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower2Level10</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="3.0f" Z="4.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower3Level10</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="3.0f" Z="6.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+  <Object>
+    <ID>Tower4Level10</ID>
+    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+    <XYZLocation X="8.0f" Y="3.0f" Z="8.0f"/>
+    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>TransparentPly</Class>c
+      <PlyFile>../Resources/PlyFiles/Box.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <Texture0>../Resources/Texture/Tiles.png</Texture0>
+      <XYZDiffuse  X="0.5f" Y="0.01f" Z="0.5f" />
+      <XYZAmbent   X="0.1f" Y="0.1f" Z="0.1f"/>
+      <XYZSpec     X="0.01f" Y="0.01f" Z="0.01f"/>
+    </Draw>
+    <Physics>
+      <Class>Box</Class>
+      <XYZHalfExtent  X="0.5f" Y="0.5f" Z="0.5f"/>
+      <Scale>True</Scale>
+      <Mass>5.0f</Mass>
+      <Friction>2.0f</Friction>
+    </Physics>
+  </Object>
+
+
+  <PhysicsConstraint>
+    <ID>Constraint331</ID>
+    <Class>Hinge</Class>
+    <ObjectID1>Box3</ObjectID1>
+    <ObjectID2>Box2</ObjectID2>
+    <Axis>0</Axis>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint33331</ID>
+    <Class>Hinge</Class>
+    <ObjectID1>Box3</ObjectID1>
+    <ObjectID2>Box2</ObjectID2>
+    <Axis>1</Axis>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint32331</ID>
+    <Class>Hinge</Class>
+    <ObjectID1>Box3</ObjectID1>
+    <ObjectID2>Box2</ObjectID2>
+    <Axis>2</Axis>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint1</ID>
+    <Class>Ball</Class>
+    <ObjectID1>Box3</ObjectID1>
+    <ObjectID2>Sphere1</ObjectID2>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint2</ID>
+    <Class>Ball</Class>
+    <ObjectID1>Sphere1</ObjectID1>
+    <ObjectID2>Sphere2</ObjectID2>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint3</ID>
+    <Class>Ball</Class>
+    <ObjectID1>Sphere2</ObjectID1>
+    <ObjectID2>Sphere3</ObjectID2>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint4</ID>
+    <Class>Ball</Class>
+    <ObjectID1>Sphere3</ObjectID1>
+    <ObjectID2>Sphere4</ObjectID2>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraintt</ID>
+    <Class>Ball</Class>
+    <ObjectID1>Sphere4</ObjectID1>
+    <ObjectID2>Sphere5</ObjectID2>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint3</ID>
+    <Class>Ball</Class>
+    <ObjectID1>Sphere5</ObjectID1>
+    <ObjectID2>Sphere6</ObjectID2>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint4</ID>
+    <Class>Ball</Class>
+    <ObjectID1>Sphere5</ObjectID1>
+    <ObjectID2>Sphere6</ObjectID2>
+  </PhysicsConstraint>
+  <PhysicsConstraint>
+    <ID>Constraint5</ID>
+    <Class>Ball</Class>
+    <ObjectID1>Sphere6</ObjectID1>
+    <ObjectID2>Sphere7</ObjectID2>
+  </PhysicsConstraint>
+
+  <Object>
+    <ID>SphericalMirror</ID>
+    <Draw>
+      <Class>SphericalMirror</Class>
+      <XYZScale    X="5.0f" Y="5.0f" Z="5.0f"/>
+      <XYZLocation X="0.0f" Y="20.0f" Z="5.0f"/>
+      <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+      <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
+      <UpdateEvery>0.012</UpdateEvery>
+    </Draw>
+  </Object>
+  <!--<Object>
     <ID>Bunny</ID>
     <Class>TransparentPly</Class>
     <PlyFile>../Resources/PlyFiles/bun_zipper_res3.ply</PlyFile>
-    <ShaderInput  FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
     <ShaderPixel  FileName="../Resources/ShaderFiles/PS_0_Basic.fx" EntryPoint="PS" Model="ps_4_0"/>
     <XYZScale    X="5.0f" Y="5.0f" Z="5.0f"/>
-    <XYZLocation X="-2.5f" Y="1.0f" Z="2.0f"/>
+    <XYZLocation X="-2.3f" Y="1.0f" Z="1.0f"/>
     <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
     <XYZDiffuse  X="0.5f" Y="0.5f" Z="0.5f" W="0.7f"/>
     <XYZAmbent   X="1.0f" Y="0.0f" Z="0.0f"/>
     <XYZSpec     X="1.0f" Y="0.0f" Z="0.0f"/>
     <Texture0>../Resources/Texture/Sky/+Y.jpg</Texture0>
+  </Object>-->
+  <Object>
+    <ID>FBXObject1</ID>
+    <Draw>
+      <Class>FBXFile</Class>
+      <Mesh>../Resources/DefaultCharacter/DefaultAvatar.BakedFBX</Mesh>
+      <AnimationIdle>../Resources/DefaultCharacter/Idles.Bakedfbx</AnimationIdle>
+      <AnimationWalk>../Resources/DefaultCharacter/WalkFWD_S25E55.Bakedfbx</AnimationWalk>
+      <AnimationRun>../Resources/DefaultCharacter/RunForward_Loop_S223E239.Bakedfbx</AnimationRun>
+      <AnimationStartRun>../Resources/DefaultCharacter/RunStart_Loop_S20E65.Bakedfbx</AnimationStartRun>
+      <AnimationStartEnd>../Resources/DefaultCharacter/RunEnd_Loop_S405E460.Bakedfbx</AnimationStartEnd>
+      <DefaultAnimation>Idle</DefaultAnimation>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_1_GPUSkinning.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
+      <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
+      <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
+      <XYZDiffuse  X="0.15f" Y="0.15f" Z="0.15f"/>
+      <XYZAmbent   X="0.2f" Y="0.2f" Z="0.2f"/>
+      <XYZSpec     X="0.0f" Y="0.0f" Z="0.0f"/>
+    </Draw>
+    <Input>
+      <Class>PlayerInput</Class>
+    </Input>
   </Object>
   <Object>
     <ID>SkyBox</ID>
-    <Class>SkyBox</Class>
-    <PlyFile>../Resources/PlyFiles/Sphere_Smooth_3.ply</PlyFile>
-    <ShaderInput  FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="../Resources/ShaderFiles/PS_5_SkyMap.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="2000.0f" Y="2000.0f" Z="2000.0f"/>
-    <CubeMap>../Resources/Texture/Sky/Sky.dds</CubeMap>
-  </Object>
-  <Object>
-    <ID>SphericalMirror</ID>
-    <Class>SphericalMirror</Class>
-    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="0.0f" Y="1.0f" Z="5.0f"/>
-    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZOrbit    X="0.0f" Y="0.0f" Z="0.0f"/>
-    <UpdateEvery>0.012</UpdateEvery>
-  </Object>
-  <Object>
-    <ID>FBXObject1</ID>
-    <Class>FBXFile</Class>
-    <Mesh>../Resources/DefaultCharacter/DefaultAvatar.BakedFBX</Mesh>
-    <AnimationIdle>../Resources/DefaultCharacter/Idles.Bakedfbx</AnimationIdle>
-    <AnimationWalk>../Resources/DefaultCharacter/WalkFWD_S25E55.Bakedfbx</AnimationWalk>
-    <AnimationRun>../Resources/DefaultCharacter/RunForward_Loop_S223E239.Bakedfbx</AnimationRun>
-    <DefaultAnimation>Idle</DefaultAnimation>
-    <ShaderVertex FileName="../Resources/ShaderFiles/VS_1_GPUSkinning.fx" EntryPoint="VS" Model="vs_4_0"/>
-    <ShaderPixel  FileName="../Resources/ShaderFiles/PS_1_LightingOnly.fx" EntryPoint="PS" Model="ps_4_0"/>
-    <XYZScale    X="1.0f" Y="1.0f" Z="1.0f"/>
-    <XYZLocation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZRotation X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZDiffuse  X="0.15f" Y="0.15f" Z="0.15f"/>
-    <XYZAmbent   X="0.0f" Y="0.0f" Z="0.0f"/>
-    <XYZSpec     X="0.0f" Y="0.0f" Z="0.0f"/>
+    <Draw>
+      <Class>SkyBox</Class>
+      <PlyFile>../Resources/PlyFiles/Sphere_Smooth_3.ply</PlyFile>
+      <ShaderVertex FileName="../Resources/ShaderFiles/VS_0_Regular.fx" EntryPoint="VS" Model="vs_4_0"/>
+      <ShaderPixel  FileName="../Resources/ShaderFiles/PS_5_SkyMap.fx" EntryPoint="PS" Model="ps_4_0"/>
+      <XYZScale    X="2000.0f" Y="2000.0f" Z="2000.0f"/>
+      <CubeMap>../Resources/Texture/Sky/Sky.dds</CubeMap>
+    </Draw>
   </Object>
   <Light>
     <Type>Spot</Type>--><!--None, Parrallel, Point, Spot-->
@@ -106,6 +1463,8 @@
   <XYZAttenuation     X="0.0f" Y="0.0f" Z="0.0f"/>
   <Power>0.0f</Power>
   <Range>0.0f</Range>
-  <Type>Parallel</Type>--><!--None, Parrallel, Point, Spot--><!--
+  <Type>Parallel</Type>-->
+<!--None, Parrallel, Point, Spot-->
+<!--
 </Light>
 -->

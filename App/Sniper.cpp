@@ -162,10 +162,6 @@ Sniper::Sniper()
 	this->pVertexShader.first        = "../Resources/ShaderFiles/VS_0_Regular.fx";
 	this->pPixelShader.first         = "../Resources/ShaderFiles/PS_6_Binoculars.fx";
 
-	this->Shader.ShaderInput.FileName		 = "../Resources/ShaderFiles/VS_0_Regular.fx";
-	this->Shader.ShaderInput.EntryPoint		 = "VS";	
-	this->Shader.ShaderInput.Mode			 = "vs_4_0";
-
 	this->Shader.ShaderVertex.FileName		 = "../Resources/ShaderFiles/VS_0_Regular.fx";
 	this->Shader.ShaderVertex.EntryPoint	 = "VS";	
 	this->Shader.ShaderVertex.Mode			 = "vs_4_0";

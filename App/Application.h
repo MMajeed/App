@@ -10,6 +10,7 @@
 #include "SkeletalAnimation.h"
 #include "LightManager.h"
 #include "ObjectInfo.h"
+
 class Application : public DX11App
 {
 public:

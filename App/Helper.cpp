@@ -30,7 +30,7 @@ float Helper::StringToFloat(std::string inputString)
 	return returnValue;	
 }
 
-int StringToInt(std::string inputString)
+int Helper::StringToInt(std::string inputString)
 {
 	int returnValue = std::numeric_limits<int>::min();
 

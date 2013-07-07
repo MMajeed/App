@@ -26,6 +26,8 @@ public:
 		long long	_frameCount;
 		double 	  	_frameRate;		
 		double 	  	_sinceLastDraw;
+		double 	  	_sinceLastPhysicUpdate;
+		double 	  	_sinceLastInputUpdate;
 	} timer;
 
 	// Windows stuff

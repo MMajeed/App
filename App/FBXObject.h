@@ -43,10 +43,15 @@ public:
 
 	void AddAnimation(std::string name, std::string path);
 
-	void PlayAnimation(std::string anim, AnimationController::AnimationState);    
+	void PlayAnimation(std::string anim, AnimationController::AnimationState, float left = 2.0f);    
+	void PlayPartialAnimation(std::string anim);    
     std::string GetPlayingAnimation() const;
     float GetCurrentAnimTime() const;
     std::size_t GetCurrentAnimFrame() const;
+	float GetCurrentPhase() const;
+	float GetAnimLength() const;
+	XMFLOAT3 GetAnimTranslation() const;
+	XMFLOAT4 GetAnimRotation() const;
 
 	void SetAnimRate(float rate);
     float GetAnimRate() const;

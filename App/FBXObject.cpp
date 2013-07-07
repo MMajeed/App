@@ -10,11 +10,7 @@
 #include "MeshAnimationManager.h"
 
 FBXObject::FBXObject()
-{
-	this->Shader.ShaderInput.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
-	this->Shader.ShaderInput.EntryPoint = "VS";
-	this->Shader.ShaderInput.Mode		= "vs_4_0";
-	
+{	
 	this->Shader.ShaderVertex.FileName	= "../Resources/ShaderFiles/7_GpuSkinShader.fx";
 	this->Shader.ShaderVertex.EntryPoint = "VS";
 	this->Shader.ShaderVertex.Mode		= "vs_4_0";
@@ -25,9 +21,9 @@ FBXObject::FBXObject()
 
 	this->pMeshVertexBuffer.first			= "FBXFile";
 	this->pMeshIndexBuffer.first			= "FBXFile";
-	this->pInputLayout.first			= this->Shader.ShaderInput.EntryPoint;
-	this->pVertexShader.first			= this->Shader.ShaderInput.EntryPoint;
-	this->pPixelShader.first			= this->Shader.ShaderInput.EntryPoint;
+	this->pInputLayout.first			= this->Shader.ShaderVertex.EntryPoint;
+	this->pVertexShader.first			= this->Shader.ShaderVertex.EntryPoint;
+	this->pPixelShader.first			= this->Shader.ShaderVertex.EntryPoint;
 	this->pRastersizerState.first		= "Wire";
 	this->pCBChangesEveryFrame.first	= "ChangeEveryFrame";
 	this->pAnimBonesBuffer.first		= "AnimBoneBuffer";
@@ -39,6 +35,8 @@ FBXObject::~FBXObject()
 
 void FBXObject::Init()
 {
+	DirectXObject::Init();
+
 	if(!this->AnimController.AnimationPlayerA.IsSet())
 		this->AnimController.Init(this->MeshKey);
 
@@ -60,7 +58,22 @@ void FBXObject::Clean()
 }
 void FBXObject::UpdateDrawing(float delta)
 {
+	if(delta > 0.02f)
+	{
+		delta = 0.02f;
+	}
 	this->AnimController.Update(delta);
+
+	XMFLOAT3 t  = this->GetAnimTranslation();
+	XMFLOAT4 r  = this->GetAnimRotation();
+
+	if( t.z > 0.0f)
+	{
+		XMFLOAT4 newT = XMFLOAT4(this->object.Pos.x, this->object.Pos.y, this->object.Pos.z + t.z, 1.0f);
+		
+		this->object.Pos = newT;
+		this->object.Rot = r;
+	}
 }
 void FBXObject::UpdateObject(float delta)
 {
@@ -166,15 +179,22 @@ void FBXObject::AddAnimation(std::string name, std::string path)
 	this->AnimationKey[name] = path;
 	MeshAnimationManager::getInstance()->LoadAnimation(path);
 }
-void FBXObject::PlayAnimation(std::string anim, AnimationController::AnimationState state)
+void FBXObject::PlayAnimation(std::string anim, AnimationController::AnimationState state, float left)
 {
 	auto animIter = this->AnimationKey.find(anim);
 	if(animIter != this->AnimationKey.end())
 	{
-		this->AnimController.SetAnimation(animIter->second, state);
+		this->AnimController.SetAnimation(animIter->second, state, left);
 	}
 }
-
+void FBXObject::PlayPartialAnimation(std::string anim)
+{
+	auto animIter = this->AnimationKey.find(anim);
+	if(animIter != this->AnimationKey.end())
+	{
+		this->AnimController.SetPartial(animIter->second);
+	}
+}
 std::string FBXObject::GetPlayingAnimation() const
 {
 	if(this->AnimController.AnimationPlayerA.Animation.second != NULL)
@@ -195,6 +215,22 @@ float FBXObject::GetCurrentAnimTime() const
 std::size_t FBXObject::GetCurrentAnimFrame() const
 {
 	return this->AnimController.AnimationPlayerA.CurrentFrame;
+}
+float FBXObject::GetCurrentPhase() const
+{
+	return this->AnimController.AnimationPlayerA.AnimTime / this->AnimController.AnimationPlayerA.ClipLength();
+}
+float FBXObject::GetAnimLength() const
+{
+	return this->AnimController.AnimationPlayerA.ClipLength();
+}
+XMFLOAT3 FBXObject::GetAnimTranslation() const
+{
+	return this->AnimController.mRootTranslation;
+}
+XMFLOAT4 FBXObject::GetAnimRotation() const
+{
+	return this->AnimController.mRootRotation;
 }
 
 void FBXObject::InitVertexBuffer(ID3D11Device* device)
@@ -239,7 +275,7 @@ void FBXObject::InitInputLayout(ID3D11Device* device)
 		};
 		UINT numElements = ARRAYSIZE( layout );
 
-		if(!DX11Helper::LoadInputLayoutFile(Shader.ShaderInput.FileName, Shader.ShaderInput.EntryPoint, Shader.ShaderInput.Mode, device, layout, numElements, &(this->pInputLayout.second), error))
+		if(!DX11Helper::LoadInputLayoutFile(Shader.ShaderVertex.FileName, Shader.ShaderVertex.EntryPoint, Shader.ShaderVertex.Mode, device, layout, numElements, &(this->pInputLayout.second), error))
 		{
 			throw std::exception(Helper::WStringtoString(error).c_str());
 		}
@@ -350,22 +386,12 @@ FBXObject* FBXObject::Spawn(std::map<std::string, std::string> info)
 	iter = info.find("DefaultAnimation");
 	if(iter != info.end()) { FBX->PlayAnimation(iter->second, AnimationController::OneAnimation); }
 
-	iter = info.find("ShaderVertexEntryPoint");
-	if(iter == info.end()){throw std::exception("No Shader Input Entry point Name was included in the object");}
-	FBX->Shader.ShaderVertex.EntryPoint = iter->second;
-	FBX->Shader.ShaderInput.EntryPoint = iter->second;
-
-	iter = info.find("ShaderVertexModel");
-	if(iter == info.end()){throw std::exception("No Shader Input Model point Name was included in the object");}
-	FBX->Shader.ShaderVertex.Mode = iter->second;
-	FBX->Shader.ShaderInput.Mode = iter->second;
-
 	// Shader Vertex
 	iter = info.find("ShaderVertexFileName");
 	if(iter == info.end()){throw std::exception("No Shader Vertex File Name was included in the object");}
 	FBX->Shader.ShaderVertex.FileName = iter->second;	
 	FBX->pVertexShader.first = iter->second;
-	FBX->Shader.ShaderInput.FileName = iter->second;	
+	FBX->Shader.ShaderVertex.FileName = iter->second;	
 	FBX->pInputLayout.first = iter->second;
 
 

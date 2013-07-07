@@ -8,6 +8,16 @@ AnimationPlayer::AnimationPlayer()
 	this->AnimRate         = 1.0f;
 	this->CurrentFrame     = 0;
 	this->PreviousFrame    = 0;
+	this->mRootTranslation = XMFLOAT3(0.0f, 0.0f, 0.0);
+	this->mRootRotation = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	XMMATRIX matTranslate = XMMatrixIdentity();
+	XMMATRIX matFinal = XMMatrixIdentity();
+
+	matTranslate = XMMatrixTranslation( 0.0f, 1.0f, 0.0f);
+		
+	matFinal = XMMatrixMultiply(matFinal, matTranslate);
+	XMStoreFloat4x4(&mPrevRoot, matFinal);
 }
 AnimationPlayer::~AnimationPlayer()
 {
@@ -43,6 +53,11 @@ void AnimationPlayer::Init(std::string meshPath, std::string animationPath)
 			}
 		}
 	}
+}
+
+float AnimationPlayer::ClipLength() const
+{
+	return this->Animation.second->mDuration;
 }
 
 void AnimationPlayer::Play(float delta)
@@ -109,6 +124,37 @@ void AnimationPlayer::Play(float delta)
 		}
 	}
 
+	
+	XMMATRIX root = this->CurrentBones[1].GetTransform();
+	XMMATRIX modroot = root;
+	if(this->PreviousFrame > this->Animation.second->mKeys.size())
+    {
+        //if we've looped, add on the total root-motion of the animation
+        XMVECTOR fdet;
+		XMMATRIX invFirstRoot = XMMatrixInverse(&fdet, this->Animation.second->mKeys.back().mBones[1].GetTransform());    
+		modroot *= invFirstRoot * this->Animation.second->mKeys.front().mBones[1].GetTransform();
+    }
+
+	XMVECTOR det;
+	XMMATRIX invPrevRoot = XMMatrixInverse(&det, XMLoadFloat4x4(&mPrevRoot));
+	XMMATRIX rootMotion = invPrevRoot * modroot;
+
+
+	XMVECTOR scale;
+	XMVECTOR rotQuat;
+	XMVECTOR trans;
+	if(XMMatrixDecompose(&scale, &rotQuat, &trans, rootMotion))
+	{
+		XMStoreFloat3(&mRootTranslation, trans);
+		XMStoreFloat4(&mRootRotation, rotQuat);
+		if(mRootTranslation.z < -0.1f)
+		{
+			mRootTranslation.z = mRootTranslation.z;
+		}
+	}
+	
+	XMStoreFloat4x4(&mPrevRoot, root);
+
 	CurrentBones[1].translation.x = Animation.second->mKeys[0].mBones[1].translation.x;
 	CurrentBones[1].translation.z = Animation.second->mKeys[0].mBones[1].translation.z;
 }
@@ -116,4 +162,24 @@ void AnimationPlayer::Play(float delta)
 bool AnimationPlayer::IsSet() const
 {
 	return (this->Animation.first != "");
+}
+
+float AnimationPlayer::GetCurrentPhase()
+{
+	return (this->AnimTime / this->ClipLength());
+}
+void AnimationPlayer::SetCurrentPhase(float phase)
+{
+	 if(phase < 0.0f)
+    {
+		this->AnimTime = 0.0f;
+    }
+    else if(phase > 1.0f)
+    {
+		this->AnimTime = this->ClipLength();
+    }
+	else
+	{
+		this->AnimTime = phase * this->ClipLength();
+	}
 }

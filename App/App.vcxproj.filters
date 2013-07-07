@@ -22,16 +22,16 @@
       <Filter>Tools\Helper\Helper</Filter>
     </ClCompile>
     <ClCompile Include="BasicObject.cpp">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject</Filter>
     </ClCompile>
     <ClCompile Include="PlyLib\rply.c">
       <Filter>Tools\Helper\PlyFile</Filter>
     </ClCompile>
     <ClCompile Include="PlyFile.cpp">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\PlyFile</Filter>
     </ClCompile>
     <ClCompile Include="SkyBox.cpp">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SkyBox</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="ObjectLoader.cpp">
       <Filter>Tools\Loader</Filter>
@@ -40,16 +40,16 @@
       <Filter>Tools\Helper\TinyXML</Filter>
     </ClCompile>
     <ClCompile Include="Transparent.cpp">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent</Filter>
     </ClCompile>
     <ClCompile Include="MathHelper.cpp">
       <Filter>Tools\Helper\MathHelper</Filter>
     </ClCompile>
     <ClCompile Include="Sniper.cpp">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\Sniper</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\Sniper</Filter>
     </ClCompile>
     <ClCompile Include="SphericalMirror.cpp">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror</Filter>
     </ClCompile>
     <ClCompile Include="Prespective.cpp">
       <Filter>Tools\View\Prespective</Filter>
@@ -61,7 +61,7 @@
       <Filter>Tools\DX11Stuff\Buffer\cFBXBuffer</Filter>
     </ClCompile>
     <ClCompile Include="FBXObject.cpp">
-      <Filter>DX11ObjectDrawable\DirectX Objects\FBX Mesh</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\FBX Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Tools\Light Manager\Light</Filter>
@@ -84,20 +84,50 @@
     <ClCompile Include="DrawableInfo.cpp">
       <Filter>Tools\DrawableInfo</Filter>
     </ClCompile>
-    <ClCompile Include="IPhysics.cpp">
-      <Filter>Physics\PhysicsManager</Filter>
-    </ClCompile>
-    <ClCompile Include="IPhysicsObject.cpp">
-      <Filter>Physics\PhysicsObject</Filter>
-    </ClCompile>
     <ClCompile Include="HavokPhysics.cpp">
       <Filter>Physics\PhysicsManager\HavokPhysics</Filter>
     </ClCompile>
     <ClCompile Include="Shadow.cpp">
-      <Filter>DX11ObjectDrawable\Shadow</Filter>
+      <Filter>ObjectDrawable\Shadow</Filter>
     </ClCompile>
     <ClCompile Include="DirectXObject.cpp">
-      <Filter>DX11ObjectDrawable\DirectX Objects</Filter>
+      <Filter>ObjectDrawable\DirectX Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInput.cpp">
+      <Filter>Input Object\PlayerInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationState.cpp">
+      <Filter>Input Object\PlayerInput\AnimationState</Filter>
+    </ClCompile>
+    <ClCompile Include="HavokError.cpp">
+      <Filter>Physics\PhysicsManager\HavokPhysics\HaviocError</Filter>
+    </ClCompile>
+    <ClCompile Include="IPhysics.cpp">
+      <Filter>Physics\PhysicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxHavok.cpp">
+      <Filter>Physics\PhysicsObject\Havok Objects\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexHavok.cpp">
+      <Filter>Physics\PhysicsObject\Havok Objects\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereHavok.cpp">
+      <Filter>Physics\PhysicsObject\Havok Objects\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="HavokObject.cpp">
+      <Filter>Physics\PhysicsObject\Havok Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CarInput.cpp">
+      <Filter>Input Object\CarInput</Filter>
+    </ClCompile>
+    <ClCompile Include="BallConstraint.cpp">
+      <Filter>Physics\PhysicsConstraint\Havok Constraint\Ball Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="HingeConstraint.cpp">
+      <Filter>Physics\PhysicsConstraint\Havok Constraint\Hinge Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="WheelConstraint.cpp">
+      <Filter>Physics\PhysicsConstraint\Havok Constraint\Wheel Constraint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,7 +148,7 @@
       <Filter>Tools\Helper\Helper</Filter>
     </ClInclude>
     <ClInclude Include="BasicObject.h">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject</Filter>
     </ClInclude>
     <ClInclude Include="cBuffer.h">
       <Filter>Tools\DX11Stuff\Buffer</Filter>
@@ -127,10 +157,10 @@
       <Filter>Tools\Helper\PlyFile</Filter>
     </ClInclude>
     <ClInclude Include="PlyFile.h">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\PlyFile</Filter>
     </ClInclude>
     <ClInclude Include="SkyBox.h">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SkyBox</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="ObjectLoader.h">
       <Filter>Tools\Loader</Filter>
@@ -139,7 +169,7 @@
       <Filter>Tools\Helper\TinyXML</Filter>
     </ClInclude>
     <ClInclude Include="Transparent.h">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent</Filter>
     </ClInclude>
     <ClInclude Include="DX11Helper.h">
       <Filter>Tools\DX11Stuff\DX11Helper</Filter>
@@ -148,10 +178,10 @@
       <Filter>Tools\Helper\MathHelper</Filter>
     </ClInclude>
     <ClInclude Include="Sniper.h">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\Sniper</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\Sniper</Filter>
     </ClInclude>
     <ClInclude Include="SphericalMirror.h">
-      <Filter>DX11ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror</Filter>
     </ClInclude>
     <ClInclude Include="SkeletalAnimation.h">
       <Filter>Tools\DX11Stuff\Buffer\Mesh &amp; Animation\SkeletalAnimation</Filter>
@@ -169,7 +199,7 @@
       <Filter>Tools\DX11Stuff\Buffer\cFBXBuffer</Filter>
     </ClInclude>
     <ClInclude Include="FBXObject.h">
-      <Filter>DX11ObjectDrawable\DirectX Objects\FBX Mesh</Filter>
+      <Filter>ObjectDrawable\DirectX Objects\FBX Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Tools\Light Manager\Light</Filter>
@@ -193,7 +223,7 @@
       <Filter>Tools\DrawableInfo</Filter>
     </ClInclude>
     <ClInclude Include="iObjectDrawable.h">
-      <Filter>DX11ObjectDrawable</Filter>
+      <Filter>ObjectDrawable</Filter>
     </ClInclude>
     <ClInclude Include="IPhysics.h">
       <Filter>Physics\PhysicsManager</Filter>
@@ -205,13 +235,58 @@
       <Filter>Physics\PhysicsManager\HavokPhysics</Filter>
     </ClInclude>
     <ClInclude Include="Shadow.h">
-      <Filter>DX11ObjectDrawable\Shadow</Filter>
+      <Filter>ObjectDrawable\Shadow</Filter>
     </ClInclude>
     <ClInclude Include="DirectXObject.h">
-      <Filter>DX11ObjectDrawable\DirectX Objects</Filter>
+      <Filter>ObjectDrawable\DirectX Objects</Filter>
     </ClInclude>
     <ClInclude Include="Prespective.h">
       <Filter>Tools\View\Prespective</Filter>
+    </ClInclude>
+    <ClInclude Include="InputObject.h">
+      <Filter>Input Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInput.h">
+      <Filter>Input Object\PlayerInput</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationState.h">
+      <Filter>Input Object\PlayerInput\AnimationState</Filter>
+    </ClInclude>
+    <ClInclude Include="HavokError.h">
+      <Filter>Physics\PhysicsManager\HavokPhysics\HaviocError</Filter>
+    </ClInclude>
+    <ClInclude Include="HavokObject.h">
+      <Filter>Physics\PhysicsObject\Havok Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="HavokInclude.h">
+      <Filter>Tools\HavokInclude</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxHavok.h">
+      <Filter>Physics\PhysicsObject\Havok Objects\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexHavok.h">
+      <Filter>Physics\PhysicsObject\Havok Objects\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereHavok.h">
+      <Filter>Physics\PhysicsObject\Havok Objects\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="CarInput.h">
+      <Filter>Input Object\CarInput</Filter>
+    </ClInclude>
+    <ClInclude Include="HavokConstraint.h">
+      <Filter>Physics\PhysicsConstraint\Havok Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="IPhyscisConstraint.h">
+      <Filter>Physics\PhysicsConstraint</Filter>
+    </ClInclude>
+    <ClInclude Include="BallConstraint.h">
+      <Filter>Physics\PhysicsConstraint\Havok Constraint\Ball Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="HingeConstraint.h">
+      <Filter>Physics\PhysicsConstraint\Havok Constraint\Hinge Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="WheelConstraint.h">
+      <Filter>Physics\PhysicsConstraint\Havok Constraint\Wheel Constraint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -227,18 +302,6 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{2bf44b2f-1837-4966-a582-7ac7ffdd25b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable">
-      <UniqueIdentifier>{6c2ea664-9701-42f5-956f-faaf49cc41e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Helper">
-      <UniqueIdentifier>{f6e0bd46-4e65-46cb-ab21-7d4999615382}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Helper\PlyFile">
-      <UniqueIdentifier>{6f790185-5944-457e-a17b-25c70b0935f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Helper\MathHelper">
-      <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\View">
       <UniqueIdentifier>{3a400908-d7cc-411f-9122-1d533c835184}</UniqueIdentifier>
     </Filter>
@@ -247,12 +310,6 @@
     </Filter>
     <Filter Include="Tools\View\Camera">
       <UniqueIdentifier>{df0e2f90-efae-4fb3-a14a-cef66b937ab3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Helper\TinyXML">
-      <UniqueIdentifier>{a12b96c1-20f9-48af-9d3b-da5e4104e7a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Helper\Helper">
-      <UniqueIdentifier>{d2bedc80-0887-4280-b461-5e11d979fb52}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tools\DX11Stuff">
       <UniqueIdentifier>{b8c58024-4b3b-4421-a9b4-951625fcd586}</UniqueIdentifier>
@@ -320,33 +377,6 @@
     <Filter Include="Physics\PhysicsManager\HavokPhysics">
       <UniqueIdentifier>{1faeabc3-9435-4c2a-97e1-9e026a307618}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11ObjectDrawable\Shadow">
-      <UniqueIdentifier>{73c2b094-593c-4647-9ddd-3af81b292dcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\DirectX Objects">
-      <UniqueIdentifier>{7d8a9685-df61-41bd-aab8-a1bd14d77663}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\DirectX Objects\FBX Mesh">
-      <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject">
-      <UniqueIdentifier>{eaa3198d-0ed1-4ae7-a91a-2711d3e28ae8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile">
-      <UniqueIdentifier>{8aeb324e-706f-4a8c-9194-ecee1fd332a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent">
-      <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\SkyBox">
-      <UniqueIdentifier>{b6e007ae-fb76-445b-a805-b744dee49213}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\Sniper">
-      <UniqueIdentifier>{01de3689-034b-4538-84a3-9c21b4760d3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror">
-      <UniqueIdentifier>{517d0841-3de0-4907-91e9-171d8ea6849a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\Loader">
       <UniqueIdentifier>{5020a78b-07f3-4a6e-8127-79d0b94303c5}</UniqueIdentifier>
     </Filter>
@@ -355,6 +385,96 @@
     </Filter>
     <Filter Include="Shader\Vertex Shader">
       <UniqueIdentifier>{d6bc04a1-b334-4be7-b977-f230d2640ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable">
+      <UniqueIdentifier>{6c2ea664-9701-42f5-956f-faaf49cc41e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\Shadow">
+      <UniqueIdentifier>{73c2b094-593c-4647-9ddd-3af81b292dcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\DirectX Objects">
+      <UniqueIdentifier>{7d8a9685-df61-41bd-aab8-a1bd14d77663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\DirectX Objects\FBX Mesh">
+      <UniqueIdentifier>{519d826c-6418-4122-8011-f6a31690410e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\DirectX Objects\BasicObject">
+      <UniqueIdentifier>{eaa3198d-0ed1-4ae7-a91a-2711d3e28ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\DirectX Objects\BasicObject\PlyFile">
+      <UniqueIdentifier>{8aeb324e-706f-4a8c-9194-ecee1fd332a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\DirectX Objects\BasicObject\PlyFile\Transparent">
+      <UniqueIdentifier>{b93dfc3a-b002-4f23-a90f-53ecaa3e65f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\DirectX Objects\BasicObject\SkyBox">
+      <UniqueIdentifier>{b6e007ae-fb76-445b-a805-b744dee49213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\DirectX Objects\BasicObject\Sniper">
+      <UniqueIdentifier>{01de3689-034b-4538-84a3-9c21b4760d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectDrawable\DirectX Objects\BasicObject\SphericalMirror">
+      <UniqueIdentifier>{517d0841-3de0-4907-91e9-171d8ea6849a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input Object">
+      <UniqueIdentifier>{8a74b66e-db6b-4490-af7b-e51293d22bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input Object\PlayerInput">
+      <UniqueIdentifier>{46963998-6cd1-477d-9bba-bed22ab741e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input Object\PlayerInput\AnimationState">
+      <UniqueIdentifier>{1575a1d1-0a36-4e04-9dfa-18ccdc94b579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsManager\HavokPhysics\HaviocError">
+      <UniqueIdentifier>{ed581e85-2164-4932-b34f-90b5ef7692e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsObject\Havok Objects">
+      <UniqueIdentifier>{70e8139e-a388-4fd5-b662-3a1ff18ab2d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsObject\Havok Objects\Box">
+      <UniqueIdentifier>{6117e71f-25f9-4c46-ad19-f7922829e212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\HavokInclude">
+      <UniqueIdentifier>{ed31d3c4-9d5d-495f-b2a9-80e36734aaf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsObject\Havok Objects\Sphere">
+      <UniqueIdentifier>{7cd5e4ca-7f91-42d3-afc7-af2114e996f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsObject\Havok Objects\Vertex">
+      <UniqueIdentifier>{a17765f2-4d2e-4d4b-999f-1a44a59af50d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Helper">
+      <UniqueIdentifier>{f6e0bd46-4e65-46cb-ab21-7d4999615382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Helper\PlyFile">
+      <UniqueIdentifier>{6f790185-5944-457e-a17b-25c70b0935f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Helper\MathHelper">
+      <UniqueIdentifier>{91c37ec0-12a6-4d47-8ba6-e9ec904b27f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Helper\TinyXML">
+      <UniqueIdentifier>{a12b96c1-20f9-48af-9d3b-da5e4104e7a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Helper\Helper">
+      <UniqueIdentifier>{d2bedc80-0887-4280-b461-5e11d979fb52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input Object\CarInput">
+      <UniqueIdentifier>{15ae54a9-133e-4ddd-be29-a673fcf3c208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsConstraint">
+      <UniqueIdentifier>{c548e71b-a433-4a80-9070-d05e466c5fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsConstraint\Havok Constraint">
+      <UniqueIdentifier>{cb5ebf16-899d-4ca2-bf62-ab4e1891dc69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsConstraint\Havok Constraint\Ball Constraint">
+      <UniqueIdentifier>{bda4eb80-27a5-4bd3-abdc-bda72d13cff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsConstraint\Havok Constraint\Hinge Constraint">
+      <UniqueIdentifier>{492af205-0d9b-4ac3-8944-647f493f3e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsConstraint\Havok Constraint\Wheel Constraint">
+      <UniqueIdentifier>{4e5ea2bc-fee5-458e-a655-46145cf9d487}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

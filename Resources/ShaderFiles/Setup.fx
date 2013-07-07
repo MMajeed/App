@@ -9,7 +9,6 @@ cbuffer cbNeverChanges : register( b0 )
 {
     matrix CameraView;
 	matrix LightView;
-	matrix specialMatrix;
 	float4 eye;
 	float4 target;
 	LightDesc light[10];		// Light type now in light description
@@ -38,11 +37,11 @@ SamplerState samAnisotropic : register( s1 );
 
 SamplerState samShadow
 {
-	Filter   = COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
+	Filter   = COMPARISON_ANISOTROPIC;
 	AddressU = BORDER;
 	AddressV = BORDER;
 	AddressW = BORDER;
-	BorderColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	BorderColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 };
 
 

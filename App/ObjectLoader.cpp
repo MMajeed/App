@@ -6,6 +6,14 @@
 #include "Transparent.h"
 #include "SphericalMirror.h"
 #include "FBXObject.h"
+#include "PlayerInput.h"
+#include "BoxHavok.h"
+#include "SphereHavok.h"
+#include "VertexHavok.h"
+#include "CarInput.h"
+#include "BallConstraint.h"
+#include "HingeConstraint.h"
+#include "WheelConstraint.h"
 
 ObjectLoader* ObjectLoader::ObjectManager = 0;
 
@@ -52,29 +60,18 @@ void ObjectLoader::LoadXMLFile(std::string loc)
 		this->Lights.push_back(info);
 	}
 
-	for(auto objectNodeIter = document.FirstChildElement("Objects")->FirstChildElement("Object"); 
+	for(auto objectNodeIter = document.FirstChildElement("Objects")->FirstChildElement("PhysicsConstraint"); 
 		objectNodeIter;
-		objectNodeIter = objectNodeIter->NextSiblingElement("Object") )
+		objectNodeIter = objectNodeIter->NextSiblingElement("PhysicsConstraint") )
 	{
-		std::string ID;
-		std::string classType;
 		std::map<std::string, std::string> info;
 
 		for(auto childNodeIter = objectNodeIter->FirstChildElement();
 			childNodeIter;
 			childNodeIter = childNodeIter->NextSiblingElement())
 		{
-			std::string Name	= childNodeIter->Name();
-			if(Name == "ID")
-			{
-				ID = childNodeIter->GetText();
-			}
-			else if(Name == "Class")
-			{
-				classType = childNodeIter->GetText();
-				info["Class"] = childNodeIter->GetText();
-			}
-			else if (Name.compare(0, 3, "XYZ") == 0)
+			std::string Name = childNodeIter->Name();
+			if (Name.compare(0, 3, "XYZ") == 0)
 			{
 				for(auto iterAttribute = childNodeIter->FirstAttribute();
 					iterAttribute;
@@ -86,27 +83,135 @@ void ObjectLoader::LoadXMLFile(std::string loc)
 
 				}
 			}
-			else if (Name.compare(0, 6, "Shader") == 0)
-			{
-				std::string X = childNodeIter->Attribute("FileName");
-				info[Name+"FileName"] = X;
-				std::string Y = childNodeIter->Attribute("EntryPoint");
-				info[Name+"EntryPoint"] = Y;
-				std::string Z = childNodeIter->Attribute("Model");
-				info[Name+"Model"] = Z;
-			}
 			else
 			{
 				info[Name] = childNodeIter->GetText();
 			}
 		}
+		
+		this->PhysicsConstraints.push_back(info);
+	}
 
-		if(ID == "" || classType == "")
+	for(auto objectNodeIter = document.FirstChildElement("Objects")->FirstChildElement("Object"); 
+		objectNodeIter;
+		objectNodeIter = objectNodeIter->NextSiblingElement("Object") )
+	{
+		std::string ID;
+		ObjectMaps newObject;
+
+		for(auto childNodeIter = objectNodeIter->FirstChildElement();
+			childNodeIter;
+			childNodeIter = childNodeIter->NextSiblingElement())
+		{
+			std::string Name	= childNodeIter->Name();
+			if(Name == "ID")
+			{
+				ID = childNodeIter->GetText();
+			}
+			else if (Name.compare(0, 3, "XYZ") == 0)
+			{
+				for(auto iterAttribute = childNodeIter->FirstAttribute();
+					iterAttribute;
+					iterAttribute = iterAttribute->Next())
+				{
+					std::string attributeName = iterAttribute->Name();
+
+					newObject.Common[Name+attributeName] = iterAttribute->Value();
+
+				}
+			}
+			else if(Name == "Draw")
+			{
+				for(auto drawNodeIter = childNodeIter->FirstChildElement();
+					drawNodeIter;
+					drawNodeIter = drawNodeIter->NextSiblingElement())
+				{
+					Name = drawNodeIter->Name();
+					if (Name.compare(0, 3, "XYZ") == 0)
+					{
+						for(auto iterAttribute = drawNodeIter->FirstAttribute();
+							iterAttribute;
+							iterAttribute = iterAttribute->Next())
+						{
+							std::string attributeName = iterAttribute->Name();
+
+							newObject.Drawing[Name+attributeName] = iterAttribute->Value();
+
+						}
+					}
+					else if (Name.compare(0, 6, "Shader") == 0)
+					{
+						std::string X = drawNodeIter->Attribute("FileName");
+						newObject.Drawing[Name+"FileName"] = X;
+						std::string Y = drawNodeIter->Attribute("EntryPoint");
+						newObject.Drawing[Name+"EntryPoint"] = Y;
+						std::string Z = drawNodeIter->Attribute("Model");
+						newObject.Drawing[Name+"Model"] = Z;
+					}
+					else
+					{
+						newObject.Drawing[Name] = drawNodeIter->GetText();
+					}
+				}
+			}
+			else if(Name == "Physics")
+			{
+				for(auto physicsIter = childNodeIter->FirstChildElement();
+					physicsIter;
+					physicsIter = physicsIter->NextSiblingElement())
+				{
+					Name = physicsIter->Name();
+					if (Name.compare(0, 3, "XYZ") == 0)
+					{
+						for(auto iterAttribute = physicsIter->FirstAttribute();
+							iterAttribute;
+							iterAttribute = iterAttribute->Next())
+						{
+							std::string attributeName = iterAttribute->Name();
+
+							newObject.Physics[Name+attributeName] = iterAttribute->Value();
+
+						}
+					}
+					else
+					{
+						newObject.Physics[Name] = physicsIter->GetText();
+					}
+				}
+			}
+			else if(Name == "Input")
+			{
+				for(auto physicsIter = childNodeIter->FirstChildElement();
+					physicsIter;
+					physicsIter = physicsIter->NextSiblingElement())
+				{
+					Name = physicsIter->Name();
+					if (Name.compare(0, 3, "XYZ") == 0)
+					{
+						for(auto iterAttribute = physicsIter->FirstAttribute();
+							iterAttribute;
+							iterAttribute = iterAttribute->Next())
+						{
+							std::string attributeName = iterAttribute->Name();
+
+							newObject.Input[Name+attributeName] = iterAttribute->Value();
+
+						}
+					}
+					else
+					{
+						newObject.Input[Name] = physicsIter->GetText();
+					}
+				}
+			}
+		}
+
+		if(ID == "")
 		{
 			throw std::exception("Error loading one of the objects. It didn't have a class or an ID");
 		}
 
-		this->objects[ID] = info;
+		this->objects[ID] = newObject;
 	}	
 }
 
@@ -119,32 +224,60 @@ bool ObjectLoader::Spawn(std::string name, ObjectInfo& object)
 		return false;
 	}
 
-	if(objectIter->second["Class"] == "PlyFile")
+	auto info = objectIter->second;
+
+	info.Drawing.insert(info.Common.begin(), info.Common.end());
+	info.Physics.insert(info.Common.begin(), info.Common.end());
+
+	if(objectIter->second.Drawing["Class"] == "PlyFile")
 	{
-		object.ObjectDrawable = PlyFile::Spawn(objectIter->second);
+		object.ObjectDrawable = PlyFile::Spawn(info.Drawing);
 	}
-	else if(objectIter->second["Class"] == "SkyBox")
+	else if(objectIter->second.Drawing["Class"] == "SkyBox")
 	{
-		object.ObjectDrawable = SkyBox::Spawn(objectIter->second);
+		object.ObjectDrawable = SkyBox::Spawn(info.Drawing);
 	}
-	else if(objectIter->second["Class"] == "TransparentPly")
+	else if(objectIter->second.Drawing["Class"] == "TransparentPly")
 	{
-		object.ObjectDrawable = Transparent::Spawn(objectIter->second);
+		object.ObjectDrawable = Transparent::Spawn(info.Drawing);
 	}
-	else if(objectIter->second["Class"] == "SphericalMirror")
+	else if(objectIter->second.Drawing["Class"] == "SphericalMirror")
 	{
-		object.ObjectDrawable = SphericalMirror::Spawn(objectIter->second);
+		object.ObjectDrawable = SphericalMirror::Spawn(info.Drawing);
 	}
-	else if(objectIter->second["Class"] == "FBXFile")
+	else if(objectIter->second.Drawing["Class"] == "FBXFile")
 	{
-		object.ObjectDrawable = FBXObject::Spawn(objectIter->second);
+		object.ObjectDrawable = FBXObject::Spawn(info.Drawing);
 	}
-	else 
+	object.ObjectDrawable->Init();
+
+
+	if(objectIter->second.Physics["Class"] == "Box")
 	{
-		return false;
+		object.Physics = BoxHavok::Spawn(info.Physics);
+		object.Physics->Init(&object);
+	}
+	else if(objectIter->second.Physics["Class"] == "Sphere")
+	{
+		object.Physics = SphereHavok::Spawn(info.Physics);		
+		object.Physics->Init(&object);
+	}
+	else if(objectIter->second.Physics["Class"] == "Vertex")
+	{
+		object.Physics = VertexHavok::Spawn(info.Physics);		
+		object.Physics->Init(&object);
 	}
 
-	object.ObjectDrawable->Init();
+	if(objectIter->second.Input["Class"] == "Vechile")
+	{
+		object.InputObject = new CarInput(&object);
+	}
+	else if(objectIter->second.Input["Class"] == "PlayerInput")
+	{
+		object.InputObject = new PlayerInput(&object);
+	}
+
+
 	return true;
 }
 
@@ -248,6 +381,27 @@ LightManager ObjectLoader::SetupLight()
 	}
 
 	return lightManagerReturn;
+}
+
+void ObjectLoader::SetupConstraint()
+{
+	for(auto physicsConstraint = this->PhysicsConstraints.begin();
+		physicsConstraint != this->PhysicsConstraints.end();
+		++physicsConstraint)
+	{
+		if((*physicsConstraint)["Class"] == "Ball")
+		{
+			BallConstraint::Spawn(*physicsConstraint);
+		}
+		else if((*physicsConstraint)["Class"] == "Hinge")
+		{
+			HingeConstraint::Spawn(*physicsConstraint);
+		}
+		else if((*physicsConstraint)["Class"] == "Wheel")
+		{
+			WheelConstraint::Spawn(*physicsConstraint);
+		}
+	}
 }
 
 ObjectLoader* ObjectLoader::getInstance()

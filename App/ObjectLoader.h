@@ -17,9 +17,18 @@ public:
 	bool ObjectLoader::Spawn(std::string name, ObjectInfo& object);
 	std::map<std::string, ObjectInfo> SpawnAll();
 	LightManager SetupLight();
+	void SetupConstraint();
 
 protected:
-	std::map<std::string, std::map<std::string, std::string>> objects;
+	struct ObjectMaps
+	{
+		std::map<std::string, std::string> Drawing;
+		std::map<std::string, std::string> Physics;
+		std::map<std::string, std::string> Common;
+		std::map<std::string, std::string> Input;
+	};
+	std::map<std::string, ObjectMaps> objects;
+	std::vector<std::map<std::string, std::string>> PhysicsConstraints;
 	std::vector<std::map<std::string, std::string>> Lights;
 	static ObjectLoader* ObjectManager;
 
